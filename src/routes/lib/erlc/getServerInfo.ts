@@ -65,6 +65,26 @@ interface GetServerInfoRes {
     }
 }
 
-export async function getServerInfo() {
-    
+export async function getServerInfo(params: GetServerInfoParams) {
+    if (!env.SERVER_KEY) throw new Error("No SERVER_KEY env");
+
+    const url = new URL("/v2/server", "https://api.erlc.gg")
+
+    for (const [key, value] of Object.entries(params)) {
+        if (value) url.searchParams.set(key, "true")
+    }
+
+    const res = await fetch(url, {
+        headers: {
+            "server-key": env.SERVER_KEY
+        }
+    })
+
+    if (res.status != 200) {
+        throw new Error(`Error with erlc api: ${res.status}`)
+    }
+
+    const body = await res.json() as GetServerInfoRes;
+
+    return body
 }
