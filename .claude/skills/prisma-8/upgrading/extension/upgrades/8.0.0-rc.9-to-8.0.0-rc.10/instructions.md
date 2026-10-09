@@ -1,6 +1,6 @@
 ---
-from: '8.0.0-rc.9'
-to: '8.0.0-rc.10'
+from: "8.0.0-rc.9"
+to: "8.0.0-rc.10"
 # sql-orm-client doc-comment sweep: reviewed, no entry required
 # postgres shell dependency ownership: reviewed, no extension-author action required; bundled packages now declare the catalog Node/pg type dependencies that public shell manifests mirror
 changes:
@@ -11,9 +11,9 @@ changes:
       inferred-schema printer write the new form. Replace `// use prisma-next`
       at the top of every `.prisma` file the extension ships or tests against.
     detection:
-      glob: '**/*.prisma'
+      glob: "**/*.prisma"
       contains:
-        - '// use prisma-next'
+        - "// use prisma-next"
   - id: env-vars-drop-next-infix
     summary: |
       The CLI environment variables lost their `NEXT_` infix: `PRISMA_NEXT_DISABLE_TELEMETRY`,
@@ -22,9 +22,9 @@ changes:
       `PRISMA_NEXT_DISABLE_TELEMETRY` opt-out is still honoured; the others are not. Rename them
       in the extension's test setup and CI configuration.
     detection:
-      glob: '**/*'
+      glob: "**/*"
       contains:
-        - 'PRISMA_NEXT_'
+        - "PRISMA_NEXT_"
   - id: to-one-relations-record-nullable
     summary: |
       `ContractNonJunctionRelation`'s `'1:1'` and `'N:1'` members now require `nullable: boolean`,
@@ -32,7 +32,7 @@ changes:
       `nullable` on every to-one relation the extension constructs, and rebuild the extension's
       contract space so its emitted `contract.json` / `contract.d.ts` carry the flag.
     detection:
-      glob: '**/*.ts'
+      glob: "**/*.ts"
       matches:
         - '(?<!\bnullable\b(?:[^{}]|\{[^{}]*\})*)(?:(?<=\bon\s*:(?:[^{}]|\{[^{}]*\})*)|(?=(?:[^{}]|\{[^{}]*\})*\bon\s*:))\bcardinality:\s*[''"](?:N:1|1:1)[''"](?!(?:[^{}]|\{[^{}]*\})*\bnullable\b)'
   - id: contract-space-re-emit-nullable
@@ -41,7 +41,7 @@ changes:
       relation. Rebuild the contract space (the package's `build:contract-space` script) once
       after upgrading.
     detection:
-      glob: '**/contract.json'
+      glob: "**/contract.json"
       matches:
         - '"cardinality":\s*"(?:N:1|1:1)",\s*"on":'
 ---

@@ -1,6 +1,6 @@
 ---
-from: '8.0.0-rc.3'
-to: '8.0.0-rc.4'
+from: "8.0.0-rc.3"
+to: "8.0.0-rc.4"
 changes:
   - id: prisma-config-hard-cut-and-top-level-commands
     summary: |
@@ -31,7 +31,7 @@ changes:
       5. Run `prisma-cli contract emit` to confirm the config loads and to regenerate the
          artifacts (their generated-file headers change with this release).
     detection:
-      glob: '**/prisma-next.config.ts'
+      glob: "**/prisma-next.config.ts"
   - id: facades-compose-the-raw-lane
     summary: |
       A facade no longer gets the whole-query raw tag from the builder. `Db<C>` is a pure
@@ -50,7 +50,7 @@ changes:
       changes shape from a callable to `{ sql }`. That breaks your own surface, so note it in
       your release.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       regex:
         - 'createRawSql\('
         - 'RawSqlTag'
@@ -65,9 +65,9 @@ changes:
       any branch that matched it: a test asserting the refusal, a doc listing the code, an
       error mapping of your own.
     detection:
-      glob: '**/*.{ts,mts,cts,md}'
+      glob: "**/*.{ts,mts,cts,md}"
       contains:
-        - 'ORM.NAMESPACE_RESERVED'
+        - "ORM.NAMESPACE_RESERVED"
       anyMatch: true
   - id: contract-fixture-restamp
     summary: |
@@ -76,7 +76,7 @@ changes:
       with your emit script (`build:contract-space` or equivalent) after upgrading, or
       fixture comparisons fail on the version stamp alone.
     detection:
-      glob: '**/contract.json'
+      glob: "**/contract.json"
       contains:
         - '"version": "8.0.0-rc.3"'
 ---
@@ -105,9 +105,9 @@ there too and return it as `raw`:
 
 ```ts
 export interface YourStaticContext<TContract extends Contract<SqlStorage>> {
-	readonly sql: Db<TContract>;
-	readonly raw: RawLane<TContract>;
-	// …context, contract, enums
+  readonly sql: Db<TContract>;
+  readonly raw: RawLane<TContract>;
+  // …context, contract, enums
 }
 
 const raw: RawLane<TContract> = createRawLane<TContract>({ context, rawCodecInferer });

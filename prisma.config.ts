@@ -8,5 +8,9 @@ export default definePrismaConfig({
 		db: {
 			connection: process.env['DATABASE_URL']!
 		}
-	})
+	}),
+	skills: {
+		agents: ["claude"],
+		check: true
+	}
 });

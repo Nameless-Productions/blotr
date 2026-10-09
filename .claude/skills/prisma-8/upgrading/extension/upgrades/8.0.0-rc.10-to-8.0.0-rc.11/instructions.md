@@ -1,6 +1,6 @@
 ---
-from: '8.0.0-rc.10'
-to: '8.0.0-rc.11'
+from: "8.0.0-rc.10"
+to: "8.0.0-rc.11"
 changes:
   - id: engine-pin-moves-to-0-4-0
     summary: |
@@ -9,7 +9,7 @@ changes:
       adds a `--format markdown` output format to every command and widens its `Format` type to
       `"human" | "json" | "markdown"`; nothing else in its public API changed.
     detection:
-      glob: '**/package.json'
+      glob: "**/package.json"
       contains:
         - '"@prisma/cli-engine": "0.3.0"'
   - id: contract-space-restamp
@@ -18,7 +18,7 @@ changes:
       to 8.0.0-rc.11. Rebuild the extension's contract space (the package's `build:contract-space`
       script) once after upgrading so the emitted artifacts match the installed toolchain.
     detection:
-      glob: '**/contract.json'
+      glob: "**/contract.json"
       contains:
         - '"version": "8.0.0-rc.10"'
 ---

@@ -1,21 +1,21 @@
 ---
-from: '0.12'
-to: '0.13'
+from: "0.12"
+to: "0.13"
 changes:
   - id: sqlite-create-table-method
     summary: |
       SQLite migrations: `createTable` is no longer a free function exported from `@internal/sqlite/migration`. It is now a protected method on the `Migration` base class. Replace every free `createTable(...)` call in your SQLite migration files with `this.createTable({ table: ..., columns: [...], constraints: [...] })`. The `col()`, `lit()`, `fn()`, `primaryKey()`, `foreignKey()`, and `unique()` builder helpers are now exported from `@internal/sqlite/migration` directly, so your import line stays a single entry point.
     detection:
-      glob: '**/migration.ts'
+      glob: "**/migration.ts"
       contains:
-        - 'createTable'
-        - '@internal/sqlite/migration'
+        - "createTable"
+        - "@internal/sqlite/migration"
       anyMatch: false
   - id: re-emit-mti-variant-link-columns
     summary: |
       MTI variant models — PSL `@@base(Parent, "tag")` models that carry their own `@@map` and are therefore stored in their own table — now materialise base-PK link columns in storage. On re-emit, each such variant table gains a copy of the base table's full primary-key column set (same names and types), a primary key over those columns, and a cascading foreign key referencing the base table's primary key; the contract's `storageHash` changes accordingly. Re-emit your contract artefacts (`pnpm emit`), then advance your database with the corresponding migration (`prisma-next migration plan` → `prisma-next migrate`) so the variant tables gain the link column, PK, and cascading FK. Contracts whose variants share the base table (single-table inheritance, no own `@@map`) are unaffected.
     detection:
-      glob: '**/contract.json'
+      glob: "**/contract.json"
       contains:
         - '"base":'
       anyMatch: true
@@ -36,7 +36,7 @@ changes:
       plan` → `prisma-next migrate`) so your database schema is reconciled with the new
       contract shape. No source change is required — re-emitting is sufficient.
     detection:
-      glob: '**/contract.json'
+      glob: "**/contract.json"
       anyMatch: true
   - id: telemetry-now-opt-out
     summary: |
@@ -123,18 +123,16 @@ The column builder helpers `col()`, `lit()`, `fn()`, `primaryKey()`, `foreignKey
 import { Migration, MigrationCLI, createTable, col, primaryKey } from '@internal/sqlite/migration';
 
 export default class M extends Migration {
-	override describe() {
-		return { from: null, to: '...' };
-	}
+  override describe() { return { from: null, to: '...' }; }
 
-	override get operations() {
-		return [
-			createTable('user', [
-				col('id', 'INTEGER', { primaryKey: true }),
-				col('email', 'TEXT', { notNull: true })
-			])
-		];
-	}
+  override get operations() {
+    return [
+      createTable('user', [
+        col('id', 'INTEGER', { primaryKey: true }),
+        col('email', 'TEXT', { notNull: true }),
+      ]),
+    ];
+  }
 }
 
 MigrationCLI.run(import.meta.url, M);
@@ -146,21 +144,19 @@ MigrationCLI.run(import.meta.url, M);
 import { Migration, MigrationCLI, col, primaryKey } from '@internal/sqlite/migration';
 
 export default class M extends Migration {
-	override describe() {
-		return { from: null, to: '...' };
-	}
+  override describe() { return { from: null, to: '...' }; }
 
-	override get operations() {
-		return [
-			this.createTable({
-				table: 'user',
-				columns: [
-					col('id', 'INTEGER', { primaryKey: true }),
-					col('email', 'TEXT', { notNull: true })
-				]
-			})
-		];
-	}
+  override get operations() {
+    return [
+      this.createTable({
+        table: 'user',
+        columns: [
+          col('id', 'INTEGER', { primaryKey: true }),
+          col('email', 'TEXT', { notNull: true }),
+        ],
+      }),
+    ];
+  }
 }
 
 MigrationCLI.run(import.meta.url, M);
@@ -292,7 +288,6 @@ namespace public {
 ```
 
 On emit, `contract.json` gains:
-
 - A `types.Uuid` entry under `storage` for the named-type alias.
 - The `userId` column with `typeRef: "Uuid"` on the storage table.
 - A cross-space `foreignKey` entry on the storage table pointing at the extension space's table.

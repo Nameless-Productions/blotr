@@ -1,6 +1,6 @@
 ---
-from: '8.0.0-rc.11'
-to: '8.0.0-rc.12'
+from: "8.0.0-rc.11"
+to: "8.0.0-rc.12"
 # The Prisma 7 contract source adds `prisma7Schema` and `contract: ContractConfig` to
 # `@prisma/orm-postgres/config`, and `diagnostics` to CliStructuredError. Both additive. It also
 # moves the Postgres raw default parser out of the family `psl-infer` subpath (entry below). The
@@ -20,14 +20,14 @@ changes:
       `definePrismaConfig`. Required: `@prisma/cli-engine@0.6.1` no longer exports the deprecated
       `defineConfig` alias.
     detection:
-      glob: '**/prisma.config.ts'
+      glob: "**/prisma.config.ts"
       contains:
         - "import { defineConfig } from '@prisma/cli-engine'"
   - id: engine-pin-moves-to-0-6-1
     summary: |
       The toolchain now peers `@prisma/cli-engine@0.6.1` (up from 0.4.0). An extension package that pins `@prisma/cli-engine` for its tests or tooling must move the pin to `0.6.1`. A config section's `validate` now receives a second `provenance` argument naming the files that declared the section.
     detection:
-      glob: '**/package.json'
+      glob: "**/package.json"
       contains:
         - '"@prisma/cli-engine": "0.4.0"'
   - id: psl-model-names-table-verbatim
@@ -40,7 +40,7 @@ changes:
       after the codemod. Planning without it fails with `MIGRATION.TABLE_NAME_CASE_CHANGED`
       instead of dropping and recreating the table.
     detection:
-      glob: '**/*.prisma'
+      glob: "**/*.prisma"
       regex:
         - '\bmodel\s+[A-Za-z_][A-Za-z0-9_]*\s*\{'
     script: ./scripts/psl-verbatim-table-names/add-model-map.mjs
@@ -50,16 +50,16 @@ changes:
       `PSL_UNKNOWN_DEFAULT_FUNCTION`. Write a raw SQL default as the `sql` tagged literal, and a
       value the column's data type writes as that literal.
     detection:
-      glob: '**/*.prisma'
+      glob: "**/*.prisma"
       contains:
-        - 'dbgenerated('
+        - "dbgenerated("
   - id: default-sql-method-deprecated
     summary: |
       `.defaultSql('...')` on the TypeScript contract builder is deprecated and is removed at
       8.0.0. Rewrite each call to `.default(...)` with `now()`, `autoincrement()`, or the `sql`
       template tag.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\.defaultSql\('
   - id: every-codec-descriptor-names-a-data-type
@@ -68,7 +68,7 @@ changes:
       A descriptor without one does not compile, and a data type no component registers is an
       assembly error.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\b(CodecDescriptorImpl|PostgresCodecDescriptor|SqliteCodecDescriptor)\b'
   - id: a-pack-registers-its-data-types
@@ -76,7 +76,7 @@ changes:
       A pack registers its data types through `dataTypes` on its component metadata — a sibling of
       `types`, not a member of it — as an array of `dataType(...)` declarations.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\bcodecDescriptors:'
   - id: casts-replace-accepted-shape-handling
@@ -84,7 +84,7 @@ changes:
       A data type declares, in `casts`, which other types' values it takes and how. Casts replace
       every per-codec list of accepted shapes and the conversions that went with them.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\bliteralTypes\b'
         - '\bLiteralTypeDeclaration\b'
@@ -94,7 +94,7 @@ changes:
       `decodeJson` takes its data type's canonical form and nothing else. Remove every coercion a
       codec did to accept another shape; the cast runs before the codec sees the value.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\bdecodeJson\('
   - id: the-authoring-entry-replaces-the-tag-registry-entry
@@ -102,7 +102,7 @@ changes:
       PSL support for a data type is an authoring entry under `authoring.dataTypes`, keyed by the
       type's id. It replaces the entry a pack used to put in the default-literal tag registry.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\bdefaultLiteralTagRegistry\b'
         - '\bControlDefaultLiteralTagEntry\b'
@@ -113,7 +113,7 @@ changes:
       `DefaultMappingOptions` carries `dataTypeEntries`, `dataTypes` and `columnDataType` in place
       of `literalTypes`.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\bmapDefault\('
         - '\bDefaultMappingOptions\b'
@@ -122,7 +122,7 @@ changes:
       `escapePslString`, `isNumeralText`, `isNonFiniteText` and `numeralText` moved from
       `@internal/framework-components/codec` to `@internal/sql-relational-core/ast`.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\b(escapePslString|isNumeralText|isNonFiniteText|numeralText)\b'
   - id: the-postgres-target-exposes-its-data-types
@@ -131,7 +131,7 @@ changes:
       facade as `./target/data-types`. Import the Postgres types from there to declare a cast from
       one.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\bdataType\('
   - id: a-target-adapted-codec-extends-the-template
@@ -139,15 +139,15 @@ changes:
       A codec whose data type depends on the target adapting it extends `CodecDescriptorTemplateImpl`
       and leaves `dataType` off; the target names the type when it adapts the template.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\bCodecDescriptorTemplateImpl\b'
   - id: codec-without-params-has-no-params-schema
     summary: A codec that takes no params sets `paramsSchema` to `undefined`; `voidParamsSchema` is removed.
     detection:
-      glob: '**/*.ts'
+      glob: "**/*.ts"
       contains:
-        - 'voidParamsSchema'
+        - "voidParamsSchema"
   - id: psl-infer-raw-default-parser-is-target-owned
     summary: |
       `parseRawDefault` is no longer exported from the `family/psl-infer` subpath; import `parsePostgresDefault` from `@prisma/orm-postgres/target/default-normalizer` instead.
@@ -155,28 +155,28 @@ changes:
     summary: |
       `fieldAttribute`, `modelAttribute` and `blockAttribute` require a `documentation` string, and so does every positional and named parameter. A named parameter is now `{ type, documentation }` instead of a bare argument type.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\b(?:fieldAttribute|modelAttribute|blockAttribute)\('
   - id: psl-entity-ref-takes-a-selector
     summary: |
       `entityRef()` takes a selector such as `entityRef({ kind: 'model' })` and returns the resolved declaration instead of a name. Use `identifier()` for a name that is not checked. The attribute context carries the collected `symbols` table.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       contains:
-        - 'entityRef()'
+        - "entityRef()"
   - id: psl-parse-takes-a-file-name
     summary: |
       `parse(source, filename, options?)` requires the file name, and its result carries `sources` in place of `sourceFile`. The interpreter input takes `documents: [document]` in place of `document`.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - '\bparse\([^,()]*\)'
         - '\bdocument:\s'
   - id: emit-requires-deserialize-contract
     summary: Pass the contract family's deserializer to emit(); contract.d.ts is now always generated from the canonical contract.json.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - 'import\s*\{[^}]*\bemit\b[^}]*\}\s*from\s*[^/\w\s]@(?:prisma/orm-toolchain|internal)/emitter[^/\w-]'
   - id: expression-codec-on-return-type
@@ -200,10 +200,10 @@ changes:
       `@internal/target-postgres/operation-types`. The adapter subpath is gone, with no
       compatibility re-export.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
-        - 'adapter-postgres/operation-types'
-        - 'orm-postgres/adapter/operation-types'
+        - "adapter-postgres/operation-types"
+        - "orm-postgres/adapter/operation-types"
   - id: native-enum-codec-is-not-textual
     summary: |
       The native enum codec `pg/enum@1` no longer declares the `textual` trait. `pgEnumDescriptor`
@@ -215,24 +215,24 @@ changes:
       Remove `strategy: 'infix'` and `strategy: 'function'` from every operation descriptor's
       `lowering` object; `template` alone describes the lowering.
     detection:
-      glob: '**/*.{ts,mts,cts}'
+      glob: "**/*.{ts,mts,cts}"
       matches:
         - "strategy: 'infix'"
         - "strategy: 'function'"
-        - 'strategy: "infix"'
-        - 'strategy: "function"'
+        - "strategy: \"infix\""
+        - "strategy: \"function\""
   - id: share-create-default-cache-across-inserts
     summary: Share query-stable mutation defaults across every insert in one logical create operation.
   - id: supabase-contract-declares-nullable-list-columns
     summary: The Supabase extension contract now declares storage.buckets.allowed_mime_types and storage.objects.path_tokens as nullable lists, so its storage hash changes; re-sign databases that were signed against the previous Supabase contract.
     detection:
-      glob: '**/package.json'
+      glob: "**/package.json"
       contains:
         - '"@prisma/orm-extension-supabase"'
   - id: supabase-contract-regenerated-from-the-reference-fixture
     summary: The Supabase extension contract is regenerated and now declares the reference build's 43 check constraints, six native-enum defaults as member literals, four jsonb defaults as JSON literals, and an element-not-null waiver on two more list columns, so its storage hash changes; re-sign databases that were signed against the previous Supabase contract, and check your own Supabase build declares the same constraints.
     detection:
-      glob: '**/package.json'
+      glob: "**/package.json"
       contains:
         - '"@prisma/orm-extension-supabase"'
   - id: contract-space-restamp
@@ -241,7 +241,7 @@ changes:
       to 8.0.0-rc.12. Rebuild the extension's contract space (the package's `build:contract-space`
       script) once after upgrading so the emitted artifacts match the installed toolchain.
     detection:
-      glob: '**/contract.json'
+      glob: "**/contract.json"
       contains:
         - '"version": "8.0.0-rc.11"'
 ---
@@ -314,19 +314,19 @@ To adopt the verbatim names on purpose instead of mapping, rename the storage by
 
 ## `dbgenerated-removed-from-psl`
 
-`@default(dbgenerated("<expression>"))` no longer parses. Every use is reported at its span as `PSL_UNKNOWN_DEFAULT_FUNCTION` with the message ``Default function "dbgenerated" was removed. Write the SQL as a tagged literal: @default(sql`<expression>`). Supported functions: ...``. `prisma contract infer` no longer prints it either: a raw expression prints as a `sql` tagged literal, and a value the column's data type writes prints as that literal.
+`@default(dbgenerated("<expression>"))` no longer parses. Every use is reported at its span as `PSL_UNKNOWN_DEFAULT_FUNCTION` with the message `` Default function "dbgenerated" was removed. Write the SQL as a tagged literal: @default(sql`<expression>`). Supported functions: ... ``. `prisma contract infer` no longer prints it either: a raw expression prints as a `sql` tagged literal, and a value the column's data type writes prints as that literal.
 
 In PSL, a raw SQL column default is written as a tagged literal, ``@default(sql`...`)`` or `@default(sql"...")`. Rewrite each use by what the expression is:
 
-| You wrote                                                                                                            | Write instead                        |
-| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `@default(dbgenerated("gen_random_uuid()"))`                                                                         | ``@default(sql`gen_random_uuid()`)`` |
-| `@default(dbgenerated("now()"))`, `@default(dbgenerated("CURRENT_TIMESTAMP"))` on Postgres                           | `@default(now())`                    |
-| `@default(dbgenerated("autoincrement()"))`, `@default(dbgenerated("nextval('<seq>'::regclass)"))` on a serial column | `@default(autoincrement())`          |
-| `@default(dbgenerated("'<json>'::jsonb"))` on a `Json` or `Jsonb` column                                             | ``@default(json`<json>`)``           |
-| `@default(dbgenerated("'<member>'::<enum type>"))` on a column typed by that enum                                    | `@default("<member>")`               |
-| `@default(dbgenerated("'<text>'::text"))` on a text column                                                           | `@default("<text>")`                 |
-| `@default(dbgenerated("<anything else>"))`                                                                           | ``@default(sql`<anything else>`)``   |
+| You wrote | Write instead |
+| --- | --- |
+| `@default(dbgenerated("gen_random_uuid()"))` | `` @default(sql`gen_random_uuid()`) `` |
+| `@default(dbgenerated("now()"))`, `@default(dbgenerated("CURRENT_TIMESTAMP"))` on Postgres | `@default(now())` |
+| `@default(dbgenerated("autoincrement()"))`, `@default(dbgenerated("nextval('<seq>'::regclass)"))` on a serial column | `@default(autoincrement())` |
+| `@default(dbgenerated("'<json>'::jsonb"))` on a `Json` or `Jsonb` column | `` @default(json`<json>`) `` |
+| `@default(dbgenerated("'<member>'::<enum type>"))` on a column typed by that enum | `@default("<member>")` |
+| `@default(dbgenerated("'<text>'::text"))` on a text column | `@default("<text>")` |
+| `@default(dbgenerated("<anything else>"))` | `` @default(sql`<anything else>`) `` |
 
 The `now()` and `autoincrement()` rows are required, not a matter of style: `` sql`now()` `` and `` sql`autoincrement()` `` are refused with `PSL_INVALID_DEFAULT_SQL`, because Prisma reads those two expressions as its own default functions. Every other expression, including `NOW()` written in capitals, is used exactly as written.
 
@@ -344,12 +344,12 @@ A pack's committed `contract.prisma` (for example a reference contract regenerat
 
 Rewrite every `.defaultSql('<expression>')` call by its expression:
 
-| Call                               | Replacement                          | Import                                                            |
-| ---------------------------------- | ------------------------------------ | ----------------------------------------------------------------- |
-| `.defaultSql('now()')`             | `.default(now())`                    | `now` from `@internal/sql-contract-ts/contract-builder`           |
-| `.defaultSql('autoincrement()')`   | `.default(autoincrement())`          | `autoincrement` from `@internal/sql-contract-ts/contract-builder` |
-| `.defaultSql('gen_random_uuid()')` | ``.default(sql`gen_random_uuid()`)`` | `sql` from `@internal/sql-contract-ts/contract-builder`           |
-| `.defaultSql('<anything else>')`   | ``.default(sql`<anything else>`)``   | `sql` from `@internal/sql-contract-ts/contract-builder`           |
+| Call | Replacement | Import |
+| --- | --- | --- |
+| `.defaultSql('now()')` | `.default(now())` | `now` from `@internal/sql-contract-ts/contract-builder` |
+| `.defaultSql('autoincrement()')` | `.default(autoincrement())` | `autoincrement` from `@internal/sql-contract-ts/contract-builder` |
+| `.defaultSql('gen_random_uuid()')` | `` .default(sql`gen_random_uuid()`) `` | `sql` from `@internal/sql-contract-ts/contract-builder` |
+| `.defaultSql('<anything else>')` | `` .default(sql`<anything else>`) `` | `sql` from `@internal/sql-contract-ts/contract-builder` |
 
 There is no named helper for other database functions, so they use the `sql` tag, as `gen_random_uuid()` does above. `` sql`now()` `` and `` sql`autoincrement()` `` are refused in the TypeScript `sql` tag as they are in PSL, so those two must use the named form.
 
@@ -369,14 +369,14 @@ Every descriptor names the type it represents:
 import { pgvectorVector } from './data-types';
 
 export class PgVectorDescriptor extends PostgresCodecDescriptor<VectorParams> {
-	override readonly dataType = pgvectorVector.id;
-	override readonly codecId = VECTOR_CODEC_ID;
-	override readonly traits = ['equality'] as const;
-	override readonly targetTypes = ['vector'] as const;
-	override readonly paramsSchema: StandardSchemaV1<VectorParams> = vectorParamsSchema;
-	override factory(params: VectorParams): (ctx: CodecInstanceContext) => PgVectorCodec {
-		return () => new PgVectorCodec(this, params.length);
-	}
+  override readonly dataType = pgvectorVector.id;
+  override readonly codecId = VECTOR_CODEC_ID;
+  override readonly traits = ['equality'] as const;
+  override readonly targetTypes = ['vector'] as const;
+  override readonly paramsSchema: StandardSchemaV1<VectorParams> = vectorParamsSchema;
+  override factory(params: VectorParams): (ctx: CodecInstanceContext) => PgVectorCodec {
+    return () => new PgVectorCodec(this, params.length);
+  }
 }
 ```
 
@@ -398,7 +398,7 @@ import { type DataType, dataType } from '@internal/framework-components/codec';
 import { pgText } from '@internal/target-postgres/data-types';
 
 export const postgisGeometry: DataType = dataType('postgis/geometry', {
-	casts: { [pgText.id]: (value) => value }
+  casts: { [pgText.id]: (value) => value },
 });
 
 export const postgisDataTypes: readonly DataType[] = [postgisGeometry];
@@ -407,13 +407,13 @@ export const postgisDataTypes: readonly DataType[] = [postgisGeometry];
 ```ts
 // descriptor-meta.ts
 const postgisPackMetaBase = {
-	kind: 'extension',
-	id: 'postgis',
-	// …
-	dataTypes: postgisDataTypes,
-	types: {
-		codecTypes: { codecDescriptors: Array.from(postgisCodecRegistry.values()) /* … */ }
-	}
+  kind: 'extension',
+  id: 'postgis',
+  // …
+  dataTypes: postgisDataTypes,
+  types: {
+    codecTypes: { codecDescriptors: Array.from(postgisCodecRegistry.values()), /* … */ },
+  },
 };
 ```
 
@@ -429,10 +429,10 @@ This replaces the per-codec list of accepted shapes. Delete `literalTypes` from 
 
 ```ts
 const asNumeralText: Cast = (value) =>
-	typeof value === 'number' ? numeralText(value) : wrongShape(value, 'a number');
+  typeof value === 'number' ? numeralText(value) : wrongShape(value, 'a number');
 
 export const pgInt8: DataType = dataType('pg/int8', {
-	casts: { [pgInt2.id]: asNumeralText, [pgInt4.id]: asNumeralText }
+  casts: { [pgInt2.id]: asNumeralText, [pgInt4.id]: asNumeralText },
 });
 ```
 
@@ -444,14 +444,14 @@ Field "N.count": pg/int4 has no cast from pg/int8; it casts from pg/int2
 
 A cast may refuse the value it is handed, with a structured error carrying `why` and `fix`; the refusal surfaces as `PSL_INVALID_DEFAULT_LITERAL` at the written value.
 
-There is no list data type. A type whose single value holds several elements declares a `listCast` instead: `of` is the set of types an element may be, and `cast` receives the elements' canonical forms in written order. This is how a vector column takes `@default([0.1, 0.2, 0.3])`:
+There is no list data type. A type whose single value holds several elements declares a `listCast` instead: `of` is the set of types an element may be, and `cast` receives the elements' canonical forms in written order. This is how a vector column takes `` @default([0.1, 0.2, 0.3]) ``:
 
 ```ts
 export const pgvectorVector: DataType = dataType('pgvector/vector', {
-	listCast: {
-		of: [pgInt2.id, pgInt4.id, pgInt8.id, pgNumeric.id],
-		cast: (elements) => elements.map(elementNumber)
-	}
+  listCast: {
+    of: [pgInt2.id, pgInt4.id, pgInt8.id, pgNumeric.id],
+    cast: (elements) => elements.map(elementNumber),
+  },
 });
 ```
 
@@ -486,18 +486,18 @@ An entry has a **written form**, a `print` that is the reverse of reading it, an
 
 ```ts
 export function postgresDataTypeEntries(): Readonly<Record<string, AuthoringDataTypeEntry>> {
-	return {
-		[pgText.id]: {
-			written: { kind: 'plain', syntax: 'string', parse: (text) => text },
-			print: (value) => String(value),
-			documentation: 'Text.'
-		},
-		[pgJson.id]: {
-			written: { kind: 'tag', tag: 'json', parse: parseJsonBody },
-			print: printJsonBody,
-			documentation: 'Reads the body as a JSON document and stores it as the default value.'
-		}
-	};
+  return {
+    [pgText.id]: {
+      written: { kind: 'plain', syntax: 'string', parse: (text) => text },
+      print: (value) => String(value),
+      documentation: 'Text.',
+    },
+    [pgJson.id]: {
+      written: { kind: 'tag', tag: 'json', parse: parseJsonBody },
+      print: printJsonBody,
+      documentation: 'Reads the body as a JSON document and stores it as the default value.',
+    },
+  };
 }
 ```
 
@@ -509,14 +509,14 @@ There are four written forms:
 
 ```ts
 const classifyPostgresNumber = createNumberClassifier({
-	integers: [
-		{ type: pgInt2.id, form: 'number', ...signedRange(16) },
-		{ type: pgInt4.id, form: 'number', ...signedRange(32) },
-		{ type: pgInt8.id, form: 'text', ...signedRange(64) }
-	],
-	largerWhole: { type: pgNumeric.id, form: 'text' },
-	fraction: { type: pgNumeric.id, form: 'text' },
-	words: { type: pgNumeric.id, form: 'text' }
+  integers: [
+    { type: pgInt2.id, form: 'number', ...signedRange(16) },
+    { type: pgInt4.id, form: 'number', ...signedRange(32) },
+    { type: pgInt8.id, form: 'text', ...signedRange(64) },
+  ],
+  largerWhole: { type: pgNumeric.id, form: 'text' },
+  fraction: { type: pgNumeric.id, form: 'text' },
+  words: { type: pgNumeric.id, form: 'text' },
 });
 ```
 
@@ -526,11 +526,11 @@ One tag names no data type: `sql` takes an expression in the database's language
 
 ```ts
 export function createPostgresDataTypeEntries(): Readonly<Record<string, AuthoringDataTypeEntry>> {
-	return {
-		...postgresDataTypeEntries(),
-		[loweringEntryKey('sql')]: sqlDefaultLiteralTagEntry('sql'),
-		[loweringEntryKey('pg.sql')]: sqlDefaultLiteralTagEntry('pg.sql')
-	};
+  return {
+    ...postgresDataTypeEntries(),
+    [loweringEntryKey('sql')]: sqlDefaultLiteralTagEntry('sql'),
+    [loweringEntryKey('pg.sql')]: sqlDefaultLiteralTagEntry('pg.sql'),
+  };
 }
 ```
 
@@ -553,10 +553,10 @@ A target builds the first two once:
 
 ```ts
 export function createPostgresDefaultMapping(): DefaultMappingOptions {
-	return {
-		dataTypeEntries: postgresDataTypeEntries(),
-		dataTypes: createDataTypeLookup(postgresDataTypes)
-	};
+  return {
+    dataTypeEntries: postgresDataTypeEntries(),
+    dataTypes: createDataTypeLookup(postgresDataTypes),
+  };
 }
 ```
 
@@ -564,24 +564,24 @@ and adds the per-column half at each call:
 
 ```ts
 const result = mapDefault(columnDefault, {
-	...defaultMapping,
-	...ifDefined('columnDataType', dataTypeForPrintedType(resolution.pslType.name, isEnumColumn)),
-	list: column.many === true
+  ...defaultMapping,
+  ...ifDefined('columnDataType', dataTypeForPrintedType(resolution.pslType.name, isEnumColumn)),
+  list: column.many === true,
 });
 ```
 
-A value no entry writes, or one that does not read back as the stored value, makes `mapDefault` return `undefined`, which is the signal to fall back to the raw database default: map it again as a function default, which prints as a named function or as ``@default(sql`<expression>`)``. `DefaultMappingResult` is now `{ attribute }` only; the `{ comment }` result and the `fallbackFunctionAttribute` option are removed along with `dbgenerated`. `formatLiteralValue` and the per-PSL-type formatter table a target printer used to supply (`PslDefaultValueFormat`, `formatPslValue`, `formatPslListLiteralValue`) are gone; delete them.
+A value no entry writes, or one that does not read back as the stored value, makes `mapDefault` return `undefined`, which is the signal to fall back to the raw database default: map it again as a function default, which prints as a named function or as `` @default(sql`<expression>`) ``. `DefaultMappingResult` is now `{ attribute }` only; the `{ comment }` result and the `fallbackFunctionAttribute` option are removed along with `dbgenerated`. `formatLiteralValue` and the per-PSL-type formatter table a target printer used to supply (`PslDefaultValueFormat`, `formatPslValue`, `formatPslListLiteralValue`) are gone; delete them.
 
 ## `psl-and-numeral-helpers-live-in-relational-core`
 
 Four helpers moved out of `@internal/framework-components/codec`, because they are SQL-family text handling rather than framework surface:
 
-| Helper            | What it does                                     | Now imported from                   |
-| ----------------- | ------------------------------------------------ | ----------------------------------- |
+| Helper | What it does | Now imported from |
+| --- | --- | --- |
 | `escapePslString` | Escapes a string for a PSL double-quoted literal | `@internal/sql-relational-core/ast` |
-| `isNumeralText`   | Whether text is a number written out             | `@internal/sql-relational-core/ast` |
+| `isNumeralText` | Whether text is a number written out | `@internal/sql-relational-core/ast` |
 | `isNonFiniteText` | Whether text is `NaN`, `Infinity` or `-Infinity` | `@internal/sql-relational-core/ast` |
-| `numeralText`     | A JS number as digit text, with no exponent      | `@internal/sql-relational-core/ast` |
+| `numeralText` | A JS number as digit text, with no exponent | `@internal/sql-relational-core/ast` |
 
 ```diff
 -import { escapePslString, numeralText } from '@internal/framework-components/codec';
@@ -610,13 +610,13 @@ A codec shared by several targets cannot name its data type itself, because the 
 
 ```ts
 export class SqlTextDescriptor extends CodecDescriptorTemplateImpl<void> {
-	override readonly codecId = SQL_TEXT_CODEC_ID;
-	override readonly traits = ['equality', 'order', 'textual'] as const;
-	override readonly targetTypes = ['text'] as const;
-	override readonly paramsSchema = undefined;
-	override factory(): (ctx: CodecInstanceContext) => SqlTextCodec {
-		return () => new SqlTextCodec(this);
-	}
+  override readonly codecId = SQL_TEXT_CODEC_ID;
+  override readonly traits = ['equality', 'order', 'textual'] as const;
+  override readonly targetTypes = ['text'] as const;
+  override readonly paramsSchema = undefined;
+  override factory(): (ctx: CodecInstanceContext) => SqlTextCodec {
+    return () => new SqlTextCodec(this);
+  }
 }
 ```
 
@@ -624,9 +624,9 @@ The target names the type when it adapts the template:
 
 ```ts
 export const postgresSqlTextDescriptor = postgresCodec(sqlTextDescriptor, {
-	dataType: pgText.id,
-	nativeType: () => 'text',
-	jsonProjection: identityJsonProjection
+  dataType: pgText.id,
+  nativeType: () => 'text',
+  jsonProjection: identityJsonProjection,
 });
 ```
 
@@ -644,14 +644,14 @@ import { CodecDescriptorImpl, voidParamsSchema } from '@internal/framework-compo
 import type { StandardSchemaV1 } from '@standard-schema/spec';
 
 class MyTextDescriptor extends CodecDescriptorImpl<void> {
-	override readonly paramsSchema: StandardSchemaV1<void> = voidParamsSchema;
+  override readonly paramsSchema: StandardSchemaV1<void> = voidParamsSchema;
 }
 
 // after
 import { CodecDescriptorImpl } from '@internal/framework-components/codec';
 
 class MyTextDescriptor extends CodecDescriptorImpl<void> {
-	override readonly paramsSchema = undefined;
+  override readonly paramsSchema = undefined;
 }
 ```
 
@@ -674,15 +674,15 @@ The language server now shows signature help for every PSL attribute, built from
 ```ts
 // before
 const mapAttribute = blockAttribute('map', {
-	positional: [{ key: 'name', type: str() }],
-	named: { schema: optional(str()) }
+  positional: [{ key: 'name', type: str() }],
+  named: { schema: optional(str()) },
 });
 
 // after
 const mapAttribute = blockAttribute('map', {
-	documentation: 'Maps this block to its database name.',
-	positional: [{ key: 'name', type: str(), documentation: 'The database name.' }],
-	named: { schema: { type: optional(str()), documentation: 'The schema that holds it.' } }
+  documentation: 'Maps this block to its database name.',
+  positional: [{ key: 'name', type: str(), documentation: 'The database name.' }],
+  named: { schema: { type: optional(str()), documentation: 'The schema that holds it.' } },
 });
 ```
 
@@ -727,8 +727,8 @@ Find calls to `emit(contract, stack, emission, options)` imported from `@prisma/
 ```ts
 const familyInstance = family.create(stack);
 const result = await emit(contract, stack, family.emission, {
-	serializeContract: (c) => target.contractSerializer.serializeContract(c),
-	deserializeContract: (json) => familyInstance.deserializeContract(json)
+  serializeContract: (c) => target.contractSerializer.serializeContract(c),
+  deserializeContract: (json) => familyInstance.deserializeContract(json),
 });
 ```
 
@@ -755,18 +755,12 @@ Change callbacks from `(sql, params) => ...` to `(params) => ...`. Replace refer
 ```ts
 // Before
 const query = await db.prepare({ id: 'pg/int4@1' }, (sql, params) =>
-	sql.public.users
-		.select('id')
-		.where((f, fns) => fns.eq(f.id, params.id))
-		.build()
+  sql.public.users.select('id').where((f, fns) => fns.eq(f.id, params.id)).build(),
 );
 
 // After
 const query = await db.prepare({ id: 'pg/int4@1' }, (params) =>
-	db.sql.public.users
-		.select('id')
-		.where((f, fns) => fns.eq(f.id, params.id))
-		.build()
+  db.sql.public.users.select('id').where((f, fns) => fns.eq(f.id, params.id)).build(),
 );
 ```
 
