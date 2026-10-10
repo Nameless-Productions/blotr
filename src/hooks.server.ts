@@ -9,7 +9,7 @@ new Cron("*/5 * * * * *", async () => {
 
     for (const commandLog of logs.CommandLogs) {
         const commandDB = await db.orm.public.CommandLog.where((l) => l.timestamp.eq(commandLog.Timestamp)).all();
-        if (commandDB.length == 1) return;
+        if (commandDB.length == 1) continue;
 
         const robloxId = commandLog.Player.split(":")[1];
 
