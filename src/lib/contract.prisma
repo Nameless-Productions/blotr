@@ -1,17 +1,17 @@
 // use prisma-8
 
-enum Role {
-  OWNER
-  ADMINISTRATOR
-  MODERATOR
-  USER
-}
+// enum Role {
+//  OWNER
+//  ADMINISTRATOR
+//  MODERATOR
+//  USER
+// }
 
 model User {
   id Int @id @default(autoincrement())
   robloxID String @unique
   discordID String @unique
-  role Role @default(USER)
+  role String @default("USER")
 }
 
 model CommandLog {
