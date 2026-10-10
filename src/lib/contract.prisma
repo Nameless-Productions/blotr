@@ -46,3 +46,12 @@ model Player {
   WantedStars Int
   location Location
 }
+
+model Vehicle {
+  Name String
+  Owner String
+  Plate String
+  Texture String?
+  ColorHex String
+  ColorName String
+}

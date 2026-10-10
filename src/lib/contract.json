@@ -19,6 +19,10 @@
 		"User": {
 			"model": "User",
 			"namespace": "public"
+		},
+		"Vehicle": {
+			"model": "Vehicle",
+			"namespace": "public"
 		}
 	},
 	"domain": {
@@ -297,6 +301,77 @@
 							"namespaceId": "public",
 							"table": "User"
 						}
+					},
+					"Vehicle": {
+						"fields": {
+							"ColorHex": {
+								"nullable": false,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
+							"ColorName": {
+								"nullable": false,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
+							"Name": {
+								"nullable": false,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
+							"Owner": {
+								"nullable": false,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
+							"Plate": {
+								"nullable": false,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
+							"Texture": {
+								"nullable": true,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							}
+						},
+						"relations": {},
+						"storage": {
+							"fields": {
+								"ColorHex": {
+									"column": "ColorHex"
+								},
+								"ColorName": {
+									"column": "ColorName"
+								},
+								"Name": {
+									"column": "Name"
+								},
+								"Owner": {
+									"column": "Owner"
+								},
+								"Plate": {
+									"column": "Plate"
+								},
+								"Texture": {
+									"column": "Texture"
+								}
+							},
+							"namespaceId": "public",
+							"table": "Vehicle"
+						}
 					}
 				},
 				"valueObjects": {
@@ -538,6 +613,43 @@
 									"columns": ["discordID"]
 								}
 							]
+						},
+						"Vehicle": {
+							"columns": {
+								"ColorHex": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": false
+								},
+								"ColorName": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": false
+								},
+								"Name": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": false
+								},
+								"Owner": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": false
+								},
+								"Plate": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": false
+								},
+								"Texture": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": true
+								}
+							},
+							"foreignKeys": [],
+							"indexes": [],
+							"uniques": []
 						}
 					},
 					"valueSet": {
@@ -551,7 +663,7 @@
 				"kind": "postgres-schema"
 			}
 		},
-		"storageHash": "97f69775ce48eab31211181914efae93007821fb7e516c4e5a3723a18a113ab2"
+		"storageHash": "3a27be351ac333f9e5f79aae85e1772b30a258ec922edb10b2723075922ec6a9"
 	},
 	"capabilities": {
 		"postgres": {

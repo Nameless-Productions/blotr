@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-	StorageHashBase<'97f69775ce48eab31211181914efae93007821fb7e516c4e5a3723a18a113ab2'>;
+	StorageHashBase<'3a27be351ac333f9e5f79aae85e1772b30a258ec922edb10b2723075922ec6a9'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
 	ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -274,6 +274,14 @@ export type FieldOutputTypes = {
 			readonly robloxID: CodecTypes['pg/text@1']['output'];
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
 		};
+		readonly Vehicle: {
+			readonly ColorHex: CodecTypes['pg/text@1']['output'];
+			readonly ColorName: CodecTypes['pg/text@1']['output'];
+			readonly Name: CodecTypes['pg/text@1']['output'];
+			readonly Owner: CodecTypes['pg/text@1']['output'];
+			readonly Plate: CodecTypes['pg/text@1']['output'];
+			readonly Texture: CodecTypes['pg/text@1']['output'] | null;
+		};
 	};
 };
 export type FieldInputTypes = {
@@ -305,6 +313,14 @@ export type FieldInputTypes = {
 			readonly id: CodecTypes['pg/int4@1']['input'];
 			readonly robloxID: CodecTypes['pg/text@1']['input'];
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+		readonly Vehicle: {
+			readonly ColorHex: CodecTypes['pg/text@1']['input'];
+			readonly ColorName: CodecTypes['pg/text@1']['input'];
+			readonly Name: CodecTypes['pg/text@1']['input'];
+			readonly Owner: CodecTypes['pg/text@1']['input'];
+			readonly Plate: CodecTypes['pg/text@1']['input'];
+			readonly Texture: CodecTypes['pg/text@1']['input'] | null;
 		};
 	};
 };
@@ -338,6 +354,14 @@ export type StorageColumnTypes = {
 			readonly robloxID: CodecTypes['pg/text@1']['output'];
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
 		};
+		readonly Vehicle: {
+			readonly ColorHex: CodecTypes['pg/text@1']['output'];
+			readonly ColorName: CodecTypes['pg/text@1']['output'];
+			readonly Name: CodecTypes['pg/text@1']['output'];
+			readonly Owner: CodecTypes['pg/text@1']['output'];
+			readonly Plate: CodecTypes['pg/text@1']['output'];
+			readonly Texture: CodecTypes['pg/text@1']['output'] | null;
+		};
 	};
 };
 export type StorageColumnInputTypes = {
@@ -369,6 +393,14 @@ export type StorageColumnInputTypes = {
 			readonly id: CodecTypes['pg/int4@1']['input'];
 			readonly robloxID: CodecTypes['pg/text@1']['input'];
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+		readonly Vehicle: {
+			readonly ColorHex: CodecTypes['pg/text@1']['input'];
+			readonly ColorName: CodecTypes['pg/text@1']['input'];
+			readonly Name: CodecTypes['pg/text@1']['input'];
+			readonly Owner: CodecTypes['pg/text@1']['input'];
+			readonly Plate: CodecTypes['pg/text@1']['input'];
+			readonly Texture: CodecTypes['pg/text@1']['input'] | null;
 		};
 	};
 };
@@ -406,6 +438,15 @@ export namespace Models {
 		role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
 		readonly [RelationKeys]?: never;
 	};
+	export type public_Vehicle = {
+		ColorHex: CodecTypes['pg/text@1']['output'];
+		ColorName: CodecTypes['pg/text@1']['output'];
+		Name: CodecTypes['pg/text@1']['output'];
+		Owner: CodecTypes['pg/text@1']['output'];
+		Plate: CodecTypes['pg/text@1']['output'];
+		Texture: CodecTypes['pg/text@1']['output'] | null;
+		readonly [RelationKeys]?: never;
+	};
 }
 
 export declare const models: {
@@ -414,6 +455,7 @@ export declare const models: {
 		ModCall: Models.public_ModCall;
 		Player: Models.public_Player;
 		User: Models.public_User;
+		Vehicle: Models.public_Vehicle;
 	};
 };
 
@@ -609,6 +651,49 @@ type ContractBase = Omit<
 							indexes: readonly [];
 							foreignKeys: readonly [];
 						};
+						readonly Vehicle: {
+							columns: {
+								readonly ColorHex: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly ColorName: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly Name: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly Owner: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly Plate: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly Texture: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: true;
+									readonly many: false;
+								};
+							};
+							uniques: readonly [];
+							indexes: readonly [];
+							foreignKeys: readonly [];
+						};
 					};
 					readonly valueSet: {
 						readonly Role: {
@@ -633,6 +718,7 @@ type ContractBase = Omit<
 		readonly ModCall: { readonly namespace: 'public' & NamespaceId; readonly model: 'ModCall' };
 		readonly Player: { readonly namespace: 'public' & NamespaceId; readonly model: 'Player' };
 		readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+		readonly Vehicle: { readonly namespace: 'public' & NamespaceId; readonly model: 'Vehicle' };
 	};
 	readonly domain: {
 		readonly namespaces: {
@@ -779,6 +865,47 @@ type ContractBase = Omit<
 								readonly id: { readonly column: 'id' };
 								readonly robloxID: { readonly column: 'robloxID' };
 								readonly role: { readonly column: 'role' };
+							};
+						};
+					};
+					readonly Vehicle: {
+						readonly fields: {
+							readonly ColorHex: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly ColorName: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Name: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Owner: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Plate: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Texture: {
+								readonly nullable: true;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+						};
+						readonly relations: Record<string, never>;
+						readonly storage: {
+							readonly table: 'Vehicle';
+							readonly namespaceId: 'public';
+							readonly fields: {
+								readonly ColorHex: { readonly column: 'ColorHex' };
+								readonly ColorName: { readonly column: 'ColorName' };
+								readonly Name: { readonly column: 'Name' };
+								readonly Owner: { readonly column: 'Owner' };
+								readonly Plate: { readonly column: 'Plate' };
+								readonly Texture: { readonly column: 'Texture' };
 							};
 						};
 					};
