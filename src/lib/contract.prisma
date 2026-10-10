@@ -17,7 +17,7 @@ model User {
 model CommandLog {
   id Int @id @default(autoincrement())
   robloxUserId String
-  timestamp String
+  timestamp Int @unique
   command String
   userId Int?
 }
@@ -26,5 +26,5 @@ model ModCall {
   id Int @id @default(autoincrement())
   callerId Int
   moderatorId String?
-  timestamp String
+  timestamp Int @unique
 }

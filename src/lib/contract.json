@@ -70,7 +70,7 @@
               "timestamp": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/text@1",
+                  "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               },
@@ -131,7 +131,7 @@
               "timestamp": {
                 "nullable": false,
                 "type": {
-                  "codecId": "pg/text@1",
+                  "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               }
@@ -244,8 +244,8 @@
                   "nullable": false
                 },
                 "timestamp": {
-                  "codecId": "pg/text@1",
-                  "dataType": "pg/text",
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "nullable": false
                 },
                 "userId": {
@@ -261,7 +261,13 @@
                   "id"
                 ]
               },
-              "uniques": []
+              "uniques": [
+                {
+                  "columns": [
+                    "timestamp"
+                  ]
+                }
+              ]
             },
             "ModCall": {
               "columns": {
@@ -285,8 +291,8 @@
                   "nullable": true
                 },
                 "timestamp": {
-                  "codecId": "pg/text@1",
-                  "dataType": "pg/text",
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
                   "nullable": false
                 }
               },
@@ -297,7 +303,13 @@
                   "id"
                 ]
               },
-              "uniques": []
+              "uniques": [
+                {
+                  "columns": [
+                    "timestamp"
+                  ]
+                }
+              ]
             },
             "User": {
               "checks": [
@@ -380,7 +392,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "275d993b04985d6da0fb2c8103c8bf9545aa0b449842e73afc06ac7fdc0e6fd9"
+    "storageHash": "a1fdac8c086420d7c3e74db2523610926b1c3b433447fa85de459985bd5cc31c"
   },
   "capabilities": {
     "postgres": {
