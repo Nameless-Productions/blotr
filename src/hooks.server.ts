@@ -3,6 +3,8 @@ import { getServerInfo } from "./lib/erlc/getServerInfo";
 import { db } from "./lib/db";
 
 new Cron("*/5 * * * * *", async () => {
+    console.log("Running cron job");
+    
     const logs = await getServerInfo({CommandLogs: true, ModCalls: true});
 
     if (!logs.CommandLogs || !logs.ModCalls) return console.warn("API returned no command or mod call logs");
