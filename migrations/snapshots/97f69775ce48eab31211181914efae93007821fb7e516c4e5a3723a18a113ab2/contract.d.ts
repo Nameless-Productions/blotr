@@ -231,14 +231,14 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
     : CodecTypes[CodecId]['json']
   : Encoded;
 export type LocationOutput = {
-  readonly BuildingNumber: CodecTypes['pg/text@1']['output'];
+  readonly BuildingNumber: CodecTypes['pg/int4@1']['output'];
   readonly PostalCode: CodecTypes['pg/text@1']['output'];
   readonly StreetName: CodecTypes['pg/text@1']['output'];
   readonly X: CodecTypes['pg/int4@1']['output'];
   readonly Z: CodecTypes['pg/int4@1']['output'];
 };
 export type LocationInput = {
-  readonly BuildingNumber: CodecTypes['pg/text@1']['input'];
+  readonly BuildingNumber: CodecTypes['pg/int4@1']['input'];
   readonly PostalCode: CodecTypes['pg/text@1']['input'];
   readonly StreetName: CodecTypes['pg/text@1']['input'];
   readonly X: CodecTypes['pg/int4@1']['input'];
@@ -788,7 +788,7 @@ type ContractBase = Omit<
             readonly fields: {
               readonly BuildingNumber: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly PostalCode: {
                 readonly nullable: false;
@@ -865,7 +865,7 @@ type ContractBase = Omit<
       readonly fields: {
         readonly BuildingNumber: {
           readonly nullable: false;
-          readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+          readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
         };
         readonly PostalCode: {
           readonly nullable: false;

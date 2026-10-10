@@ -7,6 +7,14 @@ enum Role {
   USER
 }
 
+type Location {
+  X Int
+  Z Int
+  PostalCode String
+  StreetName String
+  BuildingNumber String
+}
+
 model User {
   id Int @id @default(autoincrement())
   robloxID String @unique
@@ -27,4 +35,14 @@ model ModCall {
   callerId Int
   moderatorId String?
   timestamp Int @unique
+}
+
+model Player {
+  robloxId String @unique
+  robloxUsername String @unique
+  team String
+  Callsign String? @unique
+  Permissions String
+  WantedStars Int
+  location Location
 }

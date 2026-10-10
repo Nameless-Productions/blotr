@@ -12,6 +12,10 @@
       "model": "ModCall",
       "namespace": "public"
     },
+    "Player": {
+      "model": "Player",
+      "namespace": "public"
+    },
     "User": {
       "model": "User",
       "namespace": "public"
@@ -156,6 +160,87 @@
               "table": "ModCall"
             }
           },
+          "Player": {
+            "fields": {
+              "Callsign": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "Permissions": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "WantedStars": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "location": {
+                "nullable": false,
+                "type": {
+                  "kind": "valueObject",
+                  "name": "Location"
+                }
+              },
+              "robloxId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "robloxUsername": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "team": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "Callsign": {
+                  "column": "Callsign"
+                },
+                "Permissions": {
+                  "column": "Permissions"
+                },
+                "WantedStars": {
+                  "column": "WantedStars"
+                },
+                "location": {
+                  "column": "location"
+                },
+                "robloxId": {
+                  "column": "robloxId"
+                },
+                "robloxUsername": {
+                  "column": "robloxUsername"
+                },
+                "team": {
+                  "column": "team"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Player"
+            }
+          },
           "User": {
             "fields": {
               "discordID": {
@@ -211,6 +296,47 @@
               },
               "namespaceId": "public",
               "table": "User"
+            }
+          }
+        },
+        "valueObjects": {
+          "Location": {
+            "fields": {
+              "BuildingNumber": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "PostalCode": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "StreetName": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "X": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "Z": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
             }
           }
         }
@@ -311,6 +437,64 @@
                 }
               ]
             },
+            "Player": {
+              "columns": {
+                "Callsign": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": true
+                },
+                "Permissions": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "WantedStars": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "location": {
+                  "codecId": "pg/jsonb@1",
+                  "dataType": "pg/jsonb",
+                  "nullable": false
+                },
+                "robloxId": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "robloxUsername": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "team": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "uniques": [
+                {
+                  "columns": [
+                    "robloxId"
+                  ]
+                },
+                {
+                  "columns": [
+                    "robloxUsername"
+                  ]
+                },
+                {
+                  "columns": [
+                    "Callsign"
+                  ]
+                }
+              ]
+            },
             "User": {
               "checks": [
                 {
@@ -392,7 +576,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "a1fdac8c086420d7c3e74db2523610926b1c3b433447fa85de459985bd5cc31c"
+    "storageHash": "97f69775ce48eab31211181914efae93007821fb7e516c4e5a3723a18a113ab2"
   },
   "capabilities": {
     "postgres": {
