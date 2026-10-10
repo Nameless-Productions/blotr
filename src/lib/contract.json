@@ -20,29 +20,6 @@
   "domain": {
     "namespaces": {
       "public": {
-        "enum": {
-          "Role": {
-            "codecId": "pg/text@1",
-            "members": [
-              {
-                "name": "OWNER",
-                "value": "OWNER"
-              },
-              {
-                "name": "ADMINISTRATOR",
-                "value": "ADMINISTRATOR"
-              },
-              {
-                "name": "MODERATOR",
-                "value": "MODERATOR"
-              },
-              {
-                "name": "USER",
-                "value": "USER"
-              }
-            ]
-          }
-        },
         "models": {
           "CommandLog": {
             "fields": {
@@ -184,12 +161,6 @@
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
-                },
-                "valueSet": {
-                  "entityKind": "enum",
-                  "entityName": "Role",
-                  "namespaceId": "public",
-                  "plane": "domain"
                 }
               }
             },
@@ -300,13 +271,6 @@
               "uniques": []
             },
             "User": {
-              "checks": [
-                {
-                  "expression": "\"role\" IN ('OWNER', 'ADMINISTRATOR', 'MODERATOR', 'USER')",
-                  "name": "User_role_check_866f1f61",
-                  "prefix": "User_role_check"
-                }
-              ],
               "columns": {
                 "discordID": {
                   "codecId": "pg/text@1",
@@ -334,13 +298,7 @@
                     "kind": "literal",
                     "value": "USER"
                   },
-                  "nullable": false,
-                  "valueSet": {
-                    "entityKind": "valueSet",
-                    "entityName": "Role",
-                    "namespaceId": "public",
-                    "plane": "storage"
-                  }
+                  "nullable": false
                 }
               },
               "foreignKeys": [],
@@ -363,24 +321,13 @@
                 }
               ]
             }
-          },
-          "valueSet": {
-            "Role": {
-              "kind": "valueSet",
-              "values": [
-                "OWNER",
-                "ADMINISTRATOR",
-                "MODERATOR",
-                "USER"
-              ]
-            }
           }
         },
         "id": "public",
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "275d993b04985d6da0fb2c8103c8bf9545aa0b449842e73afc06ac7fdc0e6fd9"
+    "storageHash": "f10691f851d52713f0054b66f482c81273f92615489d05794166dec007bcd8c3"
   },
   "capabilities": {
     "postgres": {

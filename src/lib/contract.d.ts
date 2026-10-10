@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'275d993b04985d6da0fb2c8103c8bf9545aa0b449842e73afc06ac7fdc0e6fd9'>;
+  StorageHashBase<'f10691f851d52713f0054b66f482c81273f92615489d05794166dec007bcd8c3'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -250,7 +250,7 @@ export type FieldOutputTypes = {
       readonly discordID: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly robloxID: CodecTypes['pg/text@1']['output'];
-      readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+      readonly role: CodecTypes['pg/text@1']['output'];
     };
   };
 };
@@ -273,7 +273,7 @@ export type FieldInputTypes = {
       readonly discordID: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly robloxID: CodecTypes['pg/text@1']['input'];
-      readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+      readonly role: CodecTypes['pg/text@1']['input'];
     };
   };
 };
@@ -296,7 +296,7 @@ export type StorageColumnTypes = {
       readonly discordID: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly robloxID: CodecTypes['pg/text@1']['output'];
-      readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+      readonly role: CodecTypes['pg/text@1']['output'];
     };
   };
 };
@@ -319,7 +319,7 @@ export type StorageColumnInputTypes = {
       readonly discordID: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly robloxID: CodecTypes['pg/text@1']['input'];
-      readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+      readonly role: CodecTypes['pg/text@1']['input'];
     };
   };
 };
@@ -344,7 +344,7 @@ export namespace Models {
     discordID: CodecTypes['pg/text@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
     robloxID: CodecTypes['pg/text@1']['output'];
-    role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+    role: CodecTypes['pg/text@1']['output'];
     readonly [RelationKeys]?: never;
   };
 }
@@ -497,12 +497,6 @@ type ContractBase = Omit<
               foreignKeys: readonly [];
             };
           };
-          readonly valueSet: {
-            readonly Role: {
-              readonly kind: 'valueSet';
-              readonly values: readonly ['OWNER', 'ADMINISTRATOR', 'MODERATOR', 'USER'];
-            };
-          };
         };
       };
     };
@@ -621,17 +615,6 @@ type ContractBase = Omit<
                 readonly role: { readonly column: 'role' };
               };
             };
-          };
-        };
-        readonly enum: {
-          readonly Role: {
-            readonly codecId: 'pg/text@1';
-            readonly members: readonly [
-              { readonly name: 'OWNER'; readonly value: 'OWNER' },
-              { readonly name: 'ADMINISTRATOR'; readonly value: 'ADMINISTRATOR' },
-              { readonly name: 'MODERATOR'; readonly value: 'MODERATOR' },
-              { readonly name: 'USER'; readonly value: 'USER' },
-            ];
           };
         };
       };
