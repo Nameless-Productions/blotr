@@ -74,14 +74,22 @@ export async function getServerInfo(params: GetServerInfoParams) {
 		if (value) url.searchParams.set(key, 'true');
 	}
 
-	const res = await fetch(url, {
-		headers: {
-			'server-key': env.SERVER_KEY
-		}
-	});
+	let res: Response | undefined;
+
+	try {
+		res = await fetch(url, {
+			headers: {
+				'server-key': env.SERVER_KEY
+			}
+		});
+	} catch (err) {
+		console.warn('Error while sending request: ', err);
+		return;
+	}
 
 	if (res.status != 200) {
-		throw new Error(`Error with erlc api: ${res.status}`);
+		console.warn(`Error with erlc api: ${res.status}`);
+		return;
 	}
 
 	const body = (await res.json()) as GetServerInfoRes;
