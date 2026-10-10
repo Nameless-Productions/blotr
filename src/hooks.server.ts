@@ -40,8 +40,9 @@ new Cron('*/5 * * * * *', async () => {
 	}
 
 	await db.orm.public.Player.where({}).deleteAll();
-	for (const player of logs.Players) {
-		await db.orm.public.Player.create({
+
+	await db.orm.public.Player.createAll(
+		logs.Players.map((player) => ({
 			robloxId: player.Player.split(':')[1],
 			robloxUsername: player.Player.split(':')[0],
 			team: player.Team,
@@ -55,18 +56,19 @@ new Cron('*/5 * * * * *', async () => {
 				StreetName: player.Location.StreetName,
 				BuildingNumber: player.Location.StreetName
 			}
-		});
-	}
+		}))
+	);
 
 	await db.orm.public.Vehicle.where({}).deleteAll();
-	for (const vehicle of logs.Vehicles) {
-		await db.orm.public.Vehicle.create({
+
+	await db.orm.public.Vehicle.createAll(
+		logs.Vehicles.map((vehicle) => ({
 			Name: vehicle.Name,
 			Owner: vehicle.Owner,
 			Plate: vehicle.Plate,
 			Texture: vehicle.Texture,
 			ColorHex: vehicle.ColorHex,
 			ColorName: vehicle.ColorName
-		});
-	}
+		}))
+	);
 });
