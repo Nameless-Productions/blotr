@@ -5,12 +5,17 @@ import { db } from './lib/db';
 new Cron('*/5 * * * * *', async () => {
 	console.log('Running cron job');
 
-	const logs = await getServerInfo({ CommandLogs: true, ModCalls: true, Players: true });
+	const logs = await getServerInfo({
+		CommandLogs: true,
+		ModCalls: true,
+		Players: true,
+		Vehicles: true
+	});
 
 	if (!logs) return;
 
-	if (!logs.CommandLogs || !logs.ModCalls || !logs.Players)
-		return console.warn('API returned no command or mod call logs or players');
+	if (!logs.CommandLogs || !logs.ModCalls || !logs.Players || !logs.Vehicles)
+		return console.warn('API responded with missing things');
 
 	for (const commandLog of logs.CommandLogs) {
 		const commandDB = await db.orm.public.CommandLog.where((l) =>
