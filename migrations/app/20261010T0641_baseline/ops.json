@@ -1,220 +1,192 @@
 [
-  {
-    "id": "schema.public",
-    "label": "Create schema \"public\"",
-    "operationClass": "additive",
-    "target": {
-      "id": "postgres"
-    },
-    "precheck": [],
-    "execute": [
-      {
-        "description": "Create schema \"public\"",
-        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
-        "params": []
-      }
-    ],
-    "postcheck": []
-  },
-  {
-    "id": "table.CommandLog",
-    "label": "Create table \"CommandLog\"",
-    "summary": "Creates table \"CommandLog\"",
-    "operationClass": "additive",
-    "target": {
-      "id": "postgres",
-      "details": {
-        "schema": "public",
-        "objectType": "table",
-        "name": "CommandLog"
-      }
-    },
-    "precheck": [
-      {
-        "description": "ensure table \"CommandLog\" does not exist",
-        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
-        "params": [
-          "\"public\".\"CommandLog\""
-        ]
-      }
-    ],
-    "execute": [
-      {
-        "description": "create table \"CommandLog\"",
-        "sql": "CREATE TABLE \"public\".\"CommandLog\" (\n  \"command\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"robloxUserId\" text NOT NULL,\n  \"timestamp\" text NOT NULL,\n  \"userId\" int4,\n  PRIMARY KEY (\"id\")\n)",
-        "params": []
-      }
-    ],
-    "postcheck": [
-      {
-        "description": "verify table \"CommandLog\" exists",
-        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
-        "params": [
-          "\"public\".\"CommandLog\""
-        ]
-      }
-    ]
-  },
-  {
-    "id": "table.ModCall",
-    "label": "Create table \"ModCall\"",
-    "summary": "Creates table \"ModCall\"",
-    "operationClass": "additive",
-    "target": {
-      "id": "postgres",
-      "details": {
-        "schema": "public",
-        "objectType": "table",
-        "name": "ModCall"
-      }
-    },
-    "precheck": [
-      {
-        "description": "ensure table \"ModCall\" does not exist",
-        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
-        "params": [
-          "\"public\".\"ModCall\""
-        ]
-      }
-    ],
-    "execute": [
-      {
-        "description": "create table \"ModCall\"",
-        "sql": "CREATE TABLE \"public\".\"ModCall\" (\n  \"callerId\" int4 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"moderatorId\" text,\n  \"timestamp\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
-        "params": []
-      }
-    ],
-    "postcheck": [
-      {
-        "description": "verify table \"ModCall\" exists",
-        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
-        "params": [
-          "\"public\".\"ModCall\""
-        ]
-      }
-    ]
-  },
-  {
-    "id": "table.User",
-    "label": "Create table \"User\"",
-    "summary": "Creates table \"User\"",
-    "operationClass": "additive",
-    "target": {
-      "id": "postgres",
-      "details": {
-        "schema": "public",
-        "objectType": "table",
-        "name": "User"
-      }
-    },
-    "precheck": [
-      {
-        "description": "ensure table \"User\" does not exist",
-        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
-        "params": [
-          "\"public\".\"User\""
-        ]
-      }
-    ],
-    "execute": [
-      {
-        "description": "create table \"User\"",
-        "sql": "CREATE TABLE \"public\".\"User\" (\n  \"discordID\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"robloxID\" text NOT NULL,\n  \"role\" text DEFAULT 'USER' NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"User_role_check_866f1f61\" CHECK (\"role\" IN ('OWNER', 'ADMINISTRATOR', 'MODERATOR', 'USER'))\n)",
-        "params": []
-      }
-    ],
-    "postcheck": [
-      {
-        "description": "verify table \"User\" exists",
-        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
-        "params": [
-          "\"public\".\"User\""
-        ]
-      }
-    ]
-  },
-  {
-    "id": "unique.User.User_robloxID_key",
-    "label": "Add unique constraint on \"User\" (robloxID)",
-    "operationClass": "additive",
-    "target": {
-      "id": "postgres",
-      "details": {
-        "schema": "public",
-        "objectType": "unique",
-        "name": "User_robloxID_key",
-        "table": "User"
-      }
-    },
-    "precheck": [
-      {
-        "description": "ensure constraint \"User_robloxID_key\" does not exist",
-        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
-        "params": [
-          "User_robloxID_key",
-          "public",
-          "\"public\".\"User\""
-        ]
-      }
-    ],
-    "execute": [
-      {
-        "description": "add unique constraint \"User_robloxID_key\"",
-        "sql": "ALTER TABLE \"public\".\"User\" ADD CONSTRAINT \"User_robloxID_key\" UNIQUE (\"robloxID\")"
-      }
-    ],
-    "postcheck": [
-      {
-        "description": "verify constraint \"User_robloxID_key\" exists",
-        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
-        "params": [
-          "User_robloxID_key",
-          "public",
-          "\"public\".\"User\""
-        ]
-      }
-    ]
-  },
-  {
-    "id": "unique.User.User_discordID_key",
-    "label": "Add unique constraint on \"User\" (discordID)",
-    "operationClass": "additive",
-    "target": {
-      "id": "postgres",
-      "details": {
-        "schema": "public",
-        "objectType": "unique",
-        "name": "User_discordID_key",
-        "table": "User"
-      }
-    },
-    "precheck": [
-      {
-        "description": "ensure constraint \"User_discordID_key\" does not exist",
-        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
-        "params": [
-          "User_discordID_key",
-          "public",
-          "\"public\".\"User\""
-        ]
-      }
-    ],
-    "execute": [
-      {
-        "description": "add unique constraint \"User_discordID_key\"",
-        "sql": "ALTER TABLE \"public\".\"User\" ADD CONSTRAINT \"User_discordID_key\" UNIQUE (\"discordID\")"
-      }
-    ],
-    "postcheck": [
-      {
-        "description": "verify constraint \"User_discordID_key\" exists",
-        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
-        "params": [
-          "User_discordID_key",
-          "public",
-          "\"public\".\"User\""
-        ]
-      }
-    ]
-  }
+	{
+		"id": "schema.public",
+		"label": "Create schema \"public\"",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres"
+		},
+		"precheck": [],
+		"execute": [
+			{
+				"description": "Create schema \"public\"",
+				"sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+				"params": []
+			}
+		],
+		"postcheck": []
+	},
+	{
+		"id": "table.CommandLog",
+		"label": "Create table \"CommandLog\"",
+		"summary": "Creates table \"CommandLog\"",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "table",
+				"name": "CommandLog"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure table \"CommandLog\" does not exist",
+				"sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+				"params": ["\"public\".\"CommandLog\""]
+			}
+		],
+		"execute": [
+			{
+				"description": "create table \"CommandLog\"",
+				"sql": "CREATE TABLE \"public\".\"CommandLog\" (\n  \"command\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"robloxUserId\" text NOT NULL,\n  \"timestamp\" text NOT NULL,\n  \"userId\" int4,\n  PRIMARY KEY (\"id\")\n)",
+				"params": []
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify table \"CommandLog\" exists",
+				"sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+				"params": ["\"public\".\"CommandLog\""]
+			}
+		]
+	},
+	{
+		"id": "table.ModCall",
+		"label": "Create table \"ModCall\"",
+		"summary": "Creates table \"ModCall\"",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "table",
+				"name": "ModCall"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure table \"ModCall\" does not exist",
+				"sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+				"params": ["\"public\".\"ModCall\""]
+			}
+		],
+		"execute": [
+			{
+				"description": "create table \"ModCall\"",
+				"sql": "CREATE TABLE \"public\".\"ModCall\" (\n  \"callerId\" int4 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"moderatorId\" text,\n  \"timestamp\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+				"params": []
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify table \"ModCall\" exists",
+				"sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+				"params": ["\"public\".\"ModCall\""]
+			}
+		]
+	},
+	{
+		"id": "table.User",
+		"label": "Create table \"User\"",
+		"summary": "Creates table \"User\"",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "table",
+				"name": "User"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure table \"User\" does not exist",
+				"sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+				"params": ["\"public\".\"User\""]
+			}
+		],
+		"execute": [
+			{
+				"description": "create table \"User\"",
+				"sql": "CREATE TABLE \"public\".\"User\" (\n  \"discordID\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"robloxID\" text NOT NULL,\n  \"role\" text DEFAULT 'USER' NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"User_role_check_866f1f61\" CHECK (\"role\" IN ('OWNER', 'ADMINISTRATOR', 'MODERATOR', 'USER'))\n)",
+				"params": []
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify table \"User\" exists",
+				"sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+				"params": ["\"public\".\"User\""]
+			}
+		]
+	},
+	{
+		"id": "unique.User.User_robloxID_key",
+		"label": "Add unique constraint on \"User\" (robloxID)",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "unique",
+				"name": "User_robloxID_key",
+				"table": "User"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure constraint \"User_robloxID_key\" does not exist",
+				"sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+				"params": ["User_robloxID_key", "public", "\"public\".\"User\""]
+			}
+		],
+		"execute": [
+			{
+				"description": "add unique constraint \"User_robloxID_key\"",
+				"sql": "ALTER TABLE \"public\".\"User\" ADD CONSTRAINT \"User_robloxID_key\" UNIQUE (\"robloxID\")"
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify constraint \"User_robloxID_key\" exists",
+				"sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+				"params": ["User_robloxID_key", "public", "\"public\".\"User\""]
+			}
+		]
+	},
+	{
+		"id": "unique.User.User_discordID_key",
+		"label": "Add unique constraint on \"User\" (discordID)",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "unique",
+				"name": "User_discordID_key",
+				"table": "User"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure constraint \"User_discordID_key\" does not exist",
+				"sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+				"params": ["User_discordID_key", "public", "\"public\".\"User\""]
+			}
+		],
+		"execute": [
+			{
+				"description": "add unique constraint \"User_discordID_key\"",
+				"sql": "ALTER TABLE \"public\".\"User\" ADD CONSTRAINT \"User_discordID_key\" UNIQUE (\"discordID\")"
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify constraint \"User_discordID_key\" exists",
+				"sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+				"params": ["User_discordID_key", "public", "\"public\".\"User\""]
+			}
+		]
+	}
 ]

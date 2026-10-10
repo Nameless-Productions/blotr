@@ -10,7 +10,7 @@ export default definePrismaConfig({
 		}
 	}),
 	skills: {
-		agents: ["claude"],
+		agents: ['claude'],
 		check: true
 	}
 });

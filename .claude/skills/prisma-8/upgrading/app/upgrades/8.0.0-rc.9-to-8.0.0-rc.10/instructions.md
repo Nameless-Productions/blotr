@@ -1,6 +1,6 @@
 ---
-from: "8.0.0-rc.9"
-to: "8.0.0-rc.10"
+from: '8.0.0-rc.9'
+to: '8.0.0-rc.10'
 changes:
   - id: schema-header-use-prisma-8
     summary: |
@@ -9,9 +9,9 @@ changes:
       inferred-schema printer write the new form. Replace `// use prisma-next`
       at the top of every `.prisma` file.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       contains:
-        - "// use prisma-next"
+        - '// use prisma-next'
   - id: env-vars-drop-next-infix
     summary: |
       The CLI environment variables lost their `NEXT_` infix: `PRISMA_NEXT_DISABLE_TELEMETRY`,
@@ -21,17 +21,17 @@ changes:
       in shell profiles, `.env` files, and CI configuration. The per-user telemetry config also moved
       from `~/.config/prisma-next/` to `~/.config/prisma-8/`, so the consent prompt runs once more.
     detection:
-      glob: "**/*"
+      glob: '**/*'
       contains:
-        - "PRISMA_NEXT_"
+        - 'PRISMA_NEXT_'
   - id: primer-file-prisma-8-md
     summary: |
       The quick-reference primer `init` writes at the project root is now `prisma-8.md`. Rename the
       existing `prisma-next.md` and update any README or agent instruction that points at it.
     detection:
-      glob: "**/prisma-next.md"
+      glob: '**/prisma-next.md'
       contains:
-        - "#"
+        - '#'
   - id: to-one-relations-record-nullable
     summary: |
       Every `1:1` and `N:1` relation in `contract.json` now carries a `nullable` boolean. A
@@ -40,7 +40,7 @@ changes:
       `prisma contract emit` so the emitted `contract.json` / `contract.d.ts` match the installed
       toolchain.
     detection:
-      glob: "**/contract.json"
+      glob: '**/contract.json'
       matches:
         - '"cardinality":\s*"(?:N:1|1:1)",\s*"on":'
   - id: reemit-supabase-extension-version
@@ -49,7 +49,7 @@ changes:
       metadata. Re-emit them after upgrading so `contract.json` and `contract.d.ts` say
       `8.0.0-rc.10` instead of `8.0.0-rc.9`.
     detection:
-      glob: "**/contract.json"
+      glob: '**/contract.json'
       contains:
         - '"id": "supabase"'
   - id: contract-dts-exports-models

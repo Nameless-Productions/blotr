@@ -1,11 +1,11 @@
 ---
-from: "0.9"
-to: "0.10"
+from: '0.9'
+to: '0.10'
 changes:
   - id: stamp-storage-types-kind-on-contract-snapshots
     summary: Stamp the `kind` discriminator (`"codec-instance"` / `"postgres-enum"`) on every entry in `storage.types` inside every committed `start-contract.json` / `end-contract.json` snapshot (extension seed migrations included). The SQL family's contract serializer is now strict — untagged entries fail to load with a deserializer diagnostic naming the offending entry.
     detection:
-      glob: "**/migrations/**/{start,end}-contract.json"
+      glob: '**/migrations/**/{start,end}-contract.json'
       contains:
         - '"codecId"'
       anyMatch: true
@@ -13,10 +13,10 @@ changes:
   - id: stamp-storage-types-kind-in-source
     summary: Wrap untagged codec-triple inputs to `SqlStorage` (or any builder that materialises `storage.types`) with `toStorageTypeInstance(...)`, and use the target-specific `PostgresEnumType` class for Postgres-enum entries — the `SqlStorage` constructor now throws on untagged entries instead of papering over them.
     detection:
-      glob: "**/*.{ts,tsx}"
+      glob: '**/*.{ts,tsx}'
       contains:
-        - "storage.types"
-        - "codecId"
+        - 'storage.types'
+        - 'codecId'
       anyMatch: true
 ---
 
@@ -32,15 +32,15 @@ Before 0.10, seed snapshots looked like this:
 
 ```jsonc
 {
-  "storage": {
-    "types": {
-      "Embedding1536": {
-        "codecId": "pg/vector@1",
-        "nativeType": "vector",
-        "typeParams": { "length": 1536 }
-      }
-    }
-  }
+	"storage": {
+		"types": {
+			"Embedding1536": {
+				"codecId": "pg/vector@1",
+				"nativeType": "vector",
+				"typeParams": { "length": 1536 }
+			}
+		}
+	}
 }
 ```
 
@@ -48,16 +48,16 @@ Starting at 0.10 the same entries must look like this:
 
 ```jsonc
 {
-  "storage": {
-    "types": {
-      "Embedding1536": {
-        "kind": "codec-instance",
-        "codecId": "pg/vector@1",
-        "nativeType": "vector",
-        "typeParams": { "length": 1536 }
-      }
-    }
-  }
+	"storage": {
+		"types": {
+			"Embedding1536": {
+				"kind": "codec-instance",
+				"codecId": "pg/vector@1",
+				"nativeType": "vector",
+				"typeParams": { "length": 1536 }
+			}
+		}
+	}
 }
 ```
 
@@ -89,14 +89,14 @@ There is no codemod for this — extensions construct `SqlStorage` via too many 
   import { toStorageTypeInstance } from '@internal/sql-contract';
 
   const storage = new SqlStorage({
-    types: {
-      Embedding1536: toStorageTypeInstance({
-        codecId: 'pg/vector@1',
-        nativeType: 'vector',
-        typeParams: { length: 1536 },
-      }),
-    },
-    // …
+  	types: {
+  		Embedding1536: toStorageTypeInstance({
+  			codecId: 'pg/vector@1',
+  			nativeType: 'vector',
+  			typeParams: { length: 1536 }
+  		})
+  	}
+  	// …
   });
   ```
 
@@ -108,14 +108,14 @@ There is no codemod for this — extensions construct `SqlStorage` via too many 
   import { PostgresEnumType } from '@internal/postgres';
 
   const storage = new SqlStorage({
-    types: {
-      user_type: new PostgresEnumType({
-        name: 'user_type',
-        nativeType: 'user_type',
-        values: ['admin', 'user'],
-      }),
-    },
-    // …
+  	types: {
+  		user_type: new PostgresEnumType({
+  			name: 'user_type',
+  			nativeType: 'user_type',
+  			values: ['admin', 'user']
+  		})
+  	}
+  	// …
   });
   ```
 
@@ -125,15 +125,15 @@ There is no codemod for this — extensions construct `SqlStorage` via too many 
 
   ```ts
   const fixtureStorage: SqlStorageInput = {
-    types: {
-      user_type: {
-        kind: 'codec-instance',
-        codecId: 'pg/enum@1',
-        nativeType: 'user_type',
-        typeParams: { values: ['admin', 'user'] },
-      },
-    },
-    // …
+  	types: {
+  		user_type: {
+  			kind: 'codec-instance',
+  			codecId: 'pg/enum@1',
+  			nativeType: 'user_type',
+  			typeParams: { values: ['admin', 'user'] }
+  		}
+  	}
+  	// …
   };
   ```
 

@@ -1,96 +1,96 @@
 ---
-from: "8.0.0-rc.16"
-to: "8.0.0-rc.17"
+from: '8.0.0-rc.16'
+to: '8.0.0-rc.17'
 changes:
   - id: decode-json-integer-text-refuses-other-spellings
     summary: |
       `decodeJsonIntegerText` from `@internal/framework-components/codec` now refuses digit text with a leading zero or a minus sign on zero, such as "007" or "-0", naming the text to write. An extension codec that reads an integer through it refuses those spellings in `contract.json` and in a PSL enum member. Write its values without leading zeros or a minus sign on zero, as its `encodeJson` should already.
     detection:
-      glob: "**/*.{ts,tsx,mts,cts}"
+      glob: '**/*.{ts,tsx,mts,cts}'
       matches:
         - '\bdecodeJsonIntegerText\b'
   - id: enum-codecs-need-equality
     summary: |
       Every enum authoring surface, `enumType` in `defineContract` and the PSL enum block in both families, now refuses a codec whose descriptor does not declare the `equality` trait. A codec descriptor can also set the new `enumRefusal` field, a reason an enum cannot use it that ends with what to use instead. Declare `equality` on an extension codec whose values an enum may hold, and set `enumRefusal` on one that declares it but whose values a query reads back never equal a member as the contract stores it.
     detection:
-      glob: "**/*.{ts,tsx,mts,cts}"
+      glob: '**/*.{ts,tsx,mts,cts}'
       matches:
         - '\btraits\s*[:=]'
   - id: enum-accessor-builders-take-codecs
     summary: |
       `buildNamespacedEnums()` and `buildEnumsMapForNamespace()` from `@internal/contract/enum-accessor` now take a codec lookup, `(codecId) => EnumMemberCodec`, as their last argument and read each member through the codec it returns. The lookup must return a codec for every enum; throw `RUNTIME.CODEC_DESCRIPTOR_MISSING` when the runtime has none. `createEnumAccessor()` takes the codec as an optional second argument. `EnumAccessor` members and values are typed `unknown`, and `has()` on `EnumAccessor` and `ContractEnumAccessor` takes `unknown`. Pass the runtime's codecs.
     detection:
-      glob: "**/*.{ts,tsx,mts,cts}"
+      glob: '**/*.{ts,tsx,mts,cts}'
       matches:
         - '\b(?:buildNamespacedEnums|buildEnumsMapForNamespace|createEnumAccessor)\b'
   - id: mongo-orm-takes-enum-accessors
     summary: |
       `mongoOrm()` and `createMongoCollection()` from `@internal/mongo-orm` now require the contract's enum accessors, which they check a written enum value against. Code that builds them itself passes `buildMongoEnums(contract, context.codecs)` from `@internal/mongo-runtime` as `enums`; `createMongoCollection()` takes them before the optional `mutationDefaults`.
     detection:
-      glob: "**/*.{ts,tsx,mts,cts}"
+      glob: '**/*.{ts,tsx,mts,cts}'
       matches:
         - '\b(?:mongoOrm|createMongoCollection)\s*(?:<[^>]*>)?\s*\('
   - id: define-contract-carries-enums
     summary: |
       A target facade whose `defineContract` wraps `buildBoundContract` must carry the contract's enums as an `Enums` generic and export an `enumType` bound to its pack's codec types, as `@internal/postgres` and now `@internal/sqlite` do. Without them `db.enums` types each member as `JsonValue`, while it holds the value its codec reads, such as a bigint or a `Date`.
     detection:
-      glob: "**/*.{ts,tsx,mts,cts}"
+      glob: '**/*.{ts,tsx,mts,cts}'
       matches:
         - '\bbuildBoundContract\s*\('
   - id: contract-dts-enum-member-types
     summary: |
       An emitted `contract.d.ts` now gives every namespace that declares enums an `enumMemberTypes` entry, which types each member as `db.enums` holds it. Re-emit bundled contracts that declare enums. `contract.json`, every hash and migration snapshots are unchanged.
     detection:
-      glob: "**/contract.d.ts"
+      glob: '**/contract.d.ts'
       matches:
         - 'readonly enum: \{'
   - id: bundled-contract-foreign-keys-name-their-backing-index
     summary: |
       Each foreign key in a SQL `contract.json` now states what backs it in a new `index` field: `{ "name": "<index>" }`, `{ "primaryKey": true }` or `{ "unique": ["<column>", …] }`, absent for `index: false`. A bundled contract space with a foreign key gets a new storage hash. Regenerate the extension's bundled `contract.json` and `contract.d.ts` with its existing emission command.
     detection:
-      glob: "**/contract.json"
+      glob: '**/contract.json'
       matches:
         - '"foreignKeys"\s*:\s*\[\s*\{'
   - id: relations-name-a-leading-key-or-index
     summary: |
       A relation in a bundled PSL contract that says `index: false` although a primary key, unique constraint or plain index of its model starts with its foreign key's columns now names that object with `index: "<name>"`, as `contract infer` writes it. Otherwise the stored foreign key says nothing backs it.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       matches:
         - '@relation\([^)]*\bindex\s*:\s*false'
   - id: foreign-key-materialization-takes-one-input
     summary: |
       `materializeForeignKeysAndIndexes()` from `@internal/sql-contract/foreign-key-materialization` takes one object, `{ tableName, foreignKeys, declaredIndexes, uniques, primaryKey, warnings }`, where each declared index is `{ index, namedByUser }`, and a foreign key's `index` is `true`, `false` or the name of a declared index, unique constraint or primary key. `backingIndexColumnKeys()`, `isBackedByColumnKeys()` and `BackingIndexCandidates` are removed; `derivedBackingIndexIsRedundant()` answers whether a table already serves a foreign key's lookups, by the rule the build uses.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\b(?:materializeForeignKeysAndIndexes|backingIndexColumnKeys|isBackedByColumnKeys|BackingIndexCandidates)\b'
   - id: planner-plan-statements
     summary: |
       Every call to a migration planner's `plan(...)` passes a new required `statements` list; pass `statements: []` when the call states no renames.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\.plan\(\s*\{(?!(?:[^{}]|\{[^{}]*\})*?(?<![\w$])statements\s*[:,])(?:[^{}]|\{[^{}]*\})*?(?<![\w$])fromContract\s*[:,]'
   - id: planner-plan-origin
     summary: |
       Every call to a migration planner's `plan(...)` passes a new required `origin`: the storage hash the produced plan asserts it starts from. `fromContract` no longer sets the plan's origin.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\.plan\(\s*\{(?!(?:[^{}]|\{[^{}]*\})*?(?<![\w$])origin\s*[:,])(?:[^{}]|\{[^{}]*\})*?(?<![\w$])fromContract\s*[:,]'
   - id: planner-success-applied-statements
     summary: |
       A migration planner's success result gains a required `appliedStatements` list; a planner, or a test double of one, that returns `{ kind: 'success', plan }` adds `appliedStatements`, empty when it applied no statements.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '(?<![\s\S])(?=[\s\S]*(?<![\w$])MigrationPlanner(?:Result|SuccessResult)?(?![\w$]))(?![\s\S]*(?<![\w$])appliedStatements(?![\w$]))[\s\S]*kind:\s*["'']success["'']'
   - id: sql-planner-helpers
     summary: |
       In `@prisma/orm-family-sql/family/control`, `plannerSuccess(plan, warnings?)` becomes `plannerSuccess(plan, appliedStatements, subjects, warnings?)` (see `sql-planner-success-subjects`), `planFieldEventOperations(...)` takes required `tableRenames` and `columnRenames` lists, and the conflict kind union gains `'statementRefused'`.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '(?<![\w$])plannerSuccess\s*\('
         - '(?<![\w$])planFieldEventOperations\s*\('
@@ -99,7 +99,7 @@ changes:
     summary: |
       The aggregate planner's `planMigration(...)` input takes a required `appSpace: { fromContract, statements }`, and a `PerSpacePlan` carries a required `appliedStatements` list.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '(?<![\w$])planMigration\s*\('
         - 'strategy:\s*["''](?:plan-from-diff|resolve-recorded-path|declared-state)["'']'
@@ -107,21 +107,21 @@ changes:
     summary: |
       A migration planner's success result gains required `dataLoss` and `accessWidening` lists of `MigrationOperationSubject` (from `@prisma/orm-framework/components/control`): the operations that lose data, and those that widen who can read or write rows, each by position with its subject. A planner, or a test double of one, that returns `{ kind: 'success', ... }` adds both, empty when it plans neither.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '(?<![\s\S])(?=[\s\S]*(?<![\w$])MigrationPlanner(?:Result|SuccessResult)?(?![\w$]))(?![\s\S]*(?<![\w$])dataLoss(?![\w$]))[\s\S]*kind:\s*["'']success["'']'
   - id: sql-planner-success-subjects
     summary: |
       In `@prisma/orm-family-sql/family/control`, `plannerSuccess(plan, appliedStatements, warnings?)` becomes `plannerSuccess(plan, appliedStatements, subjects, warnings?)`, where `subjects` is `{ dataLoss, accessWidening }`.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '(?<![\w$])plannerSuccess\s*\('
   - id: per-space-plan-subjects
     summary: |
       A `PerSpacePlan` from `@prisma/orm-toolchain/migration-tools/aggregate` carries required `dataLoss` and `accessWidening` lists, and `planMigration(...)` and `resolveRecordedPath(...)` take a required `storageNameOf(operation)`, which names each destructive operation of a recorded path in `dataLoss`.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - 'strategy:\s*["''](?:plan-from-diff|resolve-recorded-path|declared-state)["'']'
         - '(?<![\w$])(?:planMigration|resolveRecordedPath)\s*\('
@@ -129,14 +129,14 @@ changes:
     summary: |
       `ControlFamilyInstance` from `@prisma/orm-framework/components/control` requires `storageNameOf(operation)`: the name the database knows the object an operation acts on by. A family instance, or a test double of one, implements it. `TargetMigrationsCapability` gains an optional `renameStatements: { refused: true, keepDataByHand }` for a target whose planner carries out no rename statement.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '(?<![\w$])(?:Sql|Mongo)?ControlFamilyInstance(?![\w$])'
   - id: operation-classes-and-calls
     summary: |
       Postgres `setNotNull`, MongoDB `dropIndex`, `setValidation` and `collMod`, and the matching op-factory calls are now `widening`. `AlterColumnTypeCall` (`@prisma/orm-target-postgres/target/op-factory-call`) takes an optional `operationClass`, and SQLite's `RecreateTableCall` (`@prisma/orm-target-sqlite/target/op-factory-call`) an optional `lossyColumns`.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '(?<![\w$])(?:AlterColumnTypeCall|RecreateTableCall)(?![\w$])'
         - '(?<![\w$.])(?:dropIndex|setValidation|collMod)\('
@@ -145,28 +145,28 @@ changes:
     summary: |
       The control client's `dbUpdate(options)` requires an `answerQuestions` callback, which answers every question about an operation that would lose data or widen access, in order, or throws to refuse.
     detection:
-      glob: "**/*.{ts,mts,cts,md}"
+      glob: '**/*.{ts,mts,cts,md}'
       matches:
         - '(?<![\s\S])(?![\s\S]*(?<![\w$])answerQuestions(?![\w$]))[\s\S]*\.dbUpdate\s*\('
   - id: collection-apply-is-now-with
     summary: |
       The collection method `apply(fn)` is renamed to `with(fn)`. Rename every call on a collection of the SQL ORM client, such as `db.orm.public.Post.apply(notDeleted)` or `posts.apply((p) => p.limit(10))`, to `.with(...)`. The detection matches `.apply(` only when its first argument is a name followed by `)`, `(` or `=>`, or an arrow function, because `Function.prototype.apply` (`fn.apply(this, args)`) and `Reflect.apply` share the name; it can still match a `Function.prototype.apply` call with one argument. Rename only where the receiver is a collection.
     detection:
-      glob: "**/*.{ts,mts,cts,tsx}"
+      glob: '**/*.{ts,mts,cts,tsx}'
       matches:
         - '\.apply\s*\(\s*(?:\(|[A-Za-z_$][\w$.]*\s*(?:\)|\(|=>))'
   - id: with-is-a-collection-member
     summary: |
       Every collection now has a `with` method instead of `apply`. A custom collection class that declares its own `with` member with another signature no longer compiles; rename it. An aggregate operation named `with` is refused with `ORM.AGGREGATE_OPERATION_RESERVED`.
     detection:
-      glob: "**/*.{ts,mts,cts,tsx}"
+      glob: '**/*.{ts,mts,cts,tsx}'
       matches:
         - '(?:^|\n)[ \t]*(?:(?:public|protected|private|readonly|static|async|override)\s+)*with\s*[(<:=?]'
   - id: orm-scope-is-now-fragment
     summary: |
       The SQL ORM client's `scope` methods are renamed to `fragment`: `db.orm.scope(fields, body)` is now `db.orm.fragment(fields, body)`, and `collection.scope(body)`, such as `db.orm.public.Post.scope(...)`, is now `collection.fragment(body)`. Rename each use whose receiver is the ORM client or a collection, including `typeof db.orm.scope` and `const { scope } = db.orm`. The detection matches every `.scope(` call; leave calls on other objects as they are.
     detection:
-      glob: "**/*.{ts,mts,cts,tsx}"
+      glob: '**/*.{ts,mts,cts,tsx}'
       matches:
         - '\.scope\s*[(<]'
         - '\btypeof\s+[\w$.]*\.scope\b'
@@ -175,7 +175,7 @@ changes:
     summary: |
       The types `Scope`, `FieldScope` and `ScopeFacts` exported by the SQL ORM client (`@prisma/orm-postgres/orm-client`, the other facades' `orm-client` entries and `@internal/sql-orm-client`) are renamed to `Fragment`, `FieldFragment` and `FragmentFacts`. The SQL builder's own `Scope` and `ScopeField` types are a different thing and keep their names; the detection matches `Scope` only in an import or re-export from the ORM client, or after a namespace import of it.
     detection:
-      glob: "**/*.{ts,mts,cts,tsx}"
+      glob: '**/*.{ts,mts,cts,tsx}'
       matches:
         - '\b(?:FieldScope|ScopeFacts)\b'
         - '(?:import|export)\s+(?:type\s+)?\{[^}]*\bScope\b[^}]*\}\s*from\s*[''"]@(?:prisma/[\w-]+/orm-client|internal/sql-orm-client)[''"]'
@@ -184,7 +184,7 @@ changes:
     summary: |
       Every collection now has a `fragment` method instead of `scope`. A custom collection class that declares its own `fragment` member with another signature no longer compiles; rename it. An aggregate operation named `fragment` is refused with `ORM.AGGREGATE_OPERATION_RESERVED`. The name `scope` is free again. The detection matches a member named `fragment` only in a file that extends `Collection`, and an aggregate operation declared as `operation: 'fragment'`.
     detection:
-      glob: "**/*.{ts,mts,cts,tsx}"
+      glob: '**/*.{ts,mts,cts,tsx}'
       matches:
         - '(?<![\s\S])(?=[\s\S]*\bextends\s+Collection\b)[\s\S]*\n[ \t]*(?:(?:public|protected|private|readonly|static|async|override|get|set)\s+)*fragment\s*(?:\?\s*)?[(<:=]'
         - '\boperation\s*:\s*[''"]fragment[''"]'
@@ -192,22 +192,22 @@ changes:
     summary: |
       A contract namespace named `fragment` now takes the name of the client's `fragment` method, so `db.orm.fragment` is that namespace and the client has no method to make a fragment for any model; code that called `db.orm.scope(fields, body)` with such a contract must make its fragments another way. A namespace named `scope` no longer hides anything.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       matches:
         - '(?:^|\n)[ \t]*namespace\s+fragment\b'
   - id: fragment-error-texts
     summary: |
       Errors and compile errors about these functions say "fragment" where they said "scope", such as `Cannot define the fragment: the body is not a function` and `Pass the fragment to with on a collection: collection.with(fragment).` Update tests that assert on the old text.
     detection:
-      glob: "**/*.{ts,mts,cts,tsx}"
+      glob: '**/*.{ts,mts,cts,tsx}'
       matches:
         - 'Cannot (?:define|apply) (?:the|a) scope|Pass the scope to with|Run the scope with apply|A scope (?:passed to with|applied with apply)|The scope was (?:made|declared)|the scope could not read the model|declaration in the scope'
   - id: collection-state-carries-locking
     summary: "CollectionState in @internal/sql-orm-client has a new required key, locking; a state literal built without spreading emptyState() must add it, carrying an existing state's value."
     detection:
-      glob: "**/*.ts"
+      glob: '**/*.ts'
       contains:
-        - "CollectionState"
+        - 'CollectionState'
 ---
 
 # 8.0.0-rc.16 → 8.0.0-rc.17 — Extension author upgrade instructions
@@ -233,9 +233,9 @@ An enum compares a value with its members, so an enum cannot use a codec whose v
 
 ```ts
 class GeoHashDescriptor extends CodecDescriptorImpl<void> {
-  override readonly traits = ['equality'] as const;
-  override readonly enumRefusal =
-    'The database normalises a geohash to its shortest form, so a member as written is not the value a query reads back. Use a text enum.';
+	override readonly traits = ['equality'] as const;
+	override readonly enumRefusal =
+		'The database normalises a geohash to its shortest form, so a member as written is not the value a query reads back. Use a text enum.';
 }
 ```
 
@@ -247,9 +247,9 @@ An extension that builds `db.enums` passes the codecs of the runtime it builds t
 
 ```ts
 const enums = Object.freeze(
-  buildNamespacedEnums<TContract>(context.contract.domain, (codecId) =>
-    context.contractCodecs.forCodecRef({ codecId }),
-  ),
+	buildNamespacedEnums<TContract>(context.contract.domain, (codecId) =>
+		context.contractCodecs.forCodecRef({ codecId })
+	)
 );
 ```
 
@@ -272,10 +272,10 @@ Pass the contract's enum accessors when building the Mongo ORM, the same ones th
 
 ```ts
 const orm = mongoOrm<TContract>({
-  contract,
-  executor,
-  mutationDefaults: context,
-  enums: buildMongoEnums(contract, context.codecs),
+	contract,
+	executor,
+	mutationDefaults: context,
+	enums: buildMongoEnums(contract, context.codecs)
 });
 ```
 
@@ -286,47 +286,46 @@ const orm = mongoOrm<TContract>({
 Give the facade's `defineContract` an `Enums` type parameter on both overloads, pass it to `buildBoundContract` through the definition type, and merge the scaffold's and the factory's enums in the factory overload:
 
 ```ts
-import type {
-  EnumTypeHandle,
-  MergeEnums,
-} from '@internal/sql-contract-ts/contract-builder';
+import type { EnumTypeHandle, MergeEnums } from '@internal/sql-contract-ts/contract-builder';
 
 type EnumsConstraint = Record<string, EnumTypeHandle>;
 
 type Result<Types, Models, Extensions, Enums extends EnumsConstraint> = ReturnType<
-  typeof buildBoundContract<
-    SqlFamily,
-    TargetPack,
-    {
-      readonly types?: Types;
-      readonly models?: Models;
-      readonly extensions?: Extensions;
-      readonly enums?: Enums;
-      readonly createNamespace: (input: SqlNamespaceInput) => SqlNamespaceBase;
-    }
-  >
+	typeof buildBoundContract<
+		SqlFamily,
+		TargetPack,
+		{
+			readonly types?: Types;
+			readonly models?: Models;
+			readonly extensions?: Extensions;
+			readonly enums?: Enums;
+			readonly createNamespace: (input: SqlNamespaceInput) => SqlNamespaceBase;
+		}
+	>
 >;
 
 export function defineContract<
-  const Types extends TypesConstraint = Record<never, never>,
-  const Models extends ModelsConstraint = Record<never, never>,
-  const Extensions extends Record<string, ExtensionPackRef<'sql', string>> | undefined = undefined,
-  const Enums extends EnumsConstraint = Record<never, never>,
->(definition: Definition<Types, Models, Extensions, Enums>): Result<Types, Models, Extensions, Enums>;
+	const Types extends TypesConstraint = Record<never, never>,
+	const Models extends ModelsConstraint = Record<never, never>,
+	const Extensions extends Record<string, ExtensionPackRef<'sql', string>> | undefined = undefined,
+	const Enums extends EnumsConstraint = Record<never, never>
+>(
+	definition: Definition<Types, Models, Extensions, Enums>
+): Result<Types, Models, Extensions, Enums>;
 
 export function defineContract<
-  const Types extends TypesConstraint = Record<never, never>,
-  const Models extends ModelsConstraint = Record<never, never>,
-  const Extensions extends Record<string, ExtensionPackRef<'sql', string>> | undefined = undefined,
-  const ScaffoldEnums extends EnumsConstraint = Record<never, never>,
-  const FactoryEnums extends EnumsConstraint = Record<never, never>,
+	const Types extends TypesConstraint = Record<never, never>,
+	const Models extends ModelsConstraint = Record<never, never>,
+	const Extensions extends Record<string, ExtensionPackRef<'sql', string>> | undefined = undefined,
+	const ScaffoldEnums extends EnumsConstraint = Record<never, never>,
+	const FactoryEnums extends EnumsConstraint = Record<never, never>
 >(
-  scaffold: Scaffold<Extensions, ScaffoldEnums>,
-  factory: (helpers: ComposedAuthoringHelpers<SqlFamily, TargetPack, Extensions>) => {
-    readonly types?: Types;
-    readonly models?: Models;
-    readonly enums?: FactoryEnums;
-  },
+	scaffold: Scaffold<Extensions, ScaffoldEnums>,
+	factory: (helpers: ComposedAuthoringHelpers<SqlFamily, TargetPack, Extensions>) => {
+		readonly types?: Types;
+		readonly models?: Models;
+		readonly enums?: FactoryEnums;
+	}
 ): Result<Types, Models, Extensions, MergeEnums<ScaffoldEnums, FactoryEnums>>;
 ```
 
@@ -334,8 +333,8 @@ Add `'enums'` to the keys the base scaffold omits from `ContractInput`, add `rea
 
 ```ts
 import {
-  bindEnumType,
-  type ExtractCodecTypesFromPack,
+	bindEnumType,
+	type ExtractCodecTypesFromPack
 } from '@internal/sql-contract-ts/contract-builder';
 
 /** `enumType` bound to the pack's codec types, so each `member()` value is checked against the enum codec's input type. */
@@ -360,11 +359,11 @@ Before:
 
 ```ts
 const { foreignKeys, indexes } = materializeForeignKeysAndIndexes(
-  tableName,
-  authoredForeignKeys,
-  declaredIndexes,
-  uniques,
-  primaryKey,
+	tableName,
+	authoredForeignKeys,
+	declaredIndexes,
+	uniques,
+	primaryKey
 );
 ```
 
@@ -373,15 +372,15 @@ After:
 ```ts
 const warnings: AuthoringWarning[] = [];
 const { foreignKeys, indexes } = materializeForeignKeysAndIndexes({
-  tableName,
-  foreignKeys: authoredForeignKeys,
-  declaredIndexes: authoredIndexes.map((authored) => ({
-    index: lowerAuthoredIndex(tableName, authored, warnings),
-    namedByUser: authored.name !== undefined || authored.map !== undefined,
-  })),
-  uniques,
-  primaryKey,
-  warnings,
+	tableName,
+	foreignKeys: authoredForeignKeys,
+	declaredIndexes: authoredIndexes.map((authored) => ({
+		index: lowerAuthoredIndex(tableName, authored, warnings),
+		namedByUser: authored.name !== undefined || authored.map !== undefined
+	})),
+	uniques,
+	primaryKey,
+	warnings
 });
 flushAuthoringWarnings(warnings);
 ```
@@ -463,13 +462,13 @@ In code and documentation that call the control client's `dbUpdate({ ... })` wit
 
 ```typescript
 await control.dbUpdate({
-  contract,
-  mode: 'apply',
-  migrationsDir: 'migrations',
-  answerQuestions: async (questions) => {
-    if (questions.length > 0) throw new Error('db update would lose data or widen access');
-    return [];
-  },
+	contract,
+	mode: 'apply',
+	migrationsDir: 'migrations',
+	answerQuestions: async (questions) => {
+		if (questions.length > 0) throw new Error('db update would lose data or widen access');
+		return [];
+	}
 });
 ```
 

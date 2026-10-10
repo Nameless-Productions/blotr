@@ -1,6 +1,6 @@
 ---
-from: "8.0.0-rc.11"
-to: "8.0.0-rc.12"
+from: '8.0.0-rc.11'
+to: '8.0.0-rc.12'
 # The Prisma 7 contract source adds `prisma7Schema` and the `examples/prisma7-adoption` example.
 # The surface itself is new, so there is nothing to translate for it; the entries below cover the
 # changes it made to paths every Postgres project already uses.
@@ -12,14 +12,14 @@ changes:
       `definePrismaConfig`. Required: `@prisma/cli-engine@0.6.1` no longer exports the deprecated
       `defineConfig` alias.
     detection:
-      glob: "**/prisma.config.ts"
+      glob: '**/prisma.config.ts'
       contains:
         - "import { defineConfig } from '@prisma/cli-engine'"
   - id: engine-pin-moves-to-0-6-1
     summary: |
       The toolchain now requires `@prisma/cli-engine@0.6.1` (up from 0.4.0). A project that pins `@prisma/cli-engine` itself must move the pin to `0.6.1`. The engine no longer exports the deprecated `defineConfig` alias, so `prisma.config.ts` must import `definePrismaConfig`.
     detection:
-      glob: "**/package.json"
+      glob: '**/package.json'
       contains:
         - '"@prisma/cli-engine": "0.4.0"'
   - id: config-paths-resolve-from-declaring-file
@@ -31,7 +31,7 @@ changes:
       `// use prisma-8` as its first line, failing with `PSL_NO_OPTED_IN_SCHEMA_FILES`. Add the
       directive to every PSL schema file your `contract.source.inputs` matches.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       regex:
         - '^(?!\s*// *use +(?:prisma-8|prisma-next)(?: *)(?!\S))'
     script: ./scripts/multifile-psl/add-use-prisma-8-directive.mjs
@@ -45,7 +45,7 @@ changes:
       after the codemod. Planning without it fails with `MIGRATION.TABLE_NAME_CASE_CHANGED`
       instead of dropping and recreating the table.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       regex:
         - '\bmodel\s+[A-Za-z_][A-Za-z0-9_]*\s*\{'
     script: ./scripts/psl-verbatim-table-names/add-model-map.mjs
@@ -58,25 +58,25 @@ changes:
       back as the stored value, including forms it used to print as `dbgenerated("...")`. Re-running
       infer produces different schema text for the same database. Nothing to fix; review the diff.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       contains:
-        - "dbgenerated("
+        - 'dbgenerated('
   - id: dbgenerated-removed-from-psl
     summary: |
       `@default(dbgenerated("..."))` is removed from PSL. `contract emit` refuses it with
       `PSL_UNKNOWN_DEFAULT_FUNCTION`. Write a raw SQL default as the `sql` tagged literal, and a
       value the column's data type writes as that literal.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       contains:
-        - "dbgenerated("
+        - 'dbgenerated('
   - id: default-sql-method-deprecated
     summary: |
       `.defaultSql('...')` on the TypeScript contract builder is deprecated and is removed at
       8.0.0. Rewrite each call to `.default(...)` with `now()`, `autoincrement()`, or the `sql`
       template tag.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\.defaultSql\('
   - id: a-json-default-is-a-json-tag
@@ -84,7 +84,7 @@ changes:
       A `Json` or `Jsonb` column's default is written ``@default(json`{ "a": 1 }`)``. A quoted
       string is refused: `pg/jsonb` casts from `pg/json`, not from `pg/text`.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       matches:
         - '\b(Jsonb|Json)(\[\])?\??([ \t]+@[\w.]+(\([^)\n]*\))?)*?[ \t]+@default\([\s\[]*"'
   - id: a-decimal-default-is-written-unquoted
@@ -92,7 +92,7 @@ changes:
       A `Decimal` or `Numeric` column's default is written as a number, not as a quoted string:
       `@default(1.50)`. Trailing zeros are kept.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       matches:
         - '\b(Decimal|Numeric)(\([^)]*\))?(\[\])?\??([ \t]+@[\w.]+(\([^)\n]*\))?)*?[ \t]+@default\([\s\[]*"'
   - id: a-float-non-finite-default-is-written-bare
@@ -100,7 +100,7 @@ changes:
       A `Float` or `Real` column's default is written as a number, and `NaN`, `Infinity` and
       `-Infinity` are written bare: `@default(NaN)`, not `@default("NaN")`.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       matches:
         - '\b(Float|Real)(\[\])?\??([ \t]+@[\w.]+(\([^)\n]*\))?)*?[ \t]+@default\([\s\[]*"'
   - id: a-json-list-default-is-one-json-literal
@@ -108,14 +108,14 @@ changes:
       A written list on a `Json` or `Jsonb` column that holds one value is refused. A JSON list
       default is one JSON document: ``@default(json`[1, 2]`)``.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       matches:
         - '\b(Jsonb|Json)\??([ \t]+@[\w.]+(\([^)\n]*\))?)*?[ \t]+@default\([ \t]*\['
   - id: psl-number-defaults-keep-digits
     summary: |
       A PSL number `@default` on a `Decimal` or `Numeric` column now emits as decimal text with every digit (`"10"`, `"1.50"`) instead of a JSON number. Re-emitting such a contract changes its storage hash, so re-sign databases signed with the old contract. `BigInt` and `UnboundedInt` defaults beyond 2^53 now emit, and `contract infer` prints such `BigInt` defaults as plain numbers.
     detection:
-      glob: "**/*.prisma"
+      glob: '**/*.prisma'
       regex:
         - '@default\(\[?-?(\d|NaN|Infinity)'
   - id: number-valued-64-bit-columns-store-their-default-as-digit-text
@@ -125,7 +125,7 @@ changes:
       where it was a JSON number. A column with no default, or with a function default, is
       unaffected. For an affected contract, re-run `prisma contract emit`, then `prisma db sign`.
     detection:
-      glob: "**/contract.json"
+      glob: '**/contract.json'
       contains:
         - '"codecId": "pg/int8number@1"'
         - '"codecId": "sqlite/bigintnumber@1"'
@@ -140,9 +140,9 @@ changes:
     detection:
       # Covers the emitted `contract.d.ts` and hand-written source alike: both
       # name the subpath, and both stop compiling until they are changed.
-      glob: "**/*.{ts,tsx,mts}"
+      glob: '**/*.{ts,tsx,mts}'
       contains:
-        - "/adapter/operation-types"
+        - '/adapter/operation-types'
   - id: native-enum-columns-have-no-text-operations
     summary: |
       A native Postgres enum column (`pg.enum(...)`) no longer offers `like`, `ilike`,
@@ -152,7 +152,7 @@ changes:
   - id: re-emit-for-the-insert-conflict-skip-capabilities
     summary: "The Postgres and SQLite adapters report two new capability keys, sql.insertOnConflictSkip and sql.insertOnConflictWithoutTarget, which the new createAll/createAndCount option { onConflict: 'skip' } requires; a contract emitted before this release does not carry them and the option is refused against it, so re-emit the contract before using it."
     detection:
-      glob: "**/contract.json"
+      glob: '**/contract.json'
       contains:
         - '"defaultInInsert"'
   - id: params-only-sql-facade-prepare
@@ -173,14 +173,14 @@ changes:
     summary: |
       Without `--from`, `migration new` now starts from the `db` ref, or from an empty database when there are no migrations, instead of from the newest migration. With migrations on disk and no `db` ref it refuses with `MIGRATION.PLAN_ORIGIN_UNKNOWN`. Scripts that relied on the old default must pass `--from`.
     detection:
-      glob: "**/{package.json,*.sh,*.yml,*.yaml}"
+      glob: '**/{package.json,*.sh,*.yml,*.yaml}'
       contains:
-        - "migration new"
+        - 'migration new'
   - id: migration-tip-error-codes-removed
     summary: |
       `MIGRATION.AMBIGUOUS_TARGET`, `MIGRATION.NO_TARGET` and `MIGRATION.NO_INITIAL_MIGRATION` are removed, and `graphTip` / `graphTipHash` are gone from error `meta`. A migration history with two branches now reports the real error, such as `MIGRATION.HASH_NOT_IN_GRAPH`.
     detection:
-      glob: "**/*.{ts,tsx,js,mjs,cjs}"
+      glob: '**/*.{ts,tsx,js,mjs,cjs}'
       matches:
         - 'AMBIGUOUS_TARGET|NO_TARGET|NO_INITIAL_MIGRATION|graphTip'
   - id: contract-artifacts-restamp
@@ -189,7 +189,7 @@ changes:
       to 8.0.0-rc.12. Run `contract emit` once after upgrading so the emitted artifacts match
       the installed toolchain.
     detection:
-      glob: "**/contract.json"
+      glob: '**/contract.json'
       contains:
         - '"version": "8.0.0-rc.11"'
 ---
@@ -285,7 +285,7 @@ Each default is now printed in the form `contract emit` reads back, so an inferr
 - a `Decimal` or `Numeric` default is printed as an unquoted number that keeps every digit (`@default(1.50)`); a quoted form is refused, as `a-decimal-default-is-written-unquoted` describes;
 - a `BigInt` default beyond ±(2^53 − 1) is printed as its digits instead of `dbgenerated(...)`;
 - `NaN`, `Infinity` and `-Infinity` are printed bare (`@default(NaN)`), as `a-float-non-finite-default-is-written-bare` describes;
-- a list default holding a `NULL` element is printed as `` @default(sql`<expression>`) `` (`dbgenerated(...)` is removed in this release; see `dbgenerated-removed-from-psl`), because no PSL list literal spells a null element. Earlier the default was dropped in silence and the column was emitted without it. `contract emit` stops at such a field with a diagnostic; edit the field or drop the default from the inferred file.
+- a list default holding a `NULL` element is printed as ``@default(sql`<expression>`)`` (`dbgenerated(...)` is removed in this release; see `dbgenerated-removed-from-psl`), because no PSL list literal spells a null element. Earlier the default was dropped in silence and the column was emitted without it. `contract emit` stops at such a field with a diagnostic; edit the field or drop the default from the inferred file.
 
 If you keep an inferred contract in version control, re-run `contract infer`, review the diff for these spellings, and re-emit. The stored defaults in the database do not change.
 
@@ -293,33 +293,33 @@ If you keep an inferred contract in version control, re-run `contract infer`, re
 
 `prisma contract infer` classifies a stored default with the same rules a written value uses, prints it with the same authoring entry, and reads the text straight back to prove it returns the stored value. A default it can read back is now printed as a literal, including forms it used to print as `dbgenerated("...")` or as a quoted string:
 
-| Column in the database | Before | After |
-| --- | --- | --- |
-| `jsonb NOT NULL DEFAULT '{}'::jsonb` | `@default(dbgenerated("'{}'::jsonb"))` | ``@default(json`{}`)`` |
-| `jsonb DEFAULT 'null'::jsonb` | `@default(dbgenerated("'null'::jsonb"))` | ``@default(json`null`)`` |
-| `timestamp(3) NOT NULL DEFAULT '2024-01-01 00:00:00'` | `@default(dbgenerated("'2024-01-01 00:00:00'::timestamp without time zone"))` | `@default("2024-01-01 00:00:00")` |
-| `numeric(65,30) DEFAULT -0.5` | `@default("-0.5")` | `@default(-0.5)` |
-| `numeric(10,2) NOT NULL DEFAULT 1.50` | `@default("1.50")` | `@default(1.50)` |
-| `float8 DEFAULT 'NaN'` | `@default("NaN")` | `@default(NaN)` |
-| `timestamp(3)[] DEFAULT ARRAY['2024-01-01 00:00:00'::timestamp(3)]` | `@default(dbgenerated("ARRAY[...]"))` | `@default(["2024-01-01 00:00:00"])` |
+| Column in the database                                              | Before                                                                        | After                               |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------- |
+| `jsonb NOT NULL DEFAULT '{}'::jsonb`                                | `@default(dbgenerated("'{}'::jsonb"))`                                        | ``@default(json`{}`)``              |
+| `jsonb DEFAULT 'null'::jsonb`                                       | `@default(dbgenerated("'null'::jsonb"))`                                      | ``@default(json`null`)``            |
+| `timestamp(3) NOT NULL DEFAULT '2024-01-01 00:00:00'`               | `@default(dbgenerated("'2024-01-01 00:00:00'::timestamp without time zone"))` | `@default("2024-01-01 00:00:00")`   |
+| `numeric(65,30) DEFAULT -0.5`                                       | `@default("-0.5")`                                                            | `@default(-0.5)`                    |
+| `numeric(10,2) NOT NULL DEFAULT 1.50`                               | `@default("1.50")`                                                            | `@default(1.50)`                    |
+| `float8 DEFAULT 'NaN'`                                              | `@default("NaN")`                                                             | `@default(NaN)`                     |
+| `timestamp(3)[] DEFAULT ARRAY['2024-01-01 00:00:00'::timestamp(3)]` | `@default(dbgenerated("ARRAY[...]"))`                                         | `@default(["2024-01-01 00:00:00"])` |
 
-This is not a break to fix. The contract is the same; only the schema text differs. Re-run `prisma contract infer`, read the diff, and commit the new text. A default whose value the codec cannot read back, such as `NULL::character varying`, prints as `` @default(sql`<expression>`) `` (`dbgenerated(...)` is removed in this release; see `dbgenerated-removed-from-psl`), so infer never prints a schema that emit cannot read.
+This is not a break to fix. The contract is the same; only the schema text differs. Re-run `prisma contract infer`, read the diff, and commit the new text. A default whose value the codec cannot read back, such as `NULL::character varying`, prints as ``@default(sql`<expression>`)`` (`dbgenerated(...)` is removed in this release; see `dbgenerated-removed-from-psl`), so infer never prints a schema that emit cannot read.
 
 ## `dbgenerated-removed-from-psl`
 
-`@default(dbgenerated("<expression>"))` no longer parses. Every use is reported at its span as `PSL_UNKNOWN_DEFAULT_FUNCTION` with the message `` Default function "dbgenerated" was removed. Write the SQL as a tagged literal: @default(sql`<expression>`). Supported functions: ... ``. `prisma contract infer` no longer prints it either: a raw expression prints as a `sql` tagged literal, and a value the column's data type writes prints as that literal.
+`@default(dbgenerated("<expression>"))` no longer parses. Every use is reported at its span as `PSL_UNKNOWN_DEFAULT_FUNCTION` with the message ``Default function "dbgenerated" was removed. Write the SQL as a tagged literal: @default(sql`<expression>`). Supported functions: ...``. `prisma contract infer` no longer prints it either: a raw expression prints as a `sql` tagged literal, and a value the column's data type writes prints as that literal.
 
 In PSL, a raw SQL column default is written as a tagged literal, ``@default(sql`...`)`` or `@default(sql"...")`. Rewrite each use by what the expression is:
 
-| You wrote | Write instead |
-| --- | --- |
-| `@default(dbgenerated("gen_random_uuid()"))` | `` @default(sql`gen_random_uuid()`) `` |
-| `@default(dbgenerated("now()"))`, `@default(dbgenerated("CURRENT_TIMESTAMP"))` on Postgres | `@default(now())` |
-| `@default(dbgenerated("autoincrement()"))`, `@default(dbgenerated("nextval('<seq>'::regclass)"))` on a serial column | `@default(autoincrement())` |
-| `@default(dbgenerated("'<json>'::jsonb"))` on a `Json` or `Jsonb` column | `` @default(json`<json>`) `` |
-| `@default(dbgenerated("'<member>'::<enum type>"))` on a column typed by that enum | `@default("<member>")` |
-| `@default(dbgenerated("'<text>'::text"))` on a text column | `@default("<text>")` |
-| `@default(dbgenerated("<anything else>"))` | `` @default(sql`<anything else>`) `` |
+| You wrote                                                                                                            | Write instead                        |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `@default(dbgenerated("gen_random_uuid()"))`                                                                         | ``@default(sql`gen_random_uuid()`)`` |
+| `@default(dbgenerated("now()"))`, `@default(dbgenerated("CURRENT_TIMESTAMP"))` on Postgres                           | `@default(now())`                    |
+| `@default(dbgenerated("autoincrement()"))`, `@default(dbgenerated("nextval('<seq>'::regclass)"))` on a serial column | `@default(autoincrement())`          |
+| `@default(dbgenerated("'<json>'::jsonb"))` on a `Json` or `Jsonb` column                                             | ``@default(json`<json>`)``           |
+| `@default(dbgenerated("'<member>'::<enum type>"))` on a column typed by that enum                                    | `@default("<member>")`               |
+| `@default(dbgenerated("'<text>'::text"))` on a text column                                                           | `@default("<text>")`                 |
+| `@default(dbgenerated("<anything else>"))`                                                                           | ``@default(sql`<anything else>`)``   |
 
 The `now()` and `autoincrement()` rows are required, not a matter of style: `` sql`now()` `` and `` sql`autoincrement()` `` are refused with `PSL_INVALID_DEFAULT_SQL`, because Prisma reads those two expressions as its own default functions. Every other expression, including `NOW()` written in capitals, is used exactly as written.
 
@@ -333,12 +333,12 @@ Find the uses with `grep -rn "dbgenerated(" prisma/` (or wherever the schema liv
 
 Rewrite every `.defaultSql('<expression>')` call by its expression:
 
-| Call | Replacement | Import |
-| --- | --- | --- |
-| `.defaultSql('now()')` | `.default(now())` | `now` from the contract builder |
-| `.defaultSql('autoincrement()')` | `.default(autoincrement())` | `autoincrement` from the contract builder |
-| `.defaultSql('gen_random_uuid()')` | `` .default(sql`gen_random_uuid()`) `` | `sql` from the contract builder |
-| `.defaultSql('<anything else>')` | `` .default(sql`<anything else>`) `` | `sql` from the contract builder |
+| Call                               | Replacement                          | Import                                    |
+| ---------------------------------- | ------------------------------------ | ----------------------------------------- |
+| `.defaultSql('now()')`             | `.default(now())`                    | `now` from the contract builder           |
+| `.defaultSql('autoincrement()')`   | `.default(autoincrement())`          | `autoincrement` from the contract builder |
+| `.defaultSql('gen_random_uuid()')` | ``.default(sql`gen_random_uuid()`)`` | `sql` from the contract builder           |
+| `.defaultSql('<anything else>')`   | ``.default(sql`<anything else>`)``   | `sql` from the contract builder           |
 
 There is no named helper for other database functions, so they use the `sql` tag, as `gen_random_uuid()` does above. `` sql`now()` `` and `` sql`autoincrement()` `` are refused in the TypeScript `sql` tag as they are in PSL, so those two must use the named form.
 
@@ -358,19 +358,19 @@ Field "Account.meta": pg/jsonb has no cast from pg/text; it casts from pg/json
 
 The `json` tag reads its body as a JSON document, which is what `pg/json` holds, and `pg/jsonb` casts from `pg/json`:
 
-| Before | After |
-| --- | --- |
-| `meta Jsonb @default("{}")` | ``meta Jsonb @default(json`{}`)`` |
+| Before                                       | After                                             |
+| -------------------------------------------- | ------------------------------------------------- |
+| `meta Jsonb @default("{}")`                  | ``meta Jsonb @default(json`{}`)``                 |
 | `meta Jsonb @default("{\"plan\":\"free\"}")` | ``meta Jsonb @default(json`{ "plan": "free" }`)`` |
-| `docs Jsonb[] @default(["{}"])` | ``docs Jsonb[] @default([json`{}`])`` |
-| `meta Jsonb? @default("null")` | ``meta Jsonb? @default(json`null`)`` |
+| `docs Jsonb[] @default(["{}"])`              | ``docs Jsonb[] @default([json`{}`])``             |
+| `meta Jsonb? @default("null")`               | ``meta Jsonb? @default(json`null`)``              |
 
 The body inside the tag is the JSON document itself, so it needs none of the escaping a PSL string needed. The backtick fence resolves `` \` `` and `\\` and nothing else, so `` json`{ "plan": "free" }` `` needs no escaping at all.
 
 A backslash has to survive the fence and then JSON, so a JSON string that holds one backslash is written with four:
 
-| In the schema | After the fence | JSON reads |
-| --- | --- | --- |
+| In the schema                 | After the fence    | JSON reads       |
+| ----------------------------- | ------------------ | ---------------- |
 | ``json`{ "re": "\\\\d+" }` `` | `{ "re": "\\d+" }` | the string `\d+` |
 
 Two backslashes are not enough: the fence turns them into one, and `\d` is not a JSON escape, so the body is refused with `PSL_INVALID_JSON_LITERAL` — as is any other body that is not a JSON document.
@@ -383,10 +383,10 @@ A written number's data type comes from its own size and precision. Quoted digit
 Field "Account.price": pg/numeric has no cast from pg/text; it casts from pg/int2, pg/int4, pg/int8
 ```
 
-| Before | After |
-| --- | --- |
-| `price Decimal @default("1.50")` | `price Decimal @default(1.50)` |
-| `price Numeric(10, 2) @default("-1.25")` | `price Numeric(10, 2) @default(-1.25)` |
+| Before                                             | After                                          |
+| -------------------------------------------------- | ---------------------------------------------- |
+| `price Decimal @default("1.50")`                   | `price Decimal @default(1.50)`                 |
+| `price Numeric(10, 2) @default("-1.25")`           | `price Numeric(10, 2) @default(-1.25)`         |
 | `prices Numeric(65, 30)[] @default(["-1.5", "2"])` | `prices Numeric(65, 30)[] @default([-1.5, 2])` |
 
 The stored value does not change. Trailing zeros are kept (`1.50` stays `1.50`), leading zeros are dropped (`007.50` is `7.50`), and `-0.0` is `0.0` — the values these defaults always had.
@@ -395,11 +395,11 @@ The stored value does not change. Trailing zeros are kept (`1.50` stays `1.50`),
 
 `NaN`, `Infinity` and `-Infinity` are number tokens in PSL, not identifiers and not text. A `Float` or `Real` column's type casts from the number types, not from text, so the quoted forms are refused with `PSL_DEFAULT_TYPE_INCOMPATIBLE`.
 
-| Before | After |
-| --- | --- |
-| `ratio Float @default("NaN")` | `ratio Float @default(NaN)` |
-| `ratio Float @default("-Infinity")` | `ratio Float @default(-Infinity)` |
-| `ratio Real @default("NaN")` | `ratio Real @default(NaN)` |
+| Before                                   | After                                |
+| ---------------------------------------- | ------------------------------------ |
+| `ratio Float @default("NaN")`            | `ratio Float @default(NaN)`          |
+| `ratio Float @default("-Infinity")`      | `ratio Float @default(-Infinity)`    |
+| `ratio Real @default("NaN")`             | `ratio Real @default(NaN)`           |
 | `ratios Float[] @default(["-1.5", "2"])` | `ratios Float[] @default([-1.5, 2])` |
 
 ## `a-json-list-default-is-one-json-literal`
@@ -412,10 +412,10 @@ Field "Account.meta": pg/jsonb has no cast from a list; it casts from pg/json
 
 A JSON list default is one JSON document, written inside the tag:
 
-| Before | After |
-| --- | --- |
+| Before                        | After                                 |
+| ----------------------------- | ------------------------------------- |
 | `meta Jsonb @default([1, 2])` | ``meta Jsonb @default(json`[1, 2]`)`` |
-| `meta Jsonb @default([])` | ``meta Jsonb @default(json`[]`)`` |
+| `meta Jsonb @default([])`     | ``meta Jsonb @default(json`[]`)``     |
 
 A `Jsonb[]` column is unaffected: it is a list of JSON columns, and each element is written as its own `json` tag — ``docs Jsonb[] @default([json`{}`, json`[]`])``.
 
@@ -504,10 +504,10 @@ In a TypeScript contract, use the matching helper inside the model's `sql({ inde
 import { fullTextIndex } from '@prisma/orm-postgres/contract-builder';
 
 model('Message', { fields: { id, text } }).sql(({ cols }) => ({
-  indexes: [
-    fullTextIndex(cols.text, { name: 'message_text_search' }),
-    fullTextIndex(cols.text, { where: 'archived_at IS NULL', name: 'message_text_search_live' }),
-  ],
+	indexes: [
+		fullTextIndex(cols.text, { name: 'message_text_search' }),
+		fullTextIndex(cols.text, { where: 'archived_at IS NULL', name: 'message_text_search_live' })
+	]
 }));
 ```
 
@@ -520,13 +520,13 @@ import { tsquery, websearchToTsquery } from '@prisma/orm-postgres/target/full-te
 
 const q = websearchToTsquery(query);
 await db.orm.public.Message.select('id', 'text')
-  .where((m) => m.text.fullTextMatches(q))
-  .orderBy((m) => m.text.fullTextRank(q, { normalization: 32 }).desc())
-  .all();
+	.where((m) => m.text.fullTextMatches(q))
+	.orderBy((m) => m.text.fullTextRank(q, { normalization: 32 }).desc())
+	.all();
 
 const suggestions = await db.orm.public.Message.select('id', 'text')
-  .where((m) => m.text.fullTextMatches(tsquery`${term}:*`))
-  .all();
+	.where((m) => m.text.fullTextMatches(tsquery`${term}:*`))
+	.all();
 ```
 
 The operation's `language` configures only the searched column. The parser or tag takes its own `language` for the query; pass the same value to both.
@@ -557,8 +557,8 @@ Nothing else about native enum columns changes: `eq`, `in`, ordering, and `min`/
 ```ts
 const inserted = await db.orm.User.createAll(rows, { onConflict: 'skip' });
 const added = await db.orm.User.createAndCount(rows, {
-  onConflict: 'skip',
-  conflictOn: ['email'],
+	onConflict: 'skip',
+	conflictOn: ['email']
 });
 ```
 
@@ -581,12 +581,18 @@ Change callbacks from `(sql, params) => ...` to `(params) => ...`. Replace refer
 ```ts
 // Before
 const query = await db.prepare({ id: 'pg/int4@1' }, (sql, params) =>
-  sql.public.users.select('id').where((f, fns) => fns.eq(f.id, params.id)).build(),
+	sql.public.users
+		.select('id')
+		.where((f, fns) => fns.eq(f.id, params.id))
+		.build()
 );
 
 // After
 const query = await db.prepare({ id: 'pg/int4@1' }, (params) =>
-  db.sql.public.users.select('id').where((f, fns) => fns.eq(f.id, params.id)).build(),
+	db.sql.public.users
+		.select('id')
+		.where((f, fns) => fns.eq(f.id, params.id))
+		.build()
 );
 ```
 

@@ -1,6 +1,6 @@
 ---
-from: "8.0.0-rc.12"
-to: "8.0.0-rc.13"
+from: '8.0.0-rc.12'
+to: '8.0.0-rc.13'
 changes:
   - id: execution-ref-entry-field
     summary: |
@@ -9,7 +9,7 @@ changes:
       are the same table and column names. Re-emit the contract; code and types that read `.ref.table` or
       `.ref.column` read `.ref.entry` and `.ref.field`.
     detection:
-      glob: "**/*.{json,ts,mts,cts}"
+      glob: '**/*.{json,ts,mts,cts}'
       matches:
         - '"ref"\s*:\s*\{(?![^{}]*"kind")[^{}]*"(?:table|column)"\s*:'
         - '\.ref\??\.(?:table|column)\b'
@@ -21,7 +21,7 @@ changes:
       runtime (`@prisma/orm-family-sql/runtime`, `@prisma/orm-postgres/family-runtime`,
       `@prisma/orm-sqlite/family-runtime`). Import them from `@prisma/orm-framework/components/runtime`.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\bimport\s+(?:type\s+)?\{[^}]*\b(?:GeneratorStability|RuntimeMutationDefaultGenerator)\b[^}]*\}\s*from\s*[''"](?:@internal/sql-runtime|@prisma/orm-family-sql/runtime|@prisma/orm-(?:postgres|sqlite)/family-runtime)[''"]'
   - id: mutation-defaults-options-entry-field
@@ -31,7 +31,7 @@ changes:
       `AppliedMutationDefault` and `MutationDefaultsOp` now come from
       `@prisma/orm-framework/components/runtime`, not from the SQL `relational-core/query-lane-context` subpath.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\bapplyMutationDefaults\s*\(\s*\{[^{}]*\btable\s*:'
         - '\bimport\s+(?:type\s+)?\{[^}]*\b(?:AppliedMutationDefault|MutationDefaultsOptions|MutationDefaultsOp)\b[^}]*\}\s*from\s*[''"](?:@internal/sql-relational-core/query-lane-context|@prisma/orm-(?:family-sql|postgres|sqlite)/relational-core/query-lane-context)[''"]'
@@ -42,7 +42,7 @@ changes:
       `timestampNowControlDescriptor` moved to `components/control`. `temporalCodecPresetWithPrecision`
       and `temporalStringAuthoringPresets` stay in `family/control`.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\b(?:TIMESTAMP_NOW_GENERATOR_ID|temporalAuthoringPresets|temporalCodecPreset|timestampNowControlDescriptor)\b[^;]*?from\s*[''"](?:@internal/family-sql/control|@prisma/orm-(?:family-sql|postgres|sqlite)/family/control)[''"]'
   - id: temporal-preset-builders-take-storage-template
@@ -52,14 +52,14 @@ changes:
       `temporalCodecPreset`) instead of `<CodecId, NativeType, GeneratorId>`. Calls that let
       TypeScript infer the type arguments are unchanged.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\b(?:temporalAuthoringPresets|temporalStringAuthoringPresets|temporalCodecPreset)\s*<'
   - id: ts-defaults-encoded-by-codec
     summary: |
       `defineContract` from the Postgres and SQLite packages now encodes every literal `.default(value)` through the column's codec. The literal is the codec's input type. TypeScript checks it for fields built inside the `defineContract` factory, and the build fails with `CONTRACT.DEFAULT_INVALID` for a value the codec refuses. Pass a value of the codec's input type, or choose the field preset whose codec takes the value you have.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\.default\(\s*(?!now\(\)|autoincrement\(\)|sql`)'
   - id: contract-source-format-is-psl-or-typescript
@@ -71,15 +71,15 @@ changes:
   - id: family-sql-psl-build-export
     summary: mapDefault, its option types, the PslTypeMap types and toEnumMemberName moved from @internal/family-sql/psl-infer to @internal/family-sql/psl-build (published as family/psl-infer and family/psl-build of @prisma/orm-family-sql).
   - id: cursor-rejects-expression-orders
-    summary: "cursor() now throws ORM.ARGUMENT_INVALID when an active orderBy item is not a plain column (extension-operation orders such as vector distance were previously dropped from the keyset silently)"
+    summary: 'cursor() now throws ORM.ARGUMENT_INVALID when an active orderBy item is not a plain column (extension-operation orders such as vector distance were previously dropped from the keyset silently)'
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\.cursor\('
   - id: order-by-item-nulls
-    summary: "OrderByItem from @internal/sql-relational-core/ast (@prisma/orm-family-sql/relational-core/ast) carries a nulls placement: its constructor takes a required third argument, withExpr rebuilds an item around a new expression, and every renderer must emit nulls wherever it emits dir"
+    summary: 'OrderByItem from @internal/sql-relational-core/ast (@prisma/orm-family-sql/relational-core/ast) carries a nulls placement: its constructor takes a required third argument, withExpr rebuilds an item around a new expression, and every renderer must emit nulls wherever it emits dir'
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - 'new OrderByItem\('
         - '\.dir\.toUpperCase\('
@@ -89,7 +89,7 @@ changes:
       `targetColumns`: ordered string arrays paired by index, with one entry per column of the
       relation's key.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\.(?:localColumn|targetColumn)\b'
   - id: mongo-codec-subpaths-move-to-target
@@ -99,7 +99,7 @@ changes:
       live under the target. The same move applies to the published `adapter/*` subpaths of
       `@prisma/orm-mongo` and `@prisma/orm-target-mongo`, which are now `target/*`.
     detection:
-      glob: "**/*.{ts,mts,cts,md}"
+      glob: '**/*.{ts,mts,cts,md}'
       matches:
         - '@internal/adapter-mongo/(?:codec-types|codecs|codec-ids|data-types)(?![\w-])'
         - '@prisma/orm-(?:target-)?mongo/adapter/(?:codec-types|codecs|codec-ids|data-types)(?![\w-])'
@@ -109,7 +109,7 @@ changes:
       (`@prisma/orm-mongo/adapter/control`). Build the
       runner dependencies with `new MongoControlAdapterImpl().createRunnerDependencies(controlDriver)`.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\bcreateMongoRunnerDeps\b'
   - id: mongo-runner-dependency-types-move-to-family
@@ -119,7 +119,7 @@ changes:
       longer from `@internal/adapter-mongo/control` or `@internal/target-mongo/control` (the
       `adapter/control` and `target/control` subpaths of `@prisma/orm-mongo`).
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\b(?:MongoRunnerDependencies|MarkerOperations)\b[^;]*?from\s*[''"]@internal/(?:adapter|target)-mongo/control[''"]'
         - '\b(?:MongoRunnerDependencies|MarkerOperations)\b[^;]*?from\s*[''"]@prisma/orm-(?:target-)?mongo/(?:adapter|target)/control[''"]'
@@ -129,7 +129,7 @@ changes:
       `MongoControlFamilyInstance` gains `createRunnerDependencies({ driver })`. A custom
       implementation of either must add the method.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '\bimplements\s+(?:[\w.]+\s*,\s*)*MongoControlAdapter\b'
         - ':\s*MongoControlFamilyInstance\s*=\s*\{'
@@ -140,7 +140,7 @@ changes:
       or from a `createControlStack(...)` with no `adapter`, fails with "Mongo family requires an
       adapter descriptor in ControlStack" when the runner executes.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - 'createMongoFamilyInstance\(\s*\{\s*\}'
         - 'createControlStack\(\s*\{(?:(?!adapter)[^}])*mongoTargetDescriptor(?:(?!adapter)[^}])*\}\s*\)'
@@ -151,7 +151,7 @@ changes:
       `createMongoExecutionContext` have it; an object literal typed as a `MongoExecutionContext`
       (usually a test double) must add it.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - '(?:\)|\b\w+)\s*:\s*MongoExecutionContext\b(?:<[^>]*>)?\s*(?:=\s*\{|\{)'
         - '\bsatisfies\s+MongoExecutionContext\b'
@@ -172,7 +172,7 @@ changes:
       whole `targetTypes` list, not only its first entry, and an enum's codec must declare exactly
       one.
     detection:
-      glob: "**/*.{ts,mts,cts}"
+      glob: '**/*.{ts,mts,cts}'
       matches:
         - 'targetTypes\s*:\s*\[\s*[^\]\s,][^\],]*,\s*[^\]\s]'
 ---
@@ -201,6 +201,7 @@ A contract with generated defaults (`temporal.createdAt()`, `temporal.updatedAt(
    The script reads every `.json` and `.d.ts` file under a `migrations/` directory, skipping `node_modules`, `.git` and `dist`, and changes only `execution.mutations.defaults[].ref` entries. In each one it renames `table` to `entry` and `column` to `field`, and writes the keys in the order `entry`, `field`, `namespace`, which is the order `prisma contract emit` writes. The old key order varies between files: older `contract.d.ts` files list `namespace`, `table`, `column`, newer ones `column`, `namespace`, `table`. The script handles any order; a hand edit or a search-and-replace that assumes one order misses some refs. A `contract.json` in canonical form stays canonical, so a snapshot matches a fresh emit apart from `executionHash`; an indented JSON file keeps its indentation. The script leaves every `executionHash` as it is. That hash no longer matches the renamed content, but the snapshot loader re-hashes only the storage section, so nothing checks it. `storageHash` and `profileHash` do not move, so snapshot directory names stay the same. A second run changes nothing. Pass `--check` to list the files it would change without writing them; it exits 1 if any would change. A `.json` file it cannot parse is listed as `NOT JSON` and also makes it exit 1.
 
    To confirm the rewrite, run the script again with `--check`; it exits 0 when no ref is left to rename. No CLI command reads the package's own `migrations/snapshots/`: run from the package root, the CLI looks for migrations in `migrations/app/`, and a contract-space package keeps them directly under `migrations/`. The CLI reads an extension's contract space in an app that installs the extension, from the app's `migrations/<space-id>/` and `migrations/snapshots/`. There, `prisma migration check --space <space-id>` loads the contract at the space's head and fails with `MIGRATION.CHECK_CONTRACT_UNREADABLE` while its refs still say `table` and `column`. The head is the only snapshot of an extension space the CLI loads; `prisma db migrate --to <hash>` selects a snapshot of the app space, not of an extension.
+
 3. Code that reads the section directly changes `.ref.table` to `.ref.entry` and `.ref.column` to `.ref.field`.
 
 `executionHash` changes for every contract with generated defaults, because the canonical JSON changes. Nothing compares it against the database, so no migration or re-sign is needed.
@@ -231,11 +232,21 @@ Code that calls `applyMutationDefaults` on an execution context, or stubs it in 
 
 ```ts
 // before
-const applied = context.applyMutationDefaults({ op: 'create', table: tableName, namespace, values });
+const applied = context.applyMutationDefaults({
+	op: 'create',
+	table: tableName,
+	namespace,
+	values
+});
 for (const def of applied) row[def.column] = def.value;
 
 // after
-const applied = context.applyMutationDefaults({ op: 'create', entry: tableName, namespace, values });
+const applied = context.applyMutationDefaults({
+	op: 'create',
+	entry: tableName,
+	namespace,
+	values
+});
 for (const def of applied) row[def.field] = def.value;
 ```
 
@@ -252,17 +263,17 @@ The target-neutral temporal preset builders now live in the framework, so a non-
 ```ts
 // before
 import {
-  TIMESTAMP_NOW_GENERATOR_ID,
-  temporalAuthoringPresets,
-  temporalCodecPreset,
-  timestampNowControlDescriptor,
+	TIMESTAMP_NOW_GENERATOR_ID,
+	temporalAuthoringPresets,
+	temporalCodecPreset,
+	timestampNowControlDescriptor
 } from '@prisma/orm-family-sql/family/control';
 
 // after
 import {
-  TIMESTAMP_NOW_GENERATOR_ID,
-  temporalAuthoringPresets,
-  temporalCodecPreset,
+	TIMESTAMP_NOW_GENERATOR_ID,
+	temporalAuthoringPresets,
+	temporalCodecPreset
 } from '@prisma/orm-framework/components/authoring';
 import { timestampNowControlDescriptor } from '@prisma/orm-framework/components/control';
 ```
@@ -275,7 +286,10 @@ The builders now carry the codec's whole storage template through, so their type
 
 ```ts
 // before
-temporalAuthoringPresets<'pg/timestamptz@1', 'timestamptz'>({ codecId: 'pg/timestamptz@1', nativeType: 'timestamptz' });
+temporalAuthoringPresets<'pg/timestamptz@1', 'timestamptz'>({
+	codecId: 'pg/timestamptz@1',
+	nativeType: 'timestamptz'
+});
 
 // after
 temporalAuthoringPresets({ codecId: 'pg/timestamptz@1', nativeType: 'timestamptz' });
@@ -285,7 +299,7 @@ If you need to name them, the first type parameter is the storage template objec
 
 ## `ts-defaults-encoded-by-codec`
 
-A TypeScript contract used to store the value passed to `.default(value)` as it stood. The column's codec now encodes it, so the value must be the codec's input type. For a field built inside the `defineContract` factory, `.default()` is typed with that input type, so a wrong value is a type error in `contract.ts`. PSL contracts, `.default(now())`, `.default(autoincrement())` and `` .default(sql`...`) `` are not affected.
+A TypeScript contract used to store the value passed to `.default(value)` as it stood. The column's codec now encodes it, so the value must be the codec's input type. For a field built inside the `defineContract` factory, `.default()` is typed with that input type, so a wrong value is a type error in `contract.ts`. PSL contracts, `.default(now())`, `.default(autoincrement())` and ``.default(sql`...`)`` are not affected.
 
 What now fails, on Postgres:
 
@@ -302,11 +316,11 @@ CONTRACT.DEFAULT_INVALID: Field "Event.createdAt" has a default that its codec r
 2. Type-check the contract file, then run `prisma contract emit`. TypeScript reports a default of the wrong type; the emit reports each default the codec refuses, with its model and field.
 3. For each one, either pass the codec's type or change the preset:
 
-| You have | Write |
-| --- | --- |
-| an ISO 8601 string | `field.temporal.timestamptzString().default('2024-01-01T00:00:00Z')` |
-| a JavaScript `Date` | `field.temporal.timestamptzJsDate().default(new Date('2024-01-01T00:00:00Z'))` |
-| a `Temporal.Instant` | `field.dateTime().default(Temporal.Instant.from('2024-01-01T00:00:00Z'))` |
+| You have             | Write                                                                          |
+| -------------------- | ------------------------------------------------------------------------------ |
+| an ISO 8601 string   | `field.temporal.timestamptzString().default('2024-01-01T00:00:00Z')`           |
+| a JavaScript `Date`  | `field.temporal.timestamptzJsDate().default(new Date('2024-01-01T00:00:00Z'))` |
+| a `Temporal.Instant` | `field.dateTime().default(Temporal.Instant.from('2024-01-01T00:00:00Z'))`      |
 
 Changing the preset changes the column's codec, and so the type your queries read and write for that field. On Postgres, `field.bigint()` takes a `bigint` and `field.bytes()` takes a `Uint8Array`. On SQLite, `field.temporal.datetime()` takes a `Date`, `field.column(bigintColumn)` takes a `bigint` and `field.column(blobColumn)` takes a `Uint8Array`.
 
@@ -318,11 +332,11 @@ A JavaScript `number` on a `bigint` field (codec `pg/int8@1`), such as `field.bi
 
 A default that gets past the type check, for example from an untyped caller, is stored in a different form than before:
 
-| Default | Stored before | Stored now |
-| --- | --- | --- |
-| `field.bigint().default(1)` (also SQLite `bigintColumn`) | `1` | `"1"` |
-| `field.bytes().default('x')` | `"x"` | `"eA=="` (base64) |
-| SQLite `blobColumn` with `.default('x')` | `"x"` | `"78"` (hex) |
+| Default                                                  | Stored before | Stored now        |
+| -------------------------------------------------------- | ------------- | ----------------- |
+| `field.bigint().default(1)` (also SQLite `bigintColumn`) | `1`           | `"1"`             |
+| `field.bytes().default('x')`                             | `"x"`         | `"eA=="` (base64) |
+| SQLite `blobColumn` with `.default('x')`                 | `"x"`         | `"78"` (hex)      |
 
 A contract with such a default emits a different `contract.json` and a different storage hash. Re-emit the contract and review the diff of `contract.json`.
 
@@ -351,9 +365,9 @@ The source returned by `prisma7Schema()` now declares `format: 'psl'`, because a
 
 ```ts
 printPsl(ast, {
-  pslBlockDescriptors,
-  description:
-    'Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.',
+	pslBlockDescriptors,
+	description:
+		'Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.'
 });
 ```
 
@@ -405,13 +419,13 @@ Update code that reads these fields to use the whole lists and pair them by inde
 
 Rewrite each specifier. The exported names are unchanged.
 
-| Before | After |
-| --- | --- |
-| `@internal/adapter-mongo/codec-types` | `@internal/target-mongo/codec-types` |
-| `@internal/adapter-mongo/codecs` | `@internal/target-mongo/codecs` |
-| `@internal/adapter-mongo/codec-ids` | `@internal/target-mongo/codec-ids` |
-| `@internal/adapter-mongo/data-types` | `@internal/target-mongo/data-types` |
-| `@prisma/orm-mongo/adapter/<same four>` | `@prisma/orm-mongo/target/<same four>` |
+| Before                                         | After                                         |
+| ---------------------------------------------- | --------------------------------------------- |
+| `@internal/adapter-mongo/codec-types`          | `@internal/target-mongo/codec-types`          |
+| `@internal/adapter-mongo/codecs`               | `@internal/target-mongo/codecs`               |
+| `@internal/adapter-mongo/codec-ids`            | `@internal/target-mongo/codec-ids`            |
+| `@internal/adapter-mongo/data-types`           | `@internal/target-mongo/data-types`           |
+| `@prisma/orm-mongo/adapter/<same four>`        | `@prisma/orm-mongo/target/<same four>`        |
 | `@prisma/orm-target-mongo/adapter/<same four>` | `@prisma/orm-target-mongo/target/<same four>` |
 
 An extension outside this repository imports the published forms in the last two rows. Then re-sort the import block with the package's formatter (the new specifier sorts after `@internal/mongo-*`). A package that imports from `@internal/target-mongo` for the first time needs it in `dependencies`. A pack that emits a Mongo `contract.d.ts` re-emits it with `prisma contract emit`, or applies the same rewrite to the committed file; the contract JSON and hashes do not change.
@@ -424,7 +438,11 @@ An extension outside this repository imports the published forms in the last two
 // before
 import { createMongoRunnerDeps, extractDb } from '@prisma/orm-mongo/adapter/control';
 import { MongoDriverImpl } from '@prisma/orm-mongo/driver';
-const deps = createMongoRunnerDeps(controlDriver, MongoDriverImpl.fromDb(extractDb(controlDriver)), family);
+const deps = createMongoRunnerDeps(
+	controlDriver,
+	MongoDriverImpl.fromDb(extractDb(controlDriver)),
+	family
+);
 
 // after
 import { MongoControlAdapterImpl } from '@prisma/orm-mongo/adapter/control';
@@ -455,7 +473,11 @@ Create the family instance from a control stack that includes the Mongo adapter:
 
 ```ts
 createMongoFamilyInstance(
-  createControlStack({ family: mongoFamilyDescriptor, target: mongoTargetDescriptor, adapter: mongoAdapterDescriptor }),
+	createControlStack({
+		family: mongoFamilyDescriptor,
+		target: mongoTargetDescriptor,
+		adapter: mongoAdapterDescriptor
+	})
 );
 ```
 
@@ -478,18 +500,22 @@ const context: MongoExecutionContext = { contract, codecs, stack, applyMutationD
 Code that constrains on a bare `FieldBuilder` (for example `Fields extends Record<string, FieldBuilder>`) accepts only builders without execution defaults; pass `ExecutionMutationDefaultPhases | undefined` as the fifth type argument to accept preset fields:
 
 ```ts
-import type { ContractFieldType, ExecutionMutationDefaultPhases } from '@prisma/orm-mongo/contract/types';
+import type {
+	ContractFieldType,
+	ExecutionMutationDefaultPhases
+} from '@prisma/orm-mongo/contract/types';
 import type { EnumTypeHandle, FieldBuilder } from '@prisma/orm-mongo/contract-builder';
 
 type AnyField = FieldBuilder<
-  ContractFieldType,
-  boolean,
-  boolean,
-  EnumTypeHandle | undefined,
-  ExecutionMutationDefaultPhases | undefined
+	ContractFieldType,
+	boolean,
+	boolean,
+	EnumTypeHandle | undefined,
+	ExecutionMutationDefaultPhases | undefined
 >;
 ```
- There is no detection pattern: a bare `FieldBuilder` reference is too common to tell which uses need the wider type.
+
+There is no detection pattern: a bare `FieldBuilder` reference is too common to tell which uses need the wider type.
 
 ## `mongo-bson-codec-added`
 

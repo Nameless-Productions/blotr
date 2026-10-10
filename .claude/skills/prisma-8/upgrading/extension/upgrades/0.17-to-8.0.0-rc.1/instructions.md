@@ -1,6 +1,6 @@
 ---
-from: "0.17"
-to: "8.0.0-rc.1"
+from: '0.17'
+to: '8.0.0-rc.1'
 changes:
   - id: codec-conformance-harness-moves-to-testkit-packages
     summary: |
@@ -16,11 +16,11 @@ changes:
       caller-supplied connection, one case per codec and value — so the cases themselves move
       verbatim. Production adapters take no dependency on either testkit.
     detection:
-      glob: "**/*.{ts,tsx,json}"
+      glob: '**/*.{ts,tsx,json}'
       contains:
-        - "codec-conformance"
-        - "runPostgresCodecProjection"
-        - "runSqliteCodecProjection"
+        - 'codec-conformance'
+        - 'runPostgresCodecProjection'
+        - 'runSqliteCodecProjection'
       anyMatch: true
   - id: aggregate-result-codecs-are-target-declared
     summary: |
@@ -40,11 +40,11 @@ changes:
       the emitted `contract.d.ts` gains an `AggregateTypes` block that the ORM and SQL builder
       resolve their result types from.
     detection:
-      glob: "**/*.{ts,tsx}"
+      glob: '**/*.{ts,tsx}'
       contains:
-        - "aggregateDescriptors"
-        - "AggregateExpr"
-        - "codecTypes"
+        - 'aggregateDescriptors'
+        - 'AggregateExpr'
+        - 'codecTypes'
       anyMatch: true
   - id: rendered-ts-literals-are-double-quoted
     summary: |
@@ -61,7 +61,7 @@ changes:
       that builds its own quoted literal, it keeps working, but switch it to `renderTsLiteral`
       so your pack's escaping matches the framework's.
     detection:
-      glob: "**/*.{test,test-d}.ts"
+      glob: '**/*.{test,test-d}.ts'
       contains:
         - 'renderValueLiteral'
         - 'generateContractDts'
@@ -80,11 +80,11 @@ changes:
       unnormalized, and surfaces a failed prepared-statement retry as the structural
       `DRIVER.PREPARE_FAILED` error envelope.
     detection:
-      glob: "**/*.{ts,tsx}"
+      glob: '**/*.{ts,tsx}'
       contains:
-        - "SqlQueryable"
-        - "PreparedExecuteRequest"
-        - "SqlQueryResult"
+        - 'SqlQueryable'
+        - 'PreparedExecuteRequest'
+        - 'SqlQueryResult'
       anyMatch: true
 ---
 
@@ -115,10 +115,10 @@ Aggregate result typing is now declared rather than inferred. A target (or an ex
 import type { SqlAggregateDescriptor } from '@internal/sql-relational-core/aggregate-descriptor-registry';
 
 const sumOverMoney: SqlAggregateDescriptor = {
-  operation: 'sum',
-  input: { kind: 'codec', codecId: 'ext/money@1' },
-  output: { kind: 'codec', codecId: 'ext/money@1' },
-  nullable: true,
+	operation: 'sum',
+	input: { kind: 'codec', codecId: 'ext/money@1' },
+	output: { kind: 'codec', codecId: 'ext/money@1' },
+	nullable: true
 };
 ```
 
@@ -167,17 +167,17 @@ The driver contract used one streaming method for every statement, a prepared-sp
 ```ts
 // Before (0.17)
 export interface SqlQueryable {
-  execute<Row>(request: SqlExecuteRequest): AsyncIterable<Row>;
-  executePrepared<Row>(request: PreparedExecuteRequest): AsyncIterable<Row>;
-  explain?(request: SqlExecuteRequest): Promise<SqlExplainResult>;
-  query<Row>(sql: string, params?: readonly unknown[]): Promise<SqlQueryResult<Row>>;
+	execute<Row>(request: SqlExecuteRequest): AsyncIterable<Row>;
+	executePrepared<Row>(request: PreparedExecuteRequest): AsyncIterable<Row>;
+	explain?(request: SqlExecuteRequest): Promise<SqlExplainResult>;
+	query<Row>(sql: string, params?: readonly unknown[]): Promise<SqlQueryResult<Row>>;
 }
 
 // After (0.18)
 export interface SqlQueryable {
-  query<Row>(request: SqlExecuteRequest): AsyncIterable<Row>;
-  execute(request: SqlExecuteRequest): Promise<SqlStatementStats>; // { affectedRows }
-  explain?(request: SqlExecuteRequest): Promise<SqlExplainResult>;
+	query<Row>(request: SqlExecuteRequest): AsyncIterable<Row>;
+	execute(request: SqlExecuteRequest): Promise<SqlStatementStats>; // { affectedRows }
+	explain?(request: SqlExecuteRequest): Promise<SqlExplainResult>;
 }
 ```
 

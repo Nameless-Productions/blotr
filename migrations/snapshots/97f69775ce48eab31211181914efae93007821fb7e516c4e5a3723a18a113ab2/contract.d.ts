@@ -5,888 +5,888 @@ import type { CodecTypes as PgTypes } from '@prisma/orm-postgres/target/codec-ty
 import type { QueryOperationTypes as PgTargetQueryOps } from '@prisma/orm-postgres/target/operation-types';
 
 import type {
-  ContractWithTypeMaps,
-  RelationKeys,
-  TypeMaps as TypeMapsType,
+	ContractWithTypeMaps,
+	RelationKeys,
+	TypeMaps as TypeMapsType
 } from '@prisma/orm-postgres/family-contract/types';
 import type {
-  Contract as ContractType,
-  ExecutionHashBase,
-  NamespaceId,
-  ProfileHashBase,
-  StorageHashBase,
+	Contract as ContractType,
+	ExecutionHashBase,
+	NamespaceId,
+	ProfileHashBase,
+	StorageHashBase
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'97f69775ce48eab31211181914efae93007821fb7e516c4e5a3723a18a113ab2'>;
+	StorageHashBase<'97f69775ce48eab31211181914efae93007821fb7e516c4e5a3723a18a113ab2'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
-  ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
+	ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
 export type CodecTypes = PgTypes;
 export type LaneCodecTypes = CodecTypes;
 export type QueryOperationTypes = PgTargetQueryOps<CodecTypes>;
 export type AggregateTypes = {
-  readonly avg: {
-    readonly byCodec: {
-      readonly 'pg/float@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/float4@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/float8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/int@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/int2@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/int4@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/int8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/int8number@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/interval@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
-      readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/time-string@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
-      readonly 'pg/time-temporal@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
-      readonly 'pg/unboundedint@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'sql/float@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'sql/int@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-    };
-  };
-  readonly avgDecimal: {
-    readonly byCodec: {
-      readonly 'pg/int@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/int2@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/int4@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/int8@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/int8number@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/unboundedint@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'sql/int@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-    };
-  };
-  readonly count: {
-    readonly byCodec: {};
-    readonly withoutInput: { readonly output: 'pg/int8number@1'; readonly nullable: false };
-    readonly anyInput: { readonly output: 'pg/int8number@1'; readonly nullable: false };
-  };
-  readonly countBigInt: {
-    readonly byCodec: {};
-    readonly withoutInput: { readonly output: 'pg/int8@1'; readonly nullable: false };
-    readonly anyInput: { readonly output: 'pg/int8@1'; readonly nullable: false };
-  };
-  readonly max: {
-    readonly byCodec: {
-      readonly 'pg/char@1': { readonly output: 'pg/char@1'; readonly nullable: true };
-      readonly 'pg/date-string@1': { readonly output: 'pg/date-string@1'; readonly nullable: true };
-      readonly 'pg/date-temporal@1': {
-        readonly output: 'pg/date-temporal@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/enum@1': { readonly output: 'pg/enum@1'; readonly nullable: true };
-      readonly 'pg/float@1': { readonly output: 'pg/float@1'; readonly nullable: true };
-      readonly 'pg/float4@1': { readonly output: 'pg/float4@1'; readonly nullable: true };
-      readonly 'pg/float8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/inet@1': { readonly output: 'pg/inet@1'; readonly nullable: true };
-      readonly 'pg/int@1': { readonly output: 'pg/int@1'; readonly nullable: true };
-      readonly 'pg/int2@1': { readonly output: 'pg/int2@1'; readonly nullable: true };
-      readonly 'pg/int4@1': { readonly output: 'pg/int4@1'; readonly nullable: true };
-      readonly 'pg/int8@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
-      readonly 'pg/int8number@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
-      readonly 'pg/interval@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
-      readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/text-array@1': { readonly output: 'pg/text-array@1'; readonly nullable: true };
-      readonly 'pg/text@1': { readonly output: 'pg/text@1'; readonly nullable: true };
-      readonly 'pg/time-string@1': { readonly output: 'pg/time-string@1'; readonly nullable: true };
-      readonly 'pg/time-temporal@1': {
-        readonly output: 'pg/time-temporal@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamp-string@1': {
-        readonly output: 'pg/timestamp-string@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamp-temporal@1': {
-        readonly output: 'pg/timestamp-temporal@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamptz-date@1': {
-        readonly output: 'pg/timestamptz-date@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamptz-string@1': {
-        readonly output: 'pg/timestamptz-string@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamptz-temporal@1': {
-        readonly output: 'pg/timestamptz-temporal@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timetz@1': { readonly output: 'pg/timetz@1'; readonly nullable: true };
-      readonly 'pg/unboundedint@1': {
-        readonly output: 'pg/unboundedint@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/varchar@1': { readonly output: 'pg/text@1'; readonly nullable: true };
-      readonly 'sql/char@1': { readonly output: 'sql/char@1'; readonly nullable: true };
-      readonly 'sql/float@1': { readonly output: 'sql/float@1'; readonly nullable: true };
-      readonly 'sql/int@1': { readonly output: 'sql/int@1'; readonly nullable: true };
-      readonly 'sql/text@1': { readonly output: 'sql/text@1'; readonly nullable: true };
-      readonly 'sql/varchar@1': { readonly output: 'pg/text@1'; readonly nullable: true };
-    };
-  };
-  readonly min: {
-    readonly byCodec: {
-      readonly 'pg/char@1': { readonly output: 'pg/char@1'; readonly nullable: true };
-      readonly 'pg/date-string@1': { readonly output: 'pg/date-string@1'; readonly nullable: true };
-      readonly 'pg/date-temporal@1': {
-        readonly output: 'pg/date-temporal@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/enum@1': { readonly output: 'pg/enum@1'; readonly nullable: true };
-      readonly 'pg/float@1': { readonly output: 'pg/float@1'; readonly nullable: true };
-      readonly 'pg/float4@1': { readonly output: 'pg/float4@1'; readonly nullable: true };
-      readonly 'pg/float8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/inet@1': { readonly output: 'pg/inet@1'; readonly nullable: true };
-      readonly 'pg/int@1': { readonly output: 'pg/int@1'; readonly nullable: true };
-      readonly 'pg/int2@1': { readonly output: 'pg/int2@1'; readonly nullable: true };
-      readonly 'pg/int4@1': { readonly output: 'pg/int4@1'; readonly nullable: true };
-      readonly 'pg/int8@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
-      readonly 'pg/int8number@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
-      readonly 'pg/interval@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
-      readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/text-array@1': { readonly output: 'pg/text-array@1'; readonly nullable: true };
-      readonly 'pg/text@1': { readonly output: 'pg/text@1'; readonly nullable: true };
-      readonly 'pg/time-string@1': { readonly output: 'pg/time-string@1'; readonly nullable: true };
-      readonly 'pg/time-temporal@1': {
-        readonly output: 'pg/time-temporal@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamp-string@1': {
-        readonly output: 'pg/timestamp-string@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamp-temporal@1': {
-        readonly output: 'pg/timestamp-temporal@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamptz-date@1': {
-        readonly output: 'pg/timestamptz-date@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamptz-string@1': {
-        readonly output: 'pg/timestamptz-string@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timestamptz-temporal@1': {
-        readonly output: 'pg/timestamptz-temporal@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/timetz@1': { readonly output: 'pg/timetz@1'; readonly nullable: true };
-      readonly 'pg/unboundedint@1': {
-        readonly output: 'pg/unboundedint@1';
-        readonly nullable: true;
-      };
-      readonly 'pg/varchar@1': { readonly output: 'pg/text@1'; readonly nullable: true };
-      readonly 'sql/char@1': { readonly output: 'sql/char@1'; readonly nullable: true };
-      readonly 'sql/float@1': { readonly output: 'sql/float@1'; readonly nullable: true };
-      readonly 'sql/int@1': { readonly output: 'sql/int@1'; readonly nullable: true };
-      readonly 'sql/text@1': { readonly output: 'sql/text@1'; readonly nullable: true };
-      readonly 'sql/varchar@1': { readonly output: 'pg/text@1'; readonly nullable: true };
-    };
-  };
-  readonly sum: {
-    readonly byCodec: {
-      readonly 'pg/float@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/float4@1': { readonly output: 'pg/float4@1'; readonly nullable: true };
-      readonly 'pg/float8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'pg/int@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
-      readonly 'pg/int2@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
-      readonly 'pg/int4@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
-      readonly 'pg/int8@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
-      readonly 'pg/int8number@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
-      readonly 'pg/interval@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
-      readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
-      readonly 'pg/time-string@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
-      readonly 'pg/time-temporal@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
-      readonly 'pg/unboundedint@1': {
-        readonly output: 'pg/unboundedint@1';
-        readonly nullable: true;
-      };
-      readonly 'sql/float@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
-      readonly 'sql/int@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
-    };
-  };
-  readonly sumBigInt: {
-    readonly byCodec: {
-      readonly 'pg/int@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
-      readonly 'pg/int2@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
-      readonly 'pg/int4@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
-      readonly 'pg/int8@1': { readonly output: 'pg/unboundedint@1'; readonly nullable: true };
-      readonly 'pg/int8number@1': { readonly output: 'pg/unboundedint@1'; readonly nullable: true };
-      readonly 'pg/unboundedint@1': {
-        readonly output: 'pg/unboundedint@1';
-        readonly nullable: true;
-      };
-      readonly 'sql/int@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
-    };
-  };
+	readonly avg: {
+		readonly byCodec: {
+			readonly 'pg/float@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/float4@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/float8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/int@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/int2@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/int4@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/int8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/int8number@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/interval@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
+			readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/time-string@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
+			readonly 'pg/time-temporal@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
+			readonly 'pg/unboundedint@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'sql/float@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'sql/int@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+		};
+	};
+	readonly avgDecimal: {
+		readonly byCodec: {
+			readonly 'pg/int@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/int2@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/int4@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/int8@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/int8number@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/unboundedint@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'sql/int@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+		};
+	};
+	readonly count: {
+		readonly byCodec: {};
+		readonly withoutInput: { readonly output: 'pg/int8number@1'; readonly nullable: false };
+		readonly anyInput: { readonly output: 'pg/int8number@1'; readonly nullable: false };
+	};
+	readonly countBigInt: {
+		readonly byCodec: {};
+		readonly withoutInput: { readonly output: 'pg/int8@1'; readonly nullable: false };
+		readonly anyInput: { readonly output: 'pg/int8@1'; readonly nullable: false };
+	};
+	readonly max: {
+		readonly byCodec: {
+			readonly 'pg/char@1': { readonly output: 'pg/char@1'; readonly nullable: true };
+			readonly 'pg/date-string@1': { readonly output: 'pg/date-string@1'; readonly nullable: true };
+			readonly 'pg/date-temporal@1': {
+				readonly output: 'pg/date-temporal@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/enum@1': { readonly output: 'pg/enum@1'; readonly nullable: true };
+			readonly 'pg/float@1': { readonly output: 'pg/float@1'; readonly nullable: true };
+			readonly 'pg/float4@1': { readonly output: 'pg/float4@1'; readonly nullable: true };
+			readonly 'pg/float8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/inet@1': { readonly output: 'pg/inet@1'; readonly nullable: true };
+			readonly 'pg/int@1': { readonly output: 'pg/int@1'; readonly nullable: true };
+			readonly 'pg/int2@1': { readonly output: 'pg/int2@1'; readonly nullable: true };
+			readonly 'pg/int4@1': { readonly output: 'pg/int4@1'; readonly nullable: true };
+			readonly 'pg/int8@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
+			readonly 'pg/int8number@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
+			readonly 'pg/interval@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
+			readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/text-array@1': { readonly output: 'pg/text-array@1'; readonly nullable: true };
+			readonly 'pg/text@1': { readonly output: 'pg/text@1'; readonly nullable: true };
+			readonly 'pg/time-string@1': { readonly output: 'pg/time-string@1'; readonly nullable: true };
+			readonly 'pg/time-temporal@1': {
+				readonly output: 'pg/time-temporal@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamp-string@1': {
+				readonly output: 'pg/timestamp-string@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamp-temporal@1': {
+				readonly output: 'pg/timestamp-temporal@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamptz-date@1': {
+				readonly output: 'pg/timestamptz-date@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamptz-string@1': {
+				readonly output: 'pg/timestamptz-string@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamptz-temporal@1': {
+				readonly output: 'pg/timestamptz-temporal@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timetz@1': { readonly output: 'pg/timetz@1'; readonly nullable: true };
+			readonly 'pg/unboundedint@1': {
+				readonly output: 'pg/unboundedint@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/varchar@1': { readonly output: 'pg/text@1'; readonly nullable: true };
+			readonly 'sql/char@1': { readonly output: 'sql/char@1'; readonly nullable: true };
+			readonly 'sql/float@1': { readonly output: 'sql/float@1'; readonly nullable: true };
+			readonly 'sql/int@1': { readonly output: 'sql/int@1'; readonly nullable: true };
+			readonly 'sql/text@1': { readonly output: 'sql/text@1'; readonly nullable: true };
+			readonly 'sql/varchar@1': { readonly output: 'pg/text@1'; readonly nullable: true };
+		};
+	};
+	readonly min: {
+		readonly byCodec: {
+			readonly 'pg/char@1': { readonly output: 'pg/char@1'; readonly nullable: true };
+			readonly 'pg/date-string@1': { readonly output: 'pg/date-string@1'; readonly nullable: true };
+			readonly 'pg/date-temporal@1': {
+				readonly output: 'pg/date-temporal@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/enum@1': { readonly output: 'pg/enum@1'; readonly nullable: true };
+			readonly 'pg/float@1': { readonly output: 'pg/float@1'; readonly nullable: true };
+			readonly 'pg/float4@1': { readonly output: 'pg/float4@1'; readonly nullable: true };
+			readonly 'pg/float8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/inet@1': { readonly output: 'pg/inet@1'; readonly nullable: true };
+			readonly 'pg/int@1': { readonly output: 'pg/int@1'; readonly nullable: true };
+			readonly 'pg/int2@1': { readonly output: 'pg/int2@1'; readonly nullable: true };
+			readonly 'pg/int4@1': { readonly output: 'pg/int4@1'; readonly nullable: true };
+			readonly 'pg/int8@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
+			readonly 'pg/int8number@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
+			readonly 'pg/interval@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
+			readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/text-array@1': { readonly output: 'pg/text-array@1'; readonly nullable: true };
+			readonly 'pg/text@1': { readonly output: 'pg/text@1'; readonly nullable: true };
+			readonly 'pg/time-string@1': { readonly output: 'pg/time-string@1'; readonly nullable: true };
+			readonly 'pg/time-temporal@1': {
+				readonly output: 'pg/time-temporal@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamp-string@1': {
+				readonly output: 'pg/timestamp-string@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamp-temporal@1': {
+				readonly output: 'pg/timestamp-temporal@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamptz-date@1': {
+				readonly output: 'pg/timestamptz-date@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamptz-string@1': {
+				readonly output: 'pg/timestamptz-string@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timestamptz-temporal@1': {
+				readonly output: 'pg/timestamptz-temporal@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/timetz@1': { readonly output: 'pg/timetz@1'; readonly nullable: true };
+			readonly 'pg/unboundedint@1': {
+				readonly output: 'pg/unboundedint@1';
+				readonly nullable: true;
+			};
+			readonly 'pg/varchar@1': { readonly output: 'pg/text@1'; readonly nullable: true };
+			readonly 'sql/char@1': { readonly output: 'sql/char@1'; readonly nullable: true };
+			readonly 'sql/float@1': { readonly output: 'sql/float@1'; readonly nullable: true };
+			readonly 'sql/int@1': { readonly output: 'sql/int@1'; readonly nullable: true };
+			readonly 'sql/text@1': { readonly output: 'sql/text@1'; readonly nullable: true };
+			readonly 'sql/varchar@1': { readonly output: 'pg/text@1'; readonly nullable: true };
+		};
+	};
+	readonly sum: {
+		readonly byCodec: {
+			readonly 'pg/float@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/float4@1': { readonly output: 'pg/float4@1'; readonly nullable: true };
+			readonly 'pg/float8@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'pg/int@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
+			readonly 'pg/int2@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
+			readonly 'pg/int4@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
+			readonly 'pg/int8@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
+			readonly 'pg/int8number@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
+			readonly 'pg/interval@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
+			readonly 'pg/numeric@1': { readonly output: 'pg/numeric@1'; readonly nullable: true };
+			readonly 'pg/time-string@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
+			readonly 'pg/time-temporal@1': { readonly output: 'pg/interval@1'; readonly nullable: true };
+			readonly 'pg/unboundedint@1': {
+				readonly output: 'pg/unboundedint@1';
+				readonly nullable: true;
+			};
+			readonly 'sql/float@1': { readonly output: 'pg/float8@1'; readonly nullable: true };
+			readonly 'sql/int@1': { readonly output: 'pg/int8number@1'; readonly nullable: true };
+		};
+	};
+	readonly sumBigInt: {
+		readonly byCodec: {
+			readonly 'pg/int@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
+			readonly 'pg/int2@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
+			readonly 'pg/int4@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
+			readonly 'pg/int8@1': { readonly output: 'pg/unboundedint@1'; readonly nullable: true };
+			readonly 'pg/int8number@1': { readonly output: 'pg/unboundedint@1'; readonly nullable: true };
+			readonly 'pg/unboundedint@1': {
+				readonly output: 'pg/unboundedint@1';
+				readonly nullable: true;
+			};
+			readonly 'sql/int@1': { readonly output: 'pg/int8@1'; readonly nullable: true };
+		};
+	};
 };
 type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyof CodecTypes
-  ? Encoded extends CodecTypes[CodecId]['json']
-    ? Encoded
-    : CodecTypes[CodecId]['json']
-  : Encoded;
+	? Encoded extends CodecTypes[CodecId]['json']
+		? Encoded
+		: CodecTypes[CodecId]['json']
+	: Encoded;
 export type LocationOutput = {
-  readonly BuildingNumber: CodecTypes['pg/int4@1']['output'];
-  readonly PostalCode: CodecTypes['pg/text@1']['output'];
-  readonly StreetName: CodecTypes['pg/text@1']['output'];
-  readonly X: CodecTypes['pg/int4@1']['output'];
-  readonly Z: CodecTypes['pg/int4@1']['output'];
+	readonly BuildingNumber: CodecTypes['pg/int4@1']['output'];
+	readonly PostalCode: CodecTypes['pg/text@1']['output'];
+	readonly StreetName: CodecTypes['pg/text@1']['output'];
+	readonly X: CodecTypes['pg/int4@1']['output'];
+	readonly Z: CodecTypes['pg/int4@1']['output'];
 };
 export type LocationInput = {
-  readonly BuildingNumber: CodecTypes['pg/int4@1']['input'];
-  readonly PostalCode: CodecTypes['pg/text@1']['input'];
-  readonly StreetName: CodecTypes['pg/text@1']['input'];
-  readonly X: CodecTypes['pg/int4@1']['input'];
-  readonly Z: CodecTypes['pg/int4@1']['input'];
+	readonly BuildingNumber: CodecTypes['pg/int4@1']['input'];
+	readonly PostalCode: CodecTypes['pg/text@1']['input'];
+	readonly StreetName: CodecTypes['pg/text@1']['input'];
+	readonly X: CodecTypes['pg/int4@1']['input'];
+	readonly Z: CodecTypes['pg/int4@1']['input'];
 };
 export type FieldOutputTypes = {
-  readonly public: {
-    readonly CommandLog: {
-      readonly command: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly robloxUserId: CodecTypes['pg/text@1']['output'];
-      readonly timestamp: CodecTypes['pg/int4@1']['output'];
-      readonly userId: CodecTypes['pg/int4@1']['output'] | null;
-    };
-    readonly ModCall: {
-      readonly callerId: CodecTypes['pg/int4@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly moderatorId: CodecTypes['pg/text@1']['output'] | null;
-      readonly timestamp: CodecTypes['pg/int4@1']['output'];
-    };
-    readonly Player: {
-      readonly Callsign: CodecTypes['pg/text@1']['output'] | null;
-      readonly Permissions: CodecTypes['pg/text@1']['output'];
-      readonly WantedStars: CodecTypes['pg/int4@1']['output'];
-      readonly location: LocationOutput;
-      readonly robloxId: CodecTypes['pg/text@1']['output'];
-      readonly robloxUsername: CodecTypes['pg/text@1']['output'];
-      readonly team: CodecTypes['pg/text@1']['output'];
-    };
-    readonly User: {
-      readonly discordID: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly robloxID: CodecTypes['pg/text@1']['output'];
-      readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
-    };
-  };
+	readonly public: {
+		readonly CommandLog: {
+			readonly command: CodecTypes['pg/text@1']['output'];
+			readonly id: CodecTypes['pg/int4@1']['output'];
+			readonly robloxUserId: CodecTypes['pg/text@1']['output'];
+			readonly timestamp: CodecTypes['pg/int4@1']['output'];
+			readonly userId: CodecTypes['pg/int4@1']['output'] | null;
+		};
+		readonly ModCall: {
+			readonly callerId: CodecTypes['pg/int4@1']['output'];
+			readonly id: CodecTypes['pg/int4@1']['output'];
+			readonly moderatorId: CodecTypes['pg/text@1']['output'] | null;
+			readonly timestamp: CodecTypes['pg/int4@1']['output'];
+		};
+		readonly Player: {
+			readonly Callsign: CodecTypes['pg/text@1']['output'] | null;
+			readonly Permissions: CodecTypes['pg/text@1']['output'];
+			readonly WantedStars: CodecTypes['pg/int4@1']['output'];
+			readonly location: LocationOutput;
+			readonly robloxId: CodecTypes['pg/text@1']['output'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['output'];
+			readonly team: CodecTypes['pg/text@1']['output'];
+		};
+		readonly User: {
+			readonly discordID: CodecTypes['pg/text@1']['output'];
+			readonly id: CodecTypes['pg/int4@1']['output'];
+			readonly robloxID: CodecTypes['pg/text@1']['output'];
+			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+	};
 };
 export type FieldInputTypes = {
-  readonly public: {
-    readonly CommandLog: {
-      readonly command: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly robloxUserId: CodecTypes['pg/text@1']['input'];
-      readonly timestamp: CodecTypes['pg/int4@1']['input'];
-      readonly userId: CodecTypes['pg/int4@1']['input'] | null;
-    };
-    readonly ModCall: {
-      readonly callerId: CodecTypes['pg/int4@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly moderatorId: CodecTypes['pg/text@1']['input'] | null;
-      readonly timestamp: CodecTypes['pg/int4@1']['input'];
-    };
-    readonly Player: {
-      readonly Callsign: CodecTypes['pg/text@1']['input'] | null;
-      readonly Permissions: CodecTypes['pg/text@1']['input'];
-      readonly WantedStars: CodecTypes['pg/int4@1']['input'];
-      readonly location: LocationInput;
-      readonly robloxId: CodecTypes['pg/text@1']['input'];
-      readonly robloxUsername: CodecTypes['pg/text@1']['input'];
-      readonly team: CodecTypes['pg/text@1']['input'];
-    };
-    readonly User: {
-      readonly discordID: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly robloxID: CodecTypes['pg/text@1']['input'];
-      readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
-    };
-  };
+	readonly public: {
+		readonly CommandLog: {
+			readonly command: CodecTypes['pg/text@1']['input'];
+			readonly id: CodecTypes['pg/int4@1']['input'];
+			readonly robloxUserId: CodecTypes['pg/text@1']['input'];
+			readonly timestamp: CodecTypes['pg/int4@1']['input'];
+			readonly userId: CodecTypes['pg/int4@1']['input'] | null;
+		};
+		readonly ModCall: {
+			readonly callerId: CodecTypes['pg/int4@1']['input'];
+			readonly id: CodecTypes['pg/int4@1']['input'];
+			readonly moderatorId: CodecTypes['pg/text@1']['input'] | null;
+			readonly timestamp: CodecTypes['pg/int4@1']['input'];
+		};
+		readonly Player: {
+			readonly Callsign: CodecTypes['pg/text@1']['input'] | null;
+			readonly Permissions: CodecTypes['pg/text@1']['input'];
+			readonly WantedStars: CodecTypes['pg/int4@1']['input'];
+			readonly location: LocationInput;
+			readonly robloxId: CodecTypes['pg/text@1']['input'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['input'];
+			readonly team: CodecTypes['pg/text@1']['input'];
+		};
+		readonly User: {
+			readonly discordID: CodecTypes['pg/text@1']['input'];
+			readonly id: CodecTypes['pg/int4@1']['input'];
+			readonly robloxID: CodecTypes['pg/text@1']['input'];
+			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+	};
 };
 export type StorageColumnTypes = {
-  readonly public: {
-    readonly CommandLog: {
-      readonly command: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly robloxUserId: CodecTypes['pg/text@1']['output'];
-      readonly timestamp: CodecTypes['pg/int4@1']['output'];
-      readonly userId: CodecTypes['pg/int4@1']['output'] | null;
-    };
-    readonly ModCall: {
-      readonly callerId: CodecTypes['pg/int4@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly moderatorId: CodecTypes['pg/text@1']['output'] | null;
-      readonly timestamp: CodecTypes['pg/int4@1']['output'];
-    };
-    readonly Player: {
-      readonly Callsign: CodecTypes['pg/text@1']['output'] | null;
-      readonly location: CodecTypes['pg/jsonb@1']['output'];
-      readonly Permissions: CodecTypes['pg/text@1']['output'];
-      readonly robloxId: CodecTypes['pg/text@1']['output'];
-      readonly robloxUsername: CodecTypes['pg/text@1']['output'];
-      readonly team: CodecTypes['pg/text@1']['output'];
-      readonly WantedStars: CodecTypes['pg/int4@1']['output'];
-    };
-    readonly User: {
-      readonly discordID: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly robloxID: CodecTypes['pg/text@1']['output'];
-      readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
-    };
-  };
+	readonly public: {
+		readonly CommandLog: {
+			readonly command: CodecTypes['pg/text@1']['output'];
+			readonly id: CodecTypes['pg/int4@1']['output'];
+			readonly robloxUserId: CodecTypes['pg/text@1']['output'];
+			readonly timestamp: CodecTypes['pg/int4@1']['output'];
+			readonly userId: CodecTypes['pg/int4@1']['output'] | null;
+		};
+		readonly ModCall: {
+			readonly callerId: CodecTypes['pg/int4@1']['output'];
+			readonly id: CodecTypes['pg/int4@1']['output'];
+			readonly moderatorId: CodecTypes['pg/text@1']['output'] | null;
+			readonly timestamp: CodecTypes['pg/int4@1']['output'];
+		};
+		readonly Player: {
+			readonly Callsign: CodecTypes['pg/text@1']['output'] | null;
+			readonly location: CodecTypes['pg/jsonb@1']['output'];
+			readonly Permissions: CodecTypes['pg/text@1']['output'];
+			readonly robloxId: CodecTypes['pg/text@1']['output'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['output'];
+			readonly team: CodecTypes['pg/text@1']['output'];
+			readonly WantedStars: CodecTypes['pg/int4@1']['output'];
+		};
+		readonly User: {
+			readonly discordID: CodecTypes['pg/text@1']['output'];
+			readonly id: CodecTypes['pg/int4@1']['output'];
+			readonly robloxID: CodecTypes['pg/text@1']['output'];
+			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+	};
 };
 export type StorageColumnInputTypes = {
-  readonly public: {
-    readonly CommandLog: {
-      readonly command: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly robloxUserId: CodecTypes['pg/text@1']['input'];
-      readonly timestamp: CodecTypes['pg/int4@1']['input'];
-      readonly userId: CodecTypes['pg/int4@1']['input'] | null;
-    };
-    readonly ModCall: {
-      readonly callerId: CodecTypes['pg/int4@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly moderatorId: CodecTypes['pg/text@1']['input'] | null;
-      readonly timestamp: CodecTypes['pg/int4@1']['input'];
-    };
-    readonly Player: {
-      readonly Callsign: CodecTypes['pg/text@1']['input'] | null;
-      readonly location: CodecTypes['pg/jsonb@1']['input'];
-      readonly Permissions: CodecTypes['pg/text@1']['input'];
-      readonly robloxId: CodecTypes['pg/text@1']['input'];
-      readonly robloxUsername: CodecTypes['pg/text@1']['input'];
-      readonly team: CodecTypes['pg/text@1']['input'];
-      readonly WantedStars: CodecTypes['pg/int4@1']['input'];
-    };
-    readonly User: {
-      readonly discordID: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly robloxID: CodecTypes['pg/text@1']['input'];
-      readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
-    };
-  };
+	readonly public: {
+		readonly CommandLog: {
+			readonly command: CodecTypes['pg/text@1']['input'];
+			readonly id: CodecTypes['pg/int4@1']['input'];
+			readonly robloxUserId: CodecTypes['pg/text@1']['input'];
+			readonly timestamp: CodecTypes['pg/int4@1']['input'];
+			readonly userId: CodecTypes['pg/int4@1']['input'] | null;
+		};
+		readonly ModCall: {
+			readonly callerId: CodecTypes['pg/int4@1']['input'];
+			readonly id: CodecTypes['pg/int4@1']['input'];
+			readonly moderatorId: CodecTypes['pg/text@1']['input'] | null;
+			readonly timestamp: CodecTypes['pg/int4@1']['input'];
+		};
+		readonly Player: {
+			readonly Callsign: CodecTypes['pg/text@1']['input'] | null;
+			readonly location: CodecTypes['pg/jsonb@1']['input'];
+			readonly Permissions: CodecTypes['pg/text@1']['input'];
+			readonly robloxId: CodecTypes['pg/text@1']['input'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['input'];
+			readonly team: CodecTypes['pg/text@1']['input'];
+			readonly WantedStars: CodecTypes['pg/int4@1']['input'];
+		};
+		readonly User: {
+			readonly discordID: CodecTypes['pg/text@1']['input'];
+			readonly id: CodecTypes['pg/int4@1']['input'];
+			readonly robloxID: CodecTypes['pg/text@1']['input'];
+			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+	};
 };
 
 export namespace Models {
-  export type public_CommandLog = {
-    command: CodecTypes['pg/text@1']['output'];
-    id: CodecTypes['pg/int4@1']['output'];
-    robloxUserId: CodecTypes['pg/text@1']['output'];
-    timestamp: CodecTypes['pg/int4@1']['output'];
-    userId: CodecTypes['pg/int4@1']['output'] | null;
-    readonly [RelationKeys]?: never;
-  };
-  export type public_ModCall = {
-    callerId: CodecTypes['pg/int4@1']['output'];
-    id: CodecTypes['pg/int4@1']['output'];
-    moderatorId: CodecTypes['pg/text@1']['output'] | null;
-    timestamp: CodecTypes['pg/int4@1']['output'];
-    readonly [RelationKeys]?: never;
-  };
-  export type public_Player = {
-    Callsign: CodecTypes['pg/text@1']['output'] | null;
-    Permissions: CodecTypes['pg/text@1']['output'];
-    WantedStars: CodecTypes['pg/int4@1']['output'];
-    location: LocationOutput;
-    robloxId: CodecTypes['pg/text@1']['output'];
-    robloxUsername: CodecTypes['pg/text@1']['output'];
-    team: CodecTypes['pg/text@1']['output'];
-    readonly [RelationKeys]?: never;
-  };
-  export type public_User = {
-    discordID: CodecTypes['pg/text@1']['output'];
-    id: CodecTypes['pg/int4@1']['output'];
-    robloxID: CodecTypes['pg/text@1']['output'];
-    role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
-    readonly [RelationKeys]?: never;
-  };
+	export type public_CommandLog = {
+		command: CodecTypes['pg/text@1']['output'];
+		id: CodecTypes['pg/int4@1']['output'];
+		robloxUserId: CodecTypes['pg/text@1']['output'];
+		timestamp: CodecTypes['pg/int4@1']['output'];
+		userId: CodecTypes['pg/int4@1']['output'] | null;
+		readonly [RelationKeys]?: never;
+	};
+	export type public_ModCall = {
+		callerId: CodecTypes['pg/int4@1']['output'];
+		id: CodecTypes['pg/int4@1']['output'];
+		moderatorId: CodecTypes['pg/text@1']['output'] | null;
+		timestamp: CodecTypes['pg/int4@1']['output'];
+		readonly [RelationKeys]?: never;
+	};
+	export type public_Player = {
+		Callsign: CodecTypes['pg/text@1']['output'] | null;
+		Permissions: CodecTypes['pg/text@1']['output'];
+		WantedStars: CodecTypes['pg/int4@1']['output'];
+		location: LocationOutput;
+		robloxId: CodecTypes['pg/text@1']['output'];
+		robloxUsername: CodecTypes['pg/text@1']['output'];
+		team: CodecTypes['pg/text@1']['output'];
+		readonly [RelationKeys]?: never;
+	};
+	export type public_User = {
+		discordID: CodecTypes['pg/text@1']['output'];
+		id: CodecTypes['pg/int4@1']['output'];
+		robloxID: CodecTypes['pg/text@1']['output'];
+		role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		readonly [RelationKeys]?: never;
+	};
 }
 
 export declare const models: {
-  public: {
-    CommandLog: Models.public_CommandLog;
-    ModCall: Models.public_ModCall;
-    Player: Models.public_Player;
-    User: Models.public_User;
-  };
+	public: {
+		CommandLog: Models.public_CommandLog;
+		ModCall: Models.public_ModCall;
+		Player: Models.public_Player;
+		User: Models.public_User;
+	};
 };
 
 export type TypeMaps = TypeMapsType<
-  CodecTypes,
-  QueryOperationTypes,
-  FieldOutputTypes,
-  FieldInputTypes,
-  StorageColumnTypes,
-  StorageColumnInputTypes,
-  AggregateTypes
+	CodecTypes,
+	QueryOperationTypes,
+	FieldOutputTypes,
+	FieldInputTypes,
+	StorageColumnTypes,
+	StorageColumnInputTypes,
+	AggregateTypes
 >;
 
 type ContractBase = Omit<
-  ContractType<{
-    readonly namespaces: {
-      readonly public: {
-        readonly id: 'public';
-        readonly kind: 'postgres-schema';
-        readonly entries: {
-          readonly table: {
-            readonly CommandLog: {
-              columns: {
-                readonly command: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                  readonly many: false;
-                };
-                readonly robloxUserId: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly timestamp: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly userId: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: true;
-                  readonly many: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [{ readonly columns: readonly ['timestamp'] }];
-              indexes: readonly [];
-              foreignKeys: readonly [];
-            };
-            readonly ModCall: {
-              columns: {
-                readonly callerId: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                  readonly many: false;
-                };
-                readonly moderatorId: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                  readonly many: false;
-                };
-                readonly timestamp: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [{ readonly columns: readonly ['timestamp'] }];
-              indexes: readonly [];
-              foreignKeys: readonly [];
-            };
-            readonly Player: {
-              columns: {
-                readonly Callsign: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                  readonly many: false;
-                };
-                readonly Permissions: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly WantedStars: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly location: {
-                  readonly dataType: 'pg/jsonb';
-                  readonly codecId: 'pg/jsonb@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly robloxId: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly robloxUsername: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly team: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-              };
-              uniques: readonly [
-                { readonly columns: readonly ['robloxId'] },
-                { readonly columns: readonly ['robloxUsername'] },
-                { readonly columns: readonly ['Callsign'] },
-              ];
-              indexes: readonly [];
-              foreignKeys: readonly [];
-            };
-            readonly User: {
-              columns: {
-                readonly discordID: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                  readonly many: false;
-                };
-                readonly robloxID: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly role: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', 'USER'>;
-                  };
-                  readonly many: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [
-                { readonly columns: readonly ['robloxID'] },
-                { readonly columns: readonly ['discordID'] },
-              ];
-              indexes: readonly [];
-              foreignKeys: readonly [];
-            };
-          };
-          readonly valueSet: {
-            readonly Role: {
-              readonly kind: 'valueSet';
-              readonly values: readonly ['OWNER', 'ADMINISTRATOR', 'MODERATOR', 'USER'];
-            };
-          };
-        };
-      };
-    };
-    readonly storageHash: StorageHash;
-  }>,
-  'roots' | 'domain'
+	ContractType<{
+		readonly namespaces: {
+			readonly public: {
+				readonly id: 'public';
+				readonly kind: 'postgres-schema';
+				readonly entries: {
+					readonly table: {
+						readonly CommandLog: {
+							columns: {
+								readonly command: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly id: {
+									readonly dataType: 'pg/int4';
+									readonly codecId: 'pg/int4@1';
+									readonly nullable: false;
+									readonly default: {
+										readonly kind: 'function';
+										readonly expression: 'autoincrement()';
+									};
+									readonly many: false;
+								};
+								readonly robloxUserId: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly timestamp: {
+									readonly dataType: 'pg/int4';
+									readonly codecId: 'pg/int4@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly userId: {
+									readonly dataType: 'pg/int4';
+									readonly codecId: 'pg/int4@1';
+									readonly nullable: true;
+									readonly many: false;
+								};
+							};
+							primaryKey: { readonly columns: readonly ['id'] };
+							uniques: readonly [{ readonly columns: readonly ['timestamp'] }];
+							indexes: readonly [];
+							foreignKeys: readonly [];
+						};
+						readonly ModCall: {
+							columns: {
+								readonly callerId: {
+									readonly dataType: 'pg/int4';
+									readonly codecId: 'pg/int4@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly id: {
+									readonly dataType: 'pg/int4';
+									readonly codecId: 'pg/int4@1';
+									readonly nullable: false;
+									readonly default: {
+										readonly kind: 'function';
+										readonly expression: 'autoincrement()';
+									};
+									readonly many: false;
+								};
+								readonly moderatorId: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: true;
+									readonly many: false;
+								};
+								readonly timestamp: {
+									readonly dataType: 'pg/int4';
+									readonly codecId: 'pg/int4@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+							};
+							primaryKey: { readonly columns: readonly ['id'] };
+							uniques: readonly [{ readonly columns: readonly ['timestamp'] }];
+							indexes: readonly [];
+							foreignKeys: readonly [];
+						};
+						readonly Player: {
+							columns: {
+								readonly Callsign: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: true;
+									readonly many: false;
+								};
+								readonly Permissions: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly WantedStars: {
+									readonly dataType: 'pg/int4';
+									readonly codecId: 'pg/int4@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly location: {
+									readonly dataType: 'pg/jsonb';
+									readonly codecId: 'pg/jsonb@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly robloxId: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly robloxUsername: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly team: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+							};
+							uniques: readonly [
+								{ readonly columns: readonly ['robloxId'] },
+								{ readonly columns: readonly ['robloxUsername'] },
+								{ readonly columns: readonly ['Callsign'] }
+							];
+							indexes: readonly [];
+							foreignKeys: readonly [];
+						};
+						readonly User: {
+							columns: {
+								readonly discordID: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly id: {
+									readonly dataType: 'pg/int4';
+									readonly codecId: 'pg/int4@1';
+									readonly nullable: false;
+									readonly default: {
+										readonly kind: 'function';
+										readonly expression: 'autoincrement()';
+									};
+									readonly many: false;
+								};
+								readonly robloxID: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly role: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly default: {
+										readonly kind: 'literal';
+										readonly value: DefaultLiteralValue<'pg/text@1', 'USER'>;
+									};
+									readonly many: false;
+								};
+							};
+							primaryKey: { readonly columns: readonly ['id'] };
+							uniques: readonly [
+								{ readonly columns: readonly ['robloxID'] },
+								{ readonly columns: readonly ['discordID'] }
+							];
+							indexes: readonly [];
+							foreignKeys: readonly [];
+						};
+					};
+					readonly valueSet: {
+						readonly Role: {
+							readonly kind: 'valueSet';
+							readonly values: readonly ['OWNER', 'ADMINISTRATOR', 'MODERATOR', 'USER'];
+						};
+					};
+				};
+			};
+		};
+		readonly storageHash: StorageHash;
+	}>,
+	'roots' | 'domain'
 > & {
-  readonly target: 'postgres';
-  readonly targetFamily: 'sql';
-  readonly roots: {
-    readonly CommandLog: {
-      readonly namespace: 'public' & NamespaceId;
-      readonly model: 'CommandLog';
-    };
-    readonly ModCall: { readonly namespace: 'public' & NamespaceId; readonly model: 'ModCall' };
-    readonly Player: { readonly namespace: 'public' & NamespaceId; readonly model: 'Player' };
-    readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-  };
-  readonly domain: {
-    readonly namespaces: {
-      readonly public: {
-        readonly models: {
-          readonly CommandLog: {
-            readonly fields: {
-              readonly command: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly robloxUserId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly timestamp: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly userId: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-            };
-            readonly relations: Record<string, never>;
-            readonly storage: {
-              readonly table: 'CommandLog';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly command: { readonly column: 'command' };
-                readonly id: { readonly column: 'id' };
-                readonly robloxUserId: { readonly column: 'robloxUserId' };
-                readonly timestamp: { readonly column: 'timestamp' };
-                readonly userId: { readonly column: 'userId' };
-              };
-            };
-          };
-          readonly ModCall: {
-            readonly fields: {
-              readonly callerId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly moderatorId: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly timestamp: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-            };
-            readonly relations: Record<string, never>;
-            readonly storage: {
-              readonly table: 'ModCall';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly callerId: { readonly column: 'callerId' };
-                readonly id: { readonly column: 'id' };
-                readonly moderatorId: { readonly column: 'moderatorId' };
-                readonly timestamp: { readonly column: 'timestamp' };
-              };
-            };
-          };
-          readonly Player: {
-            readonly fields: {
-              readonly Callsign: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly Permissions: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly WantedStars: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly location: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'valueObject'; readonly name: 'Location' };
-              };
-              readonly robloxId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly robloxUsername: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly team: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-            };
-            readonly relations: Record<string, never>;
-            readonly storage: {
-              readonly table: 'Player';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly Callsign: { readonly column: 'Callsign' };
-                readonly Permissions: { readonly column: 'Permissions' };
-                readonly WantedStars: { readonly column: 'WantedStars' };
-                readonly location: { readonly column: 'location' };
-                readonly robloxId: { readonly column: 'robloxId' };
-                readonly robloxUsername: { readonly column: 'robloxUsername' };
-                readonly team: { readonly column: 'team' };
-              };
-            };
-          };
-          readonly User: {
-            readonly fields: {
-              readonly discordID: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly robloxID: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly role: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-            };
-            readonly relations: Record<string, never>;
-            readonly storage: {
-              readonly table: 'User';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly discordID: { readonly column: 'discordID' };
-                readonly id: { readonly column: 'id' };
-                readonly robloxID: { readonly column: 'robloxID' };
-                readonly role: { readonly column: 'role' };
-              };
-            };
-          };
-        };
-        readonly valueObjects: {
-          readonly Location: {
-            readonly fields: {
-              readonly BuildingNumber: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly PostalCode: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly StreetName: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly X: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly Z: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-            };
-          };
-        };
-        readonly enum: {
-          readonly Role: {
-            readonly codecId: 'pg/text@1';
-            readonly members: readonly [
-              { readonly name: 'OWNER'; readonly value: 'OWNER' },
-              { readonly name: 'ADMINISTRATOR'; readonly value: 'ADMINISTRATOR' },
-              { readonly name: 'MODERATOR'; readonly value: 'MODERATOR' },
-              { readonly name: 'USER'; readonly value: 'USER' },
-            ];
-          };
-        };
-        readonly enumMemberTypes?: {
-          readonly Role: readonly [
-            { readonly name: 'OWNER'; readonly value: 'OWNER' },
-            { readonly name: 'ADMINISTRATOR'; readonly value: 'ADMINISTRATOR' },
-            { readonly name: 'MODERATOR'; readonly value: 'MODERATOR' },
-            { readonly name: 'USER'; readonly value: 'USER' },
-          ];
-        };
-      };
-    };
-  };
-  readonly capabilities: {
-    readonly postgres: {
-      readonly distinctOn: true;
-      readonly forKeyShare: true;
-      readonly forNoKeyUpdate: true;
-      readonly jsonAgg: true;
-      readonly lateral: true;
-      readonly limit: true;
-      readonly orderBy: true;
-      readonly returning: true;
-    };
-    readonly sql: {
-      readonly checkConstraint: true;
-      readonly defaultInInsert: true;
-      readonly enums: true;
-      readonly forShare: true;
-      readonly forUpdate: true;
-      readonly insertOnConflictSkip: true;
-      readonly insertOnConflictWithoutTarget: true;
-      readonly lateral: true;
-      readonly lockNowait: true;
-      readonly lockOf: true;
-      readonly lockSkipLocked: true;
-      readonly returning: true;
-      readonly scalarList: true;
-    };
-  };
-  readonly extensions: {};
-  readonly meta: {};
-  readonly valueObjects: {
-    readonly Location: {
-      readonly fields: {
-        readonly BuildingNumber: {
-          readonly nullable: false;
-          readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-        };
-        readonly PostalCode: {
-          readonly nullable: false;
-          readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-        };
-        readonly StreetName: {
-          readonly nullable: false;
-          readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-        };
-        readonly X: {
-          readonly nullable: false;
-          readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-        };
-        readonly Z: {
-          readonly nullable: false;
-          readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-        };
-      };
-    };
-  };
-  readonly profileHash: ProfileHash;
+	readonly target: 'postgres';
+	readonly targetFamily: 'sql';
+	readonly roots: {
+		readonly CommandLog: {
+			readonly namespace: 'public' & NamespaceId;
+			readonly model: 'CommandLog';
+		};
+		readonly ModCall: { readonly namespace: 'public' & NamespaceId; readonly model: 'ModCall' };
+		readonly Player: { readonly namespace: 'public' & NamespaceId; readonly model: 'Player' };
+		readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+	};
+	readonly domain: {
+		readonly namespaces: {
+			readonly public: {
+				readonly models: {
+					readonly CommandLog: {
+						readonly fields: {
+							readonly command: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly id: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+							readonly robloxUserId: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly timestamp: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+							readonly userId: {
+								readonly nullable: true;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+						};
+						readonly relations: Record<string, never>;
+						readonly storage: {
+							readonly table: 'CommandLog';
+							readonly namespaceId: 'public';
+							readonly fields: {
+								readonly command: { readonly column: 'command' };
+								readonly id: { readonly column: 'id' };
+								readonly robloxUserId: { readonly column: 'robloxUserId' };
+								readonly timestamp: { readonly column: 'timestamp' };
+								readonly userId: { readonly column: 'userId' };
+							};
+						};
+					};
+					readonly ModCall: {
+						readonly fields: {
+							readonly callerId: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+							readonly id: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+							readonly moderatorId: {
+								readonly nullable: true;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly timestamp: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+						};
+						readonly relations: Record<string, never>;
+						readonly storage: {
+							readonly table: 'ModCall';
+							readonly namespaceId: 'public';
+							readonly fields: {
+								readonly callerId: { readonly column: 'callerId' };
+								readonly id: { readonly column: 'id' };
+								readonly moderatorId: { readonly column: 'moderatorId' };
+								readonly timestamp: { readonly column: 'timestamp' };
+							};
+						};
+					};
+					readonly Player: {
+						readonly fields: {
+							readonly Callsign: {
+								readonly nullable: true;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Permissions: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly WantedStars: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+							readonly location: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'valueObject'; readonly name: 'Location' };
+							};
+							readonly robloxId: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly robloxUsername: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly team: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+						};
+						readonly relations: Record<string, never>;
+						readonly storage: {
+							readonly table: 'Player';
+							readonly namespaceId: 'public';
+							readonly fields: {
+								readonly Callsign: { readonly column: 'Callsign' };
+								readonly Permissions: { readonly column: 'Permissions' };
+								readonly WantedStars: { readonly column: 'WantedStars' };
+								readonly location: { readonly column: 'location' };
+								readonly robloxId: { readonly column: 'robloxId' };
+								readonly robloxUsername: { readonly column: 'robloxUsername' };
+								readonly team: { readonly column: 'team' };
+							};
+						};
+					};
+					readonly User: {
+						readonly fields: {
+							readonly discordID: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly id: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+							readonly robloxID: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly role: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+						};
+						readonly relations: Record<string, never>;
+						readonly storage: {
+							readonly table: 'User';
+							readonly namespaceId: 'public';
+							readonly fields: {
+								readonly discordID: { readonly column: 'discordID' };
+								readonly id: { readonly column: 'id' };
+								readonly robloxID: { readonly column: 'robloxID' };
+								readonly role: { readonly column: 'role' };
+							};
+						};
+					};
+				};
+				readonly valueObjects: {
+					readonly Location: {
+						readonly fields: {
+							readonly BuildingNumber: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+							readonly PostalCode: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly StreetName: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly X: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+							readonly Z: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+							};
+						};
+					};
+				};
+				readonly enum: {
+					readonly Role: {
+						readonly codecId: 'pg/text@1';
+						readonly members: readonly [
+							{ readonly name: 'OWNER'; readonly value: 'OWNER' },
+							{ readonly name: 'ADMINISTRATOR'; readonly value: 'ADMINISTRATOR' },
+							{ readonly name: 'MODERATOR'; readonly value: 'MODERATOR' },
+							{ readonly name: 'USER'; readonly value: 'USER' }
+						];
+					};
+				};
+				readonly enumMemberTypes?: {
+					readonly Role: readonly [
+						{ readonly name: 'OWNER'; readonly value: 'OWNER' },
+						{ readonly name: 'ADMINISTRATOR'; readonly value: 'ADMINISTRATOR' },
+						{ readonly name: 'MODERATOR'; readonly value: 'MODERATOR' },
+						{ readonly name: 'USER'; readonly value: 'USER' }
+					];
+				};
+			};
+		};
+	};
+	readonly capabilities: {
+		readonly postgres: {
+			readonly distinctOn: true;
+			readonly forKeyShare: true;
+			readonly forNoKeyUpdate: true;
+			readonly jsonAgg: true;
+			readonly lateral: true;
+			readonly limit: true;
+			readonly orderBy: true;
+			readonly returning: true;
+		};
+		readonly sql: {
+			readonly checkConstraint: true;
+			readonly defaultInInsert: true;
+			readonly enums: true;
+			readonly forShare: true;
+			readonly forUpdate: true;
+			readonly insertOnConflictSkip: true;
+			readonly insertOnConflictWithoutTarget: true;
+			readonly lateral: true;
+			readonly lockNowait: true;
+			readonly lockOf: true;
+			readonly lockSkipLocked: true;
+			readonly returning: true;
+			readonly scalarList: true;
+		};
+	};
+	readonly extensions: {};
+	readonly meta: {};
+	readonly valueObjects: {
+		readonly Location: {
+			readonly fields: {
+				readonly BuildingNumber: {
+					readonly nullable: false;
+					readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+				};
+				readonly PostalCode: {
+					readonly nullable: false;
+					readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+				};
+				readonly StreetName: {
+					readonly nullable: false;
+					readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+				};
+				readonly X: {
+					readonly nullable: false;
+					readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+				};
+				readonly Z: {
+					readonly nullable: false;
+					readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+				};
+			};
+		};
+	};
+	readonly profileHash: ProfileHash;
 };
 
 export type Contract = ContractWithTypeMaps<ContractBase, TypeMaps>;

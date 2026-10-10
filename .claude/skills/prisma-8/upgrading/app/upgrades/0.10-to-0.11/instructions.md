@@ -1,13 +1,13 @@
 ---
-from: "0.10"
-to: "0.11"
+from: '0.10'
+to: '0.11'
 changes:
   - id: insert-single-row-wrap-in-array
     summary: Wrap single-row `.insert({...})` call sites in an array — `.insert([{...}])`. The single-object overload is removed; `.insert()` now exclusively accepts an array of row objects.
     detection:
-      glob: "**/*.{ts,tsx}"
+      glob: '**/*.{ts,tsx}'
       contains:
-        - ".insert("
+        - '.insert('
       anyMatch: true
 ---
 
@@ -39,11 +39,11 @@ Variable references to a row object are safe to wrap directly:
 ```ts
 // Before
 for (const item of items) {
-  await runtime.execute(db.sql.table.insert(item).build());
+	await runtime.execute(db.sql.table.insert(item).build());
 }
 // After
 for (const item of items) {
-  await runtime.execute(db.sql.table.insert([item]).build());
+	await runtime.execute(db.sql.table.insert([item]).build());
 }
 ```
 

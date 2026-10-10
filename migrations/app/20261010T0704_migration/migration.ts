@@ -6,53 +6,53 @@ import endContract from '../../snapshots/a1fdac8c086420d7c3e74db2523610926b1c3b4
 import { Migration, MigrationCLI, placeholder } from '@prisma/orm-postgres/migration';
 
 export default class M extends Migration<Start, End> {
-  override readonly startContractJson = startContract;
-  override readonly endContractJson = endContract;
+	override readonly startContractJson = startContract;
+	override readonly endContractJson = endContract;
 
-  override get operations() {
-    return [
-      this.dataTransform(endContract, 'typechange-CommandLog-timestamp', {
-        check: () => placeholder('typechange-CommandLog-timestamp:check'),
-        run: () => placeholder('typechange-CommandLog-timestamp:run'),
-      }),
-      this.alterColumnType({
-        schema: 'public',
-        table: 'CommandLog',
-        column: 'timestamp',
-        options: {
-          qualifiedTargetType: 'int4',
-          formatTypeExpected: 'integer',
-          rawTargetTypeForLabel: 'int4',
-        },
-      }),
-      this.dataTransform(endContract, 'typechange-ModCall-timestamp', {
-        check: () => placeholder('typechange-ModCall-timestamp:check'),
-        run: () => placeholder('typechange-ModCall-timestamp:run'),
-      }),
-      this.alterColumnType({
-        schema: 'public',
-        table: 'ModCall',
-        column: 'timestamp',
-        options: {
-          qualifiedTargetType: 'int4',
-          formatTypeExpected: 'integer',
-          rawTargetTypeForLabel: 'int4',
-        },
-      }),
-      this.addUnique({
-        schema: 'public',
-        table: 'CommandLog',
-        constraint: 'CommandLog_timestamp_key',
-        columns: ['timestamp'],
-      }),
-      this.addUnique({
-        schema: 'public',
-        table: 'ModCall',
-        constraint: 'ModCall_timestamp_key',
-        columns: ['timestamp'],
-      }),
-    ];
-  }
+	override get operations() {
+		return [
+			this.dataTransform(endContract, 'typechange-CommandLog-timestamp', {
+				check: () => placeholder('typechange-CommandLog-timestamp:check'),
+				run: () => placeholder('typechange-CommandLog-timestamp:run')
+			}),
+			this.alterColumnType({
+				schema: 'public',
+				table: 'CommandLog',
+				column: 'timestamp',
+				options: {
+					qualifiedTargetType: 'int4',
+					formatTypeExpected: 'integer',
+					rawTargetTypeForLabel: 'int4'
+				}
+			}),
+			this.dataTransform(endContract, 'typechange-ModCall-timestamp', {
+				check: () => placeholder('typechange-ModCall-timestamp:check'),
+				run: () => placeholder('typechange-ModCall-timestamp:run')
+			}),
+			this.alterColumnType({
+				schema: 'public',
+				table: 'ModCall',
+				column: 'timestamp',
+				options: {
+					qualifiedTargetType: 'int4',
+					formatTypeExpected: 'integer',
+					rawTargetTypeForLabel: 'int4'
+				}
+			}),
+			this.addUnique({
+				schema: 'public',
+				table: 'CommandLog',
+				constraint: 'CommandLog_timestamp_key',
+				columns: ['timestamp']
+			}),
+			this.addUnique({
+				schema: 'public',
+				table: 'ModCall',
+				constraint: 'ModCall_timestamp_key',
+				columns: ['timestamp']
+			})
+		];
+	}
 }
 
 MigrationCLI.run(import.meta.url, M);
