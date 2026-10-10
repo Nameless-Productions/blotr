@@ -7,6 +7,8 @@ new Cron('*/5 * * * * *', async () => {
 
 	const logs = await getServerInfo({ CommandLogs: true, ModCalls: true, Players: true });
 
+	if (!logs) return;
+
 	if (!logs.CommandLogs || !logs.ModCalls || !logs.Players)
 		return console.warn('API returned no command or mod call logs or players');
 
