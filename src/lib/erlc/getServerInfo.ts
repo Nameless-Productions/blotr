@@ -62,7 +62,7 @@ interface GetServerInfoRes {
 		Texture?: string;
 		ColorHex: string;
 		ColorName: string;
-	};
+	}[];
 }
 
 export async function getServerInfo(params: GetServerInfoParams) {
