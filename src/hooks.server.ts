@@ -57,4 +57,16 @@ new Cron('*/5 * * * * *', async () => {
 			}
 		});
 	}
+
+	await db.orm.public.Vehicle.where({}).deleteAll();
+	for (const vehicle of logs.Vehicles) {
+		await db.orm.public.Vehicle.create({
+			Name: vehicle.Name,
+			Owner: vehicle.Owner,
+			Plate: vehicle.Plate,
+			Texture: vehicle.Texture,
+			ColorHex: vehicle.ColorHex,
+			ColorName: vehicle.ColorName
+		});
+	}
 });
