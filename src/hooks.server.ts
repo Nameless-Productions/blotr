@@ -1,6 +1,9 @@
 import { Cron } from 'croner';
 import { getServerInfo } from './lib/erlc/getServerInfo';
 import { db } from './lib/db';
+import { error, redirect, type Handle } from '@sveltejs/kit';
+import { verifyToken } from '$lib/jwt';
+import { getUser } from '$lib/users/getUser';
 
 new Cron('*/5 * * * * *', async () => {
 	console.log('Running cron job');
@@ -74,3 +77,28 @@ new Cron('*/5 * * * * *', async () => {
 		}))
 	);
 });
+
+export const handle: Handle = async ({ event, resolve }) => {
+	const pathname = event.url.pathname.replace(/\/{2,}/g, '/').replace(/\/+$/, '') || '/';
+
+	const isPublic = pathname.startsWith('/login') || pathname === '/';
+
+	const userCount = (await db.orm.public.User.all()).length;
+	if (userCount === 0) {
+		if (pathname.startsWith('/setup')) return await resolve(event);
+
+		return redirect(303, new URL('/setup', event.url));
+	}
+	if (pathname.startsWith('/setup')) return error(403, { message: 'Already set up' });
+
+	if (isPublic) return await resolve(event);
+
+	const token = event.cookies.get('token');
+	if (!token) return redirect(303, new URL('/login', event.url));
+	const uid = await verifyToken(token);
+	if (!uid) return redirect(303, new URL('/login', event.url));
+
+	const user = await getUser(uid);
+	if (!user) return redirect(303, new URL('/login', event.url));
+	return await resolve(event);
+};
