@@ -17,7 +17,9 @@ new Cron('*/5 * * * * *', async () => {
 	if (!logs.CommandLogs || !logs.ModCalls || !logs.Players || !logs.Vehicles)
 		return console.warn('API responded with missing things');
 
-	for (const commandLog of logs.CommandLogs) {
+	const last100Logs = logs.CommandLogs.slice(0, 100);
+
+	for (const commandLog of last100Logs) {
 		const commandDB = await db.orm.public.CommandLog.where((l) =>
 			l.timestamp.eq(commandLog.Timestamp)
 		).all();
