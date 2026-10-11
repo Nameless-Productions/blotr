@@ -10,9 +10,9 @@ export async function createUser(
 ) {
 	if (!env.DISCORD_TOKEN) throw new Error('No DISCORD_TOKEN in env');
 
-	if (await db.orm.public.User.where((u) => u.robloxID.eq(robloxId)))
+	if (await db.orm.public.User.where((u) => u.robloxID.eq(robloxId)).first())
 		throw new Error('User with this Roblox ID already exists');
-	if (await db.orm.public.User.where((u) => u.discordID.eq(discordId)))
+	if (await db.orm.public.User.where((u) => u.discordID.eq(discordId)).first())
 		throw new Error('User with this Discord ID already exists');
 
 	const discordUrl = new URL(`/api/v10/users/${discordId}`, 'https://discord.com');
