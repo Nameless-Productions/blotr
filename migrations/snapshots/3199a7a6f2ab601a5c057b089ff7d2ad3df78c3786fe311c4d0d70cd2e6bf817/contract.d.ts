@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-	StorageHashBase<'97f69775ce48eab31211181914efae93007821fb7e516c4e5a3723a18a113ab2'>;
+	StorageHashBase<'3199a7a6f2ab601a5c057b089ff7d2ad3df78c3786fe311c4d0d70cd2e6bf817'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
 	ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -231,14 +231,14 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 		: CodecTypes[CodecId]['json']
 	: Encoded;
 export type LocationOutput = {
-	readonly BuildingNumber: CodecTypes['pg/int4@1']['output'];
+	readonly BuildingNumber: CodecTypes['pg/text@1']['output'];
 	readonly PostalCode: CodecTypes['pg/text@1']['output'];
 	readonly StreetName: CodecTypes['pg/text@1']['output'];
 	readonly X: CodecTypes['pg/int4@1']['output'];
 	readonly Z: CodecTypes['pg/int4@1']['output'];
 };
 export type LocationInput = {
-	readonly BuildingNumber: CodecTypes['pg/int4@1']['input'];
+	readonly BuildingNumber: CodecTypes['pg/text@1']['input'];
 	readonly PostalCode: CodecTypes['pg/text@1']['input'];
 	readonly StreetName: CodecTypes['pg/text@1']['input'];
 	readonly X: CodecTypes['pg/int4@1']['input'];
@@ -271,8 +271,17 @@ export type FieldOutputTypes = {
 		readonly User: {
 			readonly discordID: CodecTypes['pg/text@1']['output'];
 			readonly id: CodecTypes['pg/int4@1']['output'];
+			readonly passwordHash: CodecTypes['pg/text@1']['output'];
 			readonly robloxID: CodecTypes['pg/text@1']['output'];
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+		readonly Vehicle: {
+			readonly ColorHex: CodecTypes['pg/text@1']['output'];
+			readonly ColorName: CodecTypes['pg/text@1']['output'];
+			readonly Name: CodecTypes['pg/text@1']['output'];
+			readonly Owner: CodecTypes['pg/text@1']['output'];
+			readonly Plate: CodecTypes['pg/text@1']['output'];
+			readonly Texture: CodecTypes['pg/text@1']['output'] | null;
 		};
 	};
 };
@@ -303,8 +312,17 @@ export type FieldInputTypes = {
 		readonly User: {
 			readonly discordID: CodecTypes['pg/text@1']['input'];
 			readonly id: CodecTypes['pg/int4@1']['input'];
+			readonly passwordHash: CodecTypes['pg/text@1']['input'];
 			readonly robloxID: CodecTypes['pg/text@1']['input'];
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+		readonly Vehicle: {
+			readonly ColorHex: CodecTypes['pg/text@1']['input'];
+			readonly ColorName: CodecTypes['pg/text@1']['input'];
+			readonly Name: CodecTypes['pg/text@1']['input'];
+			readonly Owner: CodecTypes['pg/text@1']['input'];
+			readonly Plate: CodecTypes['pg/text@1']['input'];
+			readonly Texture: CodecTypes['pg/text@1']['input'] | null;
 		};
 	};
 };
@@ -335,8 +353,17 @@ export type StorageColumnTypes = {
 		readonly User: {
 			readonly discordID: CodecTypes['pg/text@1']['output'];
 			readonly id: CodecTypes['pg/int4@1']['output'];
+			readonly passwordHash: CodecTypes['pg/text@1']['output'];
 			readonly robloxID: CodecTypes['pg/text@1']['output'];
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+		readonly Vehicle: {
+			readonly ColorHex: CodecTypes['pg/text@1']['output'];
+			readonly ColorName: CodecTypes['pg/text@1']['output'];
+			readonly Name: CodecTypes['pg/text@1']['output'];
+			readonly Owner: CodecTypes['pg/text@1']['output'];
+			readonly Plate: CodecTypes['pg/text@1']['output'];
+			readonly Texture: CodecTypes['pg/text@1']['output'] | null;
 		};
 	};
 };
@@ -367,8 +394,17 @@ export type StorageColumnInputTypes = {
 		readonly User: {
 			readonly discordID: CodecTypes['pg/text@1']['input'];
 			readonly id: CodecTypes['pg/int4@1']['input'];
+			readonly passwordHash: CodecTypes['pg/text@1']['input'];
 			readonly robloxID: CodecTypes['pg/text@1']['input'];
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		};
+		readonly Vehicle: {
+			readonly ColorHex: CodecTypes['pg/text@1']['input'];
+			readonly ColorName: CodecTypes['pg/text@1']['input'];
+			readonly Name: CodecTypes['pg/text@1']['input'];
+			readonly Owner: CodecTypes['pg/text@1']['input'];
+			readonly Plate: CodecTypes['pg/text@1']['input'];
+			readonly Texture: CodecTypes['pg/text@1']['input'] | null;
 		};
 	};
 };
@@ -402,8 +438,18 @@ export namespace Models {
 	export type public_User = {
 		discordID: CodecTypes['pg/text@1']['output'];
 		id: CodecTypes['pg/int4@1']['output'];
+		passwordHash: CodecTypes['pg/text@1']['output'];
 		robloxID: CodecTypes['pg/text@1']['output'];
 		role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
+		readonly [RelationKeys]?: never;
+	};
+	export type public_Vehicle = {
+		ColorHex: CodecTypes['pg/text@1']['output'];
+		ColorName: CodecTypes['pg/text@1']['output'];
+		Name: CodecTypes['pg/text@1']['output'];
+		Owner: CodecTypes['pg/text@1']['output'];
+		Plate: CodecTypes['pg/text@1']['output'];
+		Texture: CodecTypes['pg/text@1']['output'] | null;
 		readonly [RelationKeys]?: never;
 	};
 }
@@ -414,6 +460,7 @@ export declare const models: {
 		ModCall: Models.public_ModCall;
 		Player: Models.public_Player;
 		User: Models.public_User;
+		Vehicle: Models.public_Vehicle;
 	};
 };
 
@@ -584,6 +631,12 @@ type ContractBase = Omit<
 									};
 									readonly many: false;
 								};
+								readonly passwordHash: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
 								readonly robloxID: {
 									readonly dataType: 'pg/text';
 									readonly codecId: 'pg/text@1';
@@ -606,6 +659,49 @@ type ContractBase = Omit<
 								{ readonly columns: readonly ['robloxID'] },
 								{ readonly columns: readonly ['discordID'] }
 							];
+							indexes: readonly [];
+							foreignKeys: readonly [];
+						};
+						readonly Vehicle: {
+							columns: {
+								readonly ColorHex: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly ColorName: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly Name: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly Owner: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly Plate: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly Texture: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: true;
+									readonly many: false;
+								};
+							};
+							uniques: readonly [];
 							indexes: readonly [];
 							foreignKeys: readonly [];
 						};
@@ -633,6 +729,7 @@ type ContractBase = Omit<
 		readonly ModCall: { readonly namespace: 'public' & NamespaceId; readonly model: 'ModCall' };
 		readonly Player: { readonly namespace: 'public' & NamespaceId; readonly model: 'Player' };
 		readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+		readonly Vehicle: { readonly namespace: 'public' & NamespaceId; readonly model: 'Vehicle' };
 	};
 	readonly domain: {
 		readonly namespaces: {
@@ -761,6 +858,10 @@ type ContractBase = Omit<
 								readonly nullable: false;
 								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
 							};
+							readonly passwordHash: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
 							readonly robloxID: {
 								readonly nullable: false;
 								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -777,8 +878,50 @@ type ContractBase = Omit<
 							readonly fields: {
 								readonly discordID: { readonly column: 'discordID' };
 								readonly id: { readonly column: 'id' };
+								readonly passwordHash: { readonly column: 'passwordHash' };
 								readonly robloxID: { readonly column: 'robloxID' };
 								readonly role: { readonly column: 'role' };
+							};
+						};
+					};
+					readonly Vehicle: {
+						readonly fields: {
+							readonly ColorHex: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly ColorName: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Name: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Owner: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Plate: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly Texture: {
+								readonly nullable: true;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+						};
+						readonly relations: Record<string, never>;
+						readonly storage: {
+							readonly table: 'Vehicle';
+							readonly namespaceId: 'public';
+							readonly fields: {
+								readonly ColorHex: { readonly column: 'ColorHex' };
+								readonly ColorName: { readonly column: 'ColorName' };
+								readonly Name: { readonly column: 'Name' };
+								readonly Owner: { readonly column: 'Owner' };
+								readonly Plate: { readonly column: 'Plate' };
+								readonly Texture: { readonly column: 'Texture' };
 							};
 						};
 					};
@@ -788,7 +931,7 @@ type ContractBase = Omit<
 						readonly fields: {
 							readonly BuildingNumber: {
 								readonly nullable: false;
-								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
 							};
 							readonly PostalCode: {
 								readonly nullable: false;
@@ -865,7 +1008,7 @@ type ContractBase = Omit<
 			readonly fields: {
 				readonly BuildingNumber: {
 					readonly nullable: false;
-					readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+					readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
 				};
 				readonly PostalCode: {
 					readonly nullable: false;
