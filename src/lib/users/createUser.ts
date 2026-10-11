@@ -6,7 +6,7 @@ export async function createUser(
 	password: string,
 	robloxId: string,
 	discordId: string,
-	role: 'USER' | 'MODERATOR' | 'ADMINISTRATOR'
+	role: 'USER' | 'MODERATOR' | 'ADMINISTRATOR' | 'OWNER'
 ) {
 	if (!env.DISCORD_TOKEN) throw new Error('No DISCORD_TOKEN in env');
 
