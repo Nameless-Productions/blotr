@@ -1,0 +1,57 @@
+// use prisma-8
+
+enum Role {
+  OWNER
+  ADMINISTRATOR
+  MODERATOR
+  USER
+}
+
+type Location {
+  X Int
+  Z Int
+  PostalCode String
+  StreetName String
+  BuildingNumber String
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  robloxID String @unique
+  discordID String @unique
+  role Role @default(USER)
+}
+
+model CommandLog {
+  id Int @id @default(autoincrement())
+  robloxUserId String
+  timestamp Int @unique
+  command String
+  userId Int?
+}
+
+model ModCall {
+  id Int @id @default(autoincrement())
+  callerId Int
+  moderatorId String?
+  timestamp Int @unique
+}
+
+model Player {
+  robloxId String @unique
+  robloxUsername String @unique
+  team String
+  Callsign String? @unique
+  Permissions String
+  WantedStars Int
+  location Location
+}
+
+model Vehicle {
+  Name String
+  Owner String
+  Plate String
+  Texture String?
+  ColorHex String
+  ColorName String
+}
