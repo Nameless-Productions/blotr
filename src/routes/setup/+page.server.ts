@@ -14,9 +14,12 @@ export const actions: Actions = {
 
 		try {
 			await createUser(password, robloxId, discordId, 'OWNER');
-			return redirect(303, new URL('/login', request.url));
 		} catch (err) {
-			return await fail(400, { error: err });
+			return await fail(400, {
+				error: err instanceof Error ? err.message : 'Something went wrong'
+			});
 		}
+
+		return redirect(303, new URL('/login', request.url));
 	}
 };
