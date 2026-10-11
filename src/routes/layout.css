@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+
+body {
+	@apply bg-neutral-700 font-mono text-gray-300;
+}
