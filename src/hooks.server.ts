@@ -100,5 +100,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const user = await getUser(uid);
 	if (!user) return redirect(303, new URL('/login', event.url));
+	event.locals.userId = uid;
 	return await resolve(event);
 };
