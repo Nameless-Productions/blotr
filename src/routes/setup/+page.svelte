@@ -1,5 +1,6 @@
 <script>
 	import { enhance } from '$app/forms';
+	let { form } = $props();
 </script>
 
 <div class="text-center">
@@ -15,4 +16,9 @@
 		<br />
 		<input type="submit" class="button" value="Set up" />
 	</form>
+
+	{#if form?.error}
+		<br />
+		<p class="text-red-400">{form.error}</p>
+	{/if}
 </div>
