@@ -20,6 +20,8 @@
 		<a class="text-2xl font-bold hover:font-normal" href={resolve('/')}>Blotr</a>
 		{#if user}
 			<a class="font-bold hover:font-normal" href={resolve('/dashboard')}>Dashboard</a>
+		{:else}
+			<a class="font-bold hover:font-normal" href={resolve('/login')}>Log in</a>
 		{/if}
 	</div>
 </nav>
