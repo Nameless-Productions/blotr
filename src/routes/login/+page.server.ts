@@ -16,7 +16,7 @@ export const actions: Actions = {
 			const token = await login(userId, password);
 
 			cookies.set('token', token, {
-				path: token,
+				path: '/',
 				maxAge: 60 * 60 * 24 * 7,
 				httpOnly: true,
 				sameSite: 'lax'

@@ -5,7 +5,10 @@ export async function getUser(userId: number) {
 	if (!env.DISCORD_TOKEN) throw new Error('No DISCORD_TOKEN in env');
 
 	const userDB = await db.orm.public.User.where((u) => u.id.eq(userId)).first();
-	if (!userDB) return;
+	if (!userDB) {
+		console.warn('[getUser] User not found in DB:', userId);
+		return;
+	}
 
 	const discordUrl = new URL(`/api/v10/users/${userDB.discordID}`, 'https://discord.com');
 
@@ -14,17 +17,29 @@ export async function getUser(userId: number) {
 			Authorization: `Bot ${env.DISCORD_TOKEN}`
 		}
 	});
-	if (!discordRes.ok) return;
+	if (!discordRes.ok) {
+		console.warn('[getUser] Discord API failed:', discordRes.status, await discordRes.text());
+		return;
+	}
 	const discordJson = await discordRes.json();
-	if (!discordJson.username) return;
+	if (!discordJson.username) {
+		console.warn('[getUser] Discord user has no username:', discordJson);
+		return;
+	}
 	const discordUsername = discordJson.username;
 
 	const robloxUrl = new URL(`/v1/users/${userDB.robloxID}`, 'https://users.roblox.com');
 	const robloxRes = await fetch(robloxUrl);
 
-	if (!robloxRes.ok) return;
+	if (!robloxRes.ok) {
+		console.warn('[getUser] Roblox API failed:', robloxRes.status, await robloxRes.text());
+		return;
+	}
 	const robloxJson = await robloxRes.json();
-	if (!robloxJson.name) return;
+	if (!robloxJson.name) {
+		console.warn('[getUser] Roblox user has no name:', robloxJson);
+		return;
+	}
 	const robloxUsername = robloxJson.name;
 
 	return {

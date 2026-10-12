@@ -78,10 +78,37 @@ new Cron('*/5 * * * * *', async () => {
 	);
 });
 
+async function getUsr(token: string) {
+	const uid = await verifyToken(token);
+	if (!uid) return;
+
+	const user = await getUser(uid);
+	if (!user) return;
+	return user;
+}
+
 export const handle: Handle = async ({ event, resolve }) => {
 	const pathname = event.url.pathname.replace(/\/{2,}/g, '/').replace(/\/+$/, '') || '/';
 
 	const isPublic = pathname.startsWith('/login') || pathname === '/';
+
+	let isAuthed = false;
+
+	const token = event.cookies.get('token');
+	if (token) {
+		const user = await getUsr(token);
+		if (user) {
+			isAuthed = true;
+			event.locals.user = {
+				id: user.id,
+				robloxId: user.robloxId,
+				discordId: user.discordId,
+				robloxUsername: user.robloxUsername,
+				discordUsername: user.discordUsername,
+				role: user.role
+			};
+		}
+	}
 
 	const userCount = (await db.orm.public.User.all()).length;
 	if (userCount === 0) {
@@ -93,20 +120,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (isPublic) return await resolve(event);
 
-	const token = event.cookies.get('token');
-	if (!token) return redirect(303, new URL('/login', event.url));
-	const uid = await verifyToken(token);
-	if (!uid) return redirect(303, new URL('/login', event.url));
+	if (!isAuthed) return redirect(303, new URL('/login', event.url));
 
-	const user = await getUser(uid);
-	if (!user) return redirect(303, new URL('/login', event.url));
-	event.locals.user = {
-		id: user.id,
-		robloxId: user.robloxId,
-		discordId: user.discordId,
-		robloxUsername: user.robloxUsername,
-		discordUsername: user.discordUsername,
-		role: user.role
-	};
 	return await resolve(event);
 };
