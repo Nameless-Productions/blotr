@@ -104,6 +104,49 @@
 							"table": "ModCall"
 						}
 					},
+					"Player": {
+						"fields": {
+							"Callsign": {
+								"nullable": true,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"Permissions": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"WantedStars": {
+								"nullable": false,
+								"type": { "codecId": "pg/int4@1", "kind": "scalar" }
+							},
+							"location": {
+								"nullable": false,
+								"type": { "kind": "valueObject", "name": "Location" }
+							},
+							"robloxId": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"robloxUsername": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"team": { "nullable": false, "type": { "codecId": "pg/text@1", "kind": "scalar" } }
+						},
+						"relations": {},
+						"storage": {
+							"fields": {
+								"Callsign": { "column": "Callsign" },
+								"Permissions": { "column": "Permissions" },
+								"WantedStars": { "column": "WantedStars" },
+								"location": { "column": "location" },
+								"robloxId": { "column": "robloxId" },
+								"robloxUsername": { "column": "robloxUsername" },
+								"team": { "column": "team" }
+							},
+							"namespaceId": "public",
+							"table": "Player"
+						}
+					},
 					"User": {
 						"fields": {
 							"discordID": {
@@ -111,6 +154,10 @@
 								"type": { "codecId": "pg/text@1", "kind": "scalar" }
 							},
 							"id": { "nullable": false, "type": { "codecId": "pg/int4@1", "kind": "scalar" } },
+							"passwordHash": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
 							"robloxID": {
 								"nullable": false,
 								"type": { "codecId": "pg/text@1", "kind": "scalar" }
@@ -131,11 +178,61 @@
 							"fields": {
 								"discordID": { "column": "discordID" },
 								"id": { "column": "id" },
+								"passwordHash": { "column": "passwordHash" },
 								"robloxID": { "column": "robloxID" },
 								"role": { "column": "role" }
 							},
 							"namespaceId": "public",
 							"table": "User"
+						}
+					},
+					"Vehicle": {
+						"fields": {
+							"ColorHex": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"ColorName": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"Name": { "nullable": false, "type": { "codecId": "pg/text@1", "kind": "scalar" } },
+							"Owner": { "nullable": false, "type": { "codecId": "pg/text@1", "kind": "scalar" } },
+							"Plate": { "nullable": false, "type": { "codecId": "pg/text@1", "kind": "scalar" } },
+							"Texture": { "nullable": true, "type": { "codecId": "pg/text@1", "kind": "scalar" } }
+						},
+						"relations": {},
+						"storage": {
+							"fields": {
+								"ColorHex": { "column": "ColorHex" },
+								"ColorName": { "column": "ColorName" },
+								"Name": { "column": "Name" },
+								"Owner": { "column": "Owner" },
+								"Plate": { "column": "Plate" },
+								"Texture": { "column": "Texture" }
+							},
+							"namespaceId": "public",
+							"table": "Vehicle"
+						}
+					}
+				},
+				"valueObjects": {
+					"Location": {
+						"fields": {
+							"BuildingNumber": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"PostalCode": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"StreetName": {
+								"nullable": false,
+								"type": { "codecId": "pg/text@1", "kind": "scalar" }
+							},
+							"X": { "nullable": false, "type": { "codecId": "pg/int4@1", "kind": "scalar" } },
+							"Z": { "nullable": false, "type": { "codecId": "pg/int4@1", "kind": "scalar" } }
 						}
 					}
 				}
@@ -148,7 +245,9 @@
 	"roots": {
 		"CommandLog": { "model": "CommandLog", "namespace": "public" },
 		"ModCall": { "model": "ModCall", "namespace": "public" },
-		"User": { "model": "User", "namespace": "public" }
+		"Player": { "model": "Player", "namespace": "public" },
+		"User": { "model": "User", "namespace": "public" },
+		"Vehicle": { "model": "Vehicle", "namespace": "public" }
 	},
 	"schemaVersion": "1",
 	"storage": {
@@ -195,6 +294,28 @@
 							"primaryKey": { "columns": ["id"] },
 							"uniques": [{ "columns": ["timestamp"] }]
 						},
+						"Player": {
+							"columns": {
+								"Callsign": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": true },
+								"Permissions": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false },
+								"WantedStars": { "codecId": "pg/int4@1", "dataType": "pg/int4", "nullable": false },
+								"location": { "codecId": "pg/jsonb@1", "dataType": "pg/jsonb", "nullable": false },
+								"robloxId": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false },
+								"robloxUsername": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": false
+								},
+								"team": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false }
+							},
+							"foreignKeys": [],
+							"indexes": [],
+							"uniques": [
+								{ "columns": ["robloxId"] },
+								{ "columns": ["robloxUsername"] },
+								{ "columns": ["Callsign"] }
+							]
+						},
 						"User": {
 							"checks": [
 								{
@@ -209,6 +330,11 @@
 									"codecId": "pg/int4@1",
 									"dataType": "pg/int4",
 									"default": { "expression": "autoincrement()", "kind": "function" },
+									"nullable": false
+								},
+								"passwordHash": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
 									"nullable": false
 								},
 								"robloxID": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false },
@@ -229,6 +355,19 @@
 							"indexes": [],
 							"primaryKey": { "columns": ["id"] },
 							"uniques": [{ "columns": ["robloxID"] }, { "columns": ["discordID"] }]
+						},
+						"Vehicle": {
+							"columns": {
+								"ColorHex": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false },
+								"ColorName": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false },
+								"Name": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false },
+								"Owner": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false },
+								"Plate": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": false },
+								"Texture": { "codecId": "pg/text@1", "dataType": "pg/text", "nullable": true }
+							},
+							"foreignKeys": [],
+							"indexes": [],
+							"uniques": []
 						}
 					},
 					"valueSet": {
@@ -242,7 +381,7 @@
 				"kind": "postgres-schema"
 			}
 		},
-		"storageHash": "a1fdac8c086420d7c3e74db2523610926b1c3b433447fa85de459985bd5cc31c"
+		"storageHash": "3199a7a6f2ab601a5c057b089ff7d2ad3df78c3786fe311c4d0d70cd2e6bf817"
 	},
 	"target": "postgres",
 	"targetFamily": "sql"

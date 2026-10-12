@@ -1,6 +1,9 @@
 import { Cron } from 'croner';
 import { getServerInfo } from './lib/erlc/getServerInfo';
 import { db } from './lib/db';
+import { error, redirect, type Handle } from '@sveltejs/kit';
+import { verifyToken } from '$lib/jwt';
+import { getUser } from '$lib/users/getUser';
 
 new Cron('*/5 * * * * *', async () => {
 	console.log('Running cron job');
@@ -74,3 +77,50 @@ new Cron('*/5 * * * * *', async () => {
 		}))
 	);
 });
+
+async function getUsr(token: string) {
+	const uid = await verifyToken(token);
+	if (!uid) return;
+
+	const user = await getUser(uid);
+	if (!user) return;
+	return user;
+}
+
+export const handle: Handle = async ({ event, resolve }) => {
+	const pathname = event.url.pathname.replace(/\/{2,}/g, '/').replace(/\/+$/, '') || '/';
+
+	const isPublic = pathname.startsWith('/login') || pathname === '/';
+
+	let isAuthed = false;
+
+	const token = event.cookies.get('token');
+	if (token) {
+		const user = await getUsr(token);
+		if (user) {
+			isAuthed = true;
+			event.locals.user = {
+				id: user.id,
+				robloxId: user.robloxId,
+				discordId: user.discordId,
+				robloxUsername: user.robloxUsername,
+				discordUsername: user.discordUsername,
+				role: user.role
+			};
+		}
+	}
+
+	const userCount = (await db.orm.public.User.all()).length;
+	if (userCount === 0) {
+		if (pathname.startsWith('/setup')) return await resolve(event);
+
+		return redirect(303, new URL('/setup', event.url));
+	}
+	if (pathname.startsWith('/setup')) return error(403, { message: 'Already set up' });
+
+	if (isPublic) return await resolve(event);
+
+	if (!isAuthed) return redirect(303, new URL('/login', event.url));
+
+	return await resolve(event);
+};

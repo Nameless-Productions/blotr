@@ -261,6 +261,13 @@
 									"kind": "scalar"
 								}
 							},
+							"passwordHash": {
+								"nullable": false,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
 							"robloxID": {
 								"nullable": false,
 								"type": {
@@ -290,6 +297,9 @@
 								},
 								"id": {
 									"column": "id"
+								},
+								"passwordHash": {
+									"column": "passwordHash"
 								},
 								"robloxID": {
 									"column": "robloxID"
@@ -579,6 +589,11 @@
 									},
 									"nullable": false
 								},
+								"passwordHash": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": false
+								},
 								"robloxID": {
 									"codecId": "pg/text@1",
 									"dataType": "pg/text",
@@ -663,7 +678,7 @@
 				"kind": "postgres-schema"
 			}
 		},
-		"storageHash": "3a27be351ac333f9e5f79aae85e1772b30a258ec922edb10b2723075922ec6a9"
+		"storageHash": "3199a7a6f2ab601a5c057b089ff7d2ad3df78c3786fe311c4d0d70cd2e6bf817"
 	},
 	"capabilities": {
 		"postgres": {

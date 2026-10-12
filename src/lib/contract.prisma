@@ -20,6 +20,7 @@ model User {
   robloxID String @unique
   discordID String @unique
   role Role @default(USER)
+  passwordHash String
 }
 
 model CommandLog {
