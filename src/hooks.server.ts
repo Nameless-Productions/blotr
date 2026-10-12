@@ -100,6 +100,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const user = await getUser(uid);
 	if (!user) return redirect(303, new URL('/login', event.url));
-	event.locals.userId = uid;
+	event.locals.user = {
+		id: user.id,
+		robloxId: user.robloxId,
+		discordId: user.discordId,
+		robloxUsername: user.robloxUsername,
+		discordUsername: user.discordUsername,
+		role: user.role
+	};
 	return await resolve(event);
 };
