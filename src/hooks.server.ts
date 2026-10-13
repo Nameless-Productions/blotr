@@ -91,6 +91,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const pathname = event.url.pathname.replace(/\/{2,}/g, '/').replace(/\/+$/, '') || '/';
 
 	const isPublic = pathname.startsWith('/login') || pathname === '/';
+	const isModPage =
+		pathname.startsWith('/dashboard/logs') ||
+		pathname.startsWith('/dashboard/shifts') ||
+		pathname.startsWith('/dashboard/moderation');
+	const isAdminPage = pathname.startsWith('/dashboard/admin');
 
 	let isAuthed = false;
 
@@ -119,6 +124,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (pathname.startsWith('/setup')) return error(403, { message: 'Already set up' });
 
 	if (isPublic) return await resolve(event);
+	if (isModPage) {
+		if (event.locals.user?.role !== 'USER') return await resolve(event);
+		return error(403);
+	}
+	if (isAdminPage) {
+		if (event.locals.user?.role === 'ADMINISTRATOR' || event.locals.user?.role === 'OWNER')
+			return await resolve(event);
+		return error(403);
+	}
 
 	if (!isAuthed) return redirect(303, new URL('/login', event.url));
 
