@@ -11,3 +11,7 @@ body {
 .button {
 	@apply cursor-pointer rounded-full bg-neutral-200 p-2 text-black duration-300 hover:bg-neutral-400;
 }
+
+.link {
+	@apply cursor-pointer text-blue-500 underline;
+}
