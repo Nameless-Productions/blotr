@@ -12,5 +12,5 @@ export async function getRobloxUser(id: string) {
 	if (!robloxJson.name) return;
 
 	const robloxUsername = robloxJson.name;
-	return robloxUsername;
+	return robloxUsername as string;
 }
