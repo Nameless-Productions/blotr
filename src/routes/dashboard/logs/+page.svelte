@@ -30,7 +30,7 @@
 			logs = [...logs, ...l];
 
 			robloxUsernames = [];
-			for (const log of logs) {
+			for (const log of logs.reverse()) {
 				const robloxRes = await fetch(`/api/users/getRobloxUser/${log.robloxUserId}`);
 
 				if (!robloxRes.ok) return;
@@ -39,6 +39,7 @@
 
 				robloxUsernames = [...robloxUsernames, robloxJson.username];
 			}
+			robloxUsernames = robloxUsernames.reverse();
 		} finally {
 			loading = false;
 		}
