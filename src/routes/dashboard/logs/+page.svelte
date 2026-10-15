@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 
 	interface Log {
@@ -66,6 +67,15 @@
 			href={`https://www.roblox.com/users/${log.robloxUserId}/profile`}
 			>{robloxUsernames[log.id - 1] ?? 'Loading Roblox username...'}</a
 		>
+
+		{#if log.userId}
+			<br />
+			<a target="_blank" class="link" href={resolve(`/api/users/getUser/${log.userId}`)}
+				>User ID: {log.userId}</a
+			>
+		{:else}
+			<p>No Blotr user</p>
+		{/if}
 	</div>
 	<br />
 {/each}
