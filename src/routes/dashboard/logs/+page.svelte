@@ -30,7 +30,7 @@
 			logs = [...logs, ...l];
 
 			robloxUsernames = new Array(logs.length);
-			for (const log of [...logs].reverse()) {
+			for (const log of [...logs]) {
 				const robloxRes = await fetch(`/api/users/getRobloxUser/${log.robloxUserId}`);
 
 				if (!robloxRes.ok) return;
@@ -56,7 +56,7 @@
 
 <p class="text-xl font-bold">Logs</p>
 
-{#each [...logs].reverse() as log (log.id)}
+{#each [...logs] as log (log.id)}
 	<div>
 		<p>Log #{log.id}</p>
 		<p>{log.command}</p>
