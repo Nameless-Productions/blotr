@@ -11,10 +11,10 @@ export const actions: Actions = {
 		const formData = await request.formData();
 
 		const command = formData.get('command') as string | null;
-		if (!command) return fail(400, { error: 'No command' });
+		if (!command) return fail(400, { command: { error: 'No command' } });
 
 		await runCommand(command);
 
-		return { message: 'Ran command' };
+		return { command: { message: 'Ran command' } };
 	}
 };
