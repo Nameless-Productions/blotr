@@ -6,7 +6,7 @@ export const actions: Actions = {
 	command: async ({ request, locals }) => {
 		if (!locals.user) return redirect(303, new URL('/login', request.url));
 		if (locals.user.role !== 'ADMINISTRATOR' && locals.user.role !== 'OWNER')
-			return fail(403, { error: "You don't have permissions for this" });
+			return fail(403, { command: { error: "You don't have permissions for this" } });
 
 		const formData = await request.formData();
 
