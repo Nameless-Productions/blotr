@@ -6,7 +6,7 @@ import { verifyToken } from '$lib/jwt';
 import { getUser } from '$lib/users/getUser';
 
 new Cron('*/5 * * * * *', async () => {
-	console.log('Running cron job');
+	if (process.env.DEBUG === 'true') console.log('Running cron job');
 
 	const logs = await getServerInfo({
 		CommandLogs: true,
@@ -27,6 +27,8 @@ new Cron('*/5 * * * * *', async () => {
 			l.timestamp.eq(commandLog.Timestamp)
 		).all();
 		if (commandDB.length == 1) continue;
+
+		if (process.env.DEBUG === 'true') console.log('Adding log to db: ', commandLog);
 
 		const robloxId = commandLog.Player.split(':')[1];
 
