@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-	StorageHashBase<'3199a7a6f2ab601a5c057b089ff7d2ad3df78c3786fe311c4d0d70cd2e6bf817'>;
+	StorageHashBase<'7b42d240a373af45e445c73ee8cfe4a556180bb1725edc74767400b944d535db'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
 	ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -250,6 +250,7 @@ export type FieldOutputTypes = {
 			readonly command: CodecTypes['pg/text@1']['output'];
 			readonly id: CodecTypes['pg/int4@1']['output'];
 			readonly robloxUserId: CodecTypes['pg/text@1']['output'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['output'];
 			readonly timestamp: CodecTypes['pg/int4@1']['output'];
 			readonly userId: CodecTypes['pg/int4@1']['output'] | null;
 		};
@@ -291,6 +292,7 @@ export type FieldInputTypes = {
 			readonly command: CodecTypes['pg/text@1']['input'];
 			readonly id: CodecTypes['pg/int4@1']['input'];
 			readonly robloxUserId: CodecTypes['pg/text@1']['input'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['input'];
 			readonly timestamp: CodecTypes['pg/int4@1']['input'];
 			readonly userId: CodecTypes['pg/int4@1']['input'] | null;
 		};
@@ -332,6 +334,7 @@ export type StorageColumnTypes = {
 			readonly command: CodecTypes['pg/text@1']['output'];
 			readonly id: CodecTypes['pg/int4@1']['output'];
 			readonly robloxUserId: CodecTypes['pg/text@1']['output'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['output'];
 			readonly timestamp: CodecTypes['pg/int4@1']['output'];
 			readonly userId: CodecTypes['pg/int4@1']['output'] | null;
 		};
@@ -373,6 +376,7 @@ export type StorageColumnInputTypes = {
 			readonly command: CodecTypes['pg/text@1']['input'];
 			readonly id: CodecTypes['pg/int4@1']['input'];
 			readonly robloxUserId: CodecTypes['pg/text@1']['input'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['input'];
 			readonly timestamp: CodecTypes['pg/int4@1']['input'];
 			readonly userId: CodecTypes['pg/int4@1']['input'] | null;
 		};
@@ -414,6 +418,7 @@ export namespace Models {
 		command: CodecTypes['pg/text@1']['output'];
 		id: CodecTypes['pg/int4@1']['output'];
 		robloxUserId: CodecTypes['pg/text@1']['output'];
+		robloxUsername: CodecTypes['pg/text@1']['output'];
 		timestamp: CodecTypes['pg/int4@1']['output'];
 		userId: CodecTypes['pg/int4@1']['output'] | null;
 		readonly [RelationKeys]?: never;
@@ -501,6 +506,12 @@ type ContractBase = Omit<
 									readonly many: false;
 								};
 								readonly robloxUserId: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly robloxUsername: {
 									readonly dataType: 'pg/text';
 									readonly codecId: 'pg/text@1';
 									readonly nullable: false;
@@ -749,6 +760,10 @@ type ContractBase = Omit<
 								readonly nullable: false;
 								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
 							};
+							readonly robloxUsername: {
+								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
 							readonly timestamp: {
 								readonly nullable: false;
 								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
@@ -766,6 +781,7 @@ type ContractBase = Omit<
 								readonly command: { readonly column: 'command' };
 								readonly id: { readonly column: 'id' };
 								readonly robloxUserId: { readonly column: 'robloxUserId' };
+								readonly robloxUsername: { readonly column: 'robloxUsername' };
 								readonly timestamp: { readonly column: 'timestamp' };
 								readonly userId: { readonly column: 'userId' };
 							};

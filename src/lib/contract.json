@@ -75,6 +75,13 @@
 									"kind": "scalar"
 								}
 							},
+							"robloxUsername": {
+								"nullable": false,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
 							"timestamp": {
 								"nullable": false,
 								"type": {
@@ -101,6 +108,9 @@
 								},
 								"robloxUserId": {
 									"column": "robloxUserId"
+								},
+								"robloxUsername": {
+									"column": "robloxUsername"
 								},
 								"timestamp": {
 									"column": "timestamp"
@@ -454,6 +464,11 @@
 									"dataType": "pg/text",
 									"nullable": false
 								},
+								"robloxUsername": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": false
+								},
 								"timestamp": {
 									"codecId": "pg/int4@1",
 									"dataType": "pg/int4",
@@ -678,7 +693,7 @@
 				"kind": "postgres-schema"
 			}
 		},
-		"storageHash": "3199a7a6f2ab601a5c057b089ff7d2ad3df78c3786fe311c4d0d70cd2e6bf817"
+		"storageHash": "7b42d240a373af45e445c73ee8cfe4a556180bb1725edc74767400b944d535db"
 	},
 	"capabilities": {
 		"postgres": {

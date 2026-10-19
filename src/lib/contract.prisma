@@ -29,6 +29,7 @@ model CommandLog {
   timestamp Int @unique
   command String
   userId Int?
+  robloxUsername String
 }
 
 model ModCall {

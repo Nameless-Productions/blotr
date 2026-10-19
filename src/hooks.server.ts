@@ -4,6 +4,7 @@ import { db } from './lib/db';
 import { error, redirect, type Handle } from '@sveltejs/kit';
 import { verifyToken } from '$lib/jwt';
 import { getUser } from '$lib/users/getUser';
+import { getRobloxUser } from '$lib/users/getRobloxUser';
 
 new Cron('*/5 * * * * *', async () => {
 	if (process.env.DEBUG === 'true') console.log('Running cron job');
@@ -31,11 +32,16 @@ new Cron('*/5 * * * * *', async () => {
 		if (process.env.DEBUG === 'true') console.log('Adding log to db: ', commandLog);
 
 		let robloxId: string | undefined;
+		let robloxUsername: string | undefined;
 
 		if (commandLog.Player === 'Remote Server') {
 			robloxId = '0';
+			robloxUsername = 'Remote Server';
 		} else {
 			robloxId = commandLog.Player.split(':')[1];
+			const robloxUser = await getRobloxUser(robloxId);
+			if (!robloxUser) throw new Error(`[cron job] roblox user not found with id ${robloxId}`);
+			robloxUsername = robloxUser;
 		}
 
 		let userId: number | null = null;
@@ -48,7 +54,8 @@ new Cron('*/5 * * * * *', async () => {
 			robloxUserId: robloxId,
 			timestamp: commandLog.Timestamp,
 			command: commandLog.Command,
-			userId
+			userId,
+			robloxUsername: robloxUsername
 		});
 	}
 
