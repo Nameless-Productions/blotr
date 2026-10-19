@@ -30,7 +30,13 @@ new Cron('*/5 * * * * *', async () => {
 
 		if (process.env.DEBUG === 'true') console.log('Adding log to db: ', commandLog);
 
-		const robloxId = commandLog.Player.split(':')[1];
+		let robloxId: string | undefined;
+
+		if (commandLog.Player === 'Remote Server') {
+			robloxId = '0';
+		} else {
+			robloxId = commandLog.Player.split(':')[1];
+		}
 
 		let userId: number | null = null;
 
