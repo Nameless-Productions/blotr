@@ -6,6 +6,7 @@
 		command: string;
 		id: number;
 		robloxUserId: string;
+		robloxUsername: string;
 		timestamp: number;
 		userId: number | null;
 	}
@@ -13,7 +14,6 @@
 	let logs: Log[] = $state([]);
 	let page: number = $state(0);
 	let loading = $state(false);
-	let robloxUsernames: string[] = $state([]);
 
 	async function loadPage(p: number) {
 		try {
@@ -28,17 +28,6 @@
 				return;
 			}
 			logs = [...logs, ...l];
-
-			robloxUsernames = new Array(logs.length);
-			for (const log of [...logs]) {
-				const robloxRes = await fetch(`/api/users/getRobloxUser/${log.robloxUserId}`);
-
-				if (!robloxRes.ok) return;
-
-				const robloxJson = (await robloxRes.json()) as { username: string };
-
-				robloxUsernames[log.id - 1] = robloxJson.username;
-			}
 		} finally {
 			loading = false;
 		}
@@ -64,8 +53,7 @@
 		<a
 			target="_blank"
 			class="link"
-			href={`https://www.roblox.com/users/${log.robloxUserId}/profile`}
-			>{robloxUsernames[log.id - 1] ?? 'Loading Roblox username...'}</a
+			href={`https://www.roblox.com/users/${log.robloxUserId}/profile`}>{log.robloxUsername}</a
 		>
 
 		{#if log.userId}
