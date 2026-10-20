@@ -44,4 +44,13 @@
 
 		<input type="submit" value="Create User" class="button mt-2" />
 	</form>
+
+	{#if form && form.create}
+		{#if 'error' in form.create}
+			<p class="text-red-500">{form.create.error}</p>
+		{:else if 'message' in form.create}
+			<p>{form.create.message}</p>
+		{/if}
+		<br />
+	{/if}
 {/if}
