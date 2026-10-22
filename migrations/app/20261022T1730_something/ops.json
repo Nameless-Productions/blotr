@@ -1,0 +1,70 @@
+[
+	{
+		"id": "column.public.User.discordUsername",
+		"label": "Add column \"discordUsername\" to \"User\"",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "column",
+				"name": "discordUsername",
+				"table": "User"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure column \"discordUsername\" is missing",
+				"sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+				"params": ["public", "User", "discordUsername"]
+			}
+		],
+		"execute": [
+			{
+				"description": "add column \"discordUsername\"",
+				"sql": "ALTER TABLE \"public\".\"User\" ADD COLUMN \"discordUsername\" text"
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify column \"discordUsername\" exists",
+				"sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+				"params": ["public", "User", "discordUsername"]
+			}
+		]
+	},
+	{
+		"id": "column.public.User.robloxUsername",
+		"label": "Add column \"robloxUsername\" to \"User\"",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "column",
+				"name": "robloxUsername",
+				"table": "User"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure column \"robloxUsername\" is missing",
+				"sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+				"params": ["public", "User", "robloxUsername"]
+			}
+		],
+		"execute": [
+			{
+				"description": "add column \"robloxUsername\"",
+				"sql": "ALTER TABLE \"public\".\"User\" ADD COLUMN \"robloxUsername\" text"
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify column \"robloxUsername\" exists",
+				"sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+				"params": ["public", "User", "robloxUsername"]
+			}
+		]
+	}
+]

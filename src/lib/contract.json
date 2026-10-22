@@ -264,6 +264,13 @@
 									"kind": "scalar"
 								}
 							},
+							"discordUsername": {
+								"nullable": true,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
 							"id": {
 								"nullable": false,
 								"type": {
@@ -280,6 +287,13 @@
 							},
 							"robloxID": {
 								"nullable": false,
+								"type": {
+									"codecId": "pg/text@1",
+									"kind": "scalar"
+								}
+							},
+							"robloxUsername": {
+								"nullable": true,
 								"type": {
 									"codecId": "pg/text@1",
 									"kind": "scalar"
@@ -305,6 +319,9 @@
 								"discordID": {
 									"column": "discordID"
 								},
+								"discordUsername": {
+									"column": "discordUsername"
+								},
 								"id": {
 									"column": "id"
 								},
@@ -313,6 +330,9 @@
 								},
 								"robloxID": {
 									"column": "robloxID"
+								},
+								"robloxUsername": {
+									"column": "robloxUsername"
 								},
 								"role": {
 									"column": "role"
@@ -595,6 +615,11 @@
 									"dataType": "pg/text",
 									"nullable": false
 								},
+								"discordUsername": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": true
+								},
 								"id": {
 									"codecId": "pg/int4@1",
 									"dataType": "pg/int4",
@@ -613,6 +638,11 @@
 									"codecId": "pg/text@1",
 									"dataType": "pg/text",
 									"nullable": false
+								},
+								"robloxUsername": {
+									"codecId": "pg/text@1",
+									"dataType": "pg/text",
+									"nullable": true
 								},
 								"role": {
 									"codecId": "pg/text@1",
@@ -693,7 +723,7 @@
 				"kind": "postgres-schema"
 			}
 		},
-		"storageHash": "7b42d240a373af45e445c73ee8cfe4a556180bb1725edc74767400b944d535db"
+		"storageHash": "ace7242573fb0f52248b4c83467eb0b98cceef0c9f887bf3e42b5a3eed3a7f5f"
 	},
 	"capabilities": {
 		"postgres": {

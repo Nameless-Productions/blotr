@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-	StorageHashBase<'7b42d240a373af45e445c73ee8cfe4a556180bb1725edc74767400b944d535db'>;
+	StorageHashBase<'ace7242573fb0f52248b4c83467eb0b98cceef0c9f887bf3e42b5a3eed3a7f5f'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
 	ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -271,9 +271,11 @@ export type FieldOutputTypes = {
 		};
 		readonly User: {
 			readonly discordID: CodecTypes['pg/text@1']['output'];
+			readonly discordUsername: CodecTypes['pg/text@1']['output'] | null;
 			readonly id: CodecTypes['pg/int4@1']['output'];
 			readonly passwordHash: CodecTypes['pg/text@1']['output'];
 			readonly robloxID: CodecTypes['pg/text@1']['output'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['output'] | null;
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
 		};
 		readonly Vehicle: {
@@ -313,9 +315,11 @@ export type FieldInputTypes = {
 		};
 		readonly User: {
 			readonly discordID: CodecTypes['pg/text@1']['input'];
+			readonly discordUsername: CodecTypes['pg/text@1']['input'] | null;
 			readonly id: CodecTypes['pg/int4@1']['input'];
 			readonly passwordHash: CodecTypes['pg/text@1']['input'];
 			readonly robloxID: CodecTypes['pg/text@1']['input'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['input'] | null;
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
 		};
 		readonly Vehicle: {
@@ -355,9 +359,11 @@ export type StorageColumnTypes = {
 		};
 		readonly User: {
 			readonly discordID: CodecTypes['pg/text@1']['output'];
+			readonly discordUsername: CodecTypes['pg/text@1']['output'] | null;
 			readonly id: CodecTypes['pg/int4@1']['output'];
 			readonly passwordHash: CodecTypes['pg/text@1']['output'];
 			readonly robloxID: CodecTypes['pg/text@1']['output'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['output'] | null;
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
 		};
 		readonly Vehicle: {
@@ -397,9 +403,11 @@ export type StorageColumnInputTypes = {
 		};
 		readonly User: {
 			readonly discordID: CodecTypes['pg/text@1']['input'];
+			readonly discordUsername: CodecTypes['pg/text@1']['input'] | null;
 			readonly id: CodecTypes['pg/int4@1']['input'];
 			readonly passwordHash: CodecTypes['pg/text@1']['input'];
 			readonly robloxID: CodecTypes['pg/text@1']['input'];
+			readonly robloxUsername: CodecTypes['pg/text@1']['input'] | null;
 			readonly role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
 		};
 		readonly Vehicle: {
@@ -442,9 +450,11 @@ export namespace Models {
 	};
 	export type public_User = {
 		discordID: CodecTypes['pg/text@1']['output'];
+		discordUsername: CodecTypes['pg/text@1']['output'] | null;
 		id: CodecTypes['pg/int4@1']['output'];
 		passwordHash: CodecTypes['pg/text@1']['output'];
 		robloxID: CodecTypes['pg/text@1']['output'];
+		robloxUsername: CodecTypes['pg/text@1']['output'] | null;
 		role: 'OWNER' | 'ADMINISTRATOR' | 'MODERATOR' | 'USER';
 		readonly [RelationKeys]?: never;
 	};
@@ -632,6 +642,12 @@ type ContractBase = Omit<
 									readonly nullable: false;
 									readonly many: false;
 								};
+								readonly discordUsername: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: true;
+									readonly many: false;
+								};
 								readonly id: {
 									readonly dataType: 'pg/int4';
 									readonly codecId: 'pg/int4@1';
@@ -652,6 +668,12 @@ type ContractBase = Omit<
 									readonly dataType: 'pg/text';
 									readonly codecId: 'pg/text@1';
 									readonly nullable: false;
+									readonly many: false;
+								};
+								readonly robloxUsername: {
+									readonly dataType: 'pg/text';
+									readonly codecId: 'pg/text@1';
+									readonly nullable: true;
 									readonly many: false;
 								};
 								readonly role: {
@@ -870,6 +892,10 @@ type ContractBase = Omit<
 								readonly nullable: false;
 								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
 							};
+							readonly discordUsername: {
+								readonly nullable: true;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
 							readonly id: {
 								readonly nullable: false;
 								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
@@ -880,6 +906,10 @@ type ContractBase = Omit<
 							};
 							readonly robloxID: {
 								readonly nullable: false;
+								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+							};
+							readonly robloxUsername: {
+								readonly nullable: true;
 								readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
 							};
 							readonly role: {
@@ -893,9 +923,11 @@ type ContractBase = Omit<
 							readonly namespaceId: 'public';
 							readonly fields: {
 								readonly discordID: { readonly column: 'discordID' };
+								readonly discordUsername: { readonly column: 'discordUsername' };
 								readonly id: { readonly column: 'id' };
 								readonly passwordHash: { readonly column: 'passwordHash' };
 								readonly robloxID: { readonly column: 'robloxID' };
+								readonly robloxUsername: { readonly column: 'robloxUsername' };
 								readonly role: { readonly column: 'role' };
 							};
 						};

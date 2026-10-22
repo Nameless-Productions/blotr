@@ -18,7 +18,9 @@ type Location {
 model User {
   id Int @id @default(autoincrement())
   robloxID String @unique
+  robloxUsername String?
   discordID String @unique
+  discordUsername String?
   role Role @default(USER)
   passwordHash String
 }
