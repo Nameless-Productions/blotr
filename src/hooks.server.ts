@@ -5,6 +5,7 @@ import { error, redirect, type Handle } from '@sveltejs/kit';
 import { verifyToken } from '$lib/jwt';
 import { getUser } from '$lib/users/getUser';
 import { getRobloxUser } from '$lib/users/getRobloxUser';
+import { updateUsernames } from '$lib/users/updateUsernames';
 
 new Cron('*/5 * * * * *', async () => {
 	if (process.env.DEBUG === 'true') console.log('Running cron job');
@@ -92,6 +93,13 @@ new Cron('*/5 * * * * *', async () => {
 		}))
 	);
 });
+
+setInterval(
+	async () => {
+		updateUsernames();
+	},
+	60 * 60 * 1000
+); // 1 hour
 
 async function getUsr(token: string) {
 	const uid = await verifyToken(token);
