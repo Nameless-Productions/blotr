@@ -14,5 +14,7 @@ export async function updateUsernames() {
 			robloxUsername: user.robloxUsername,
 			discordUsername: user.discordUsername
 		});
+
+		await new Promise<void>((resolve) => setTimeout(resolve, 1000));
 	}
 }
