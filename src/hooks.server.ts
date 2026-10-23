@@ -94,6 +94,7 @@ new Cron('*/5 * * * * *', async () => {
 	);
 });
 
+updateUsernames();
 setInterval(
 	async () => {
 		updateUsernames();
