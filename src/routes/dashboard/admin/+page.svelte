@@ -57,5 +57,21 @@
 				<br />
 			{/if}
 		</div>
+
+		<div>
+			<p class="font-bold">Users</p>
+
+			<br />
+
+			{#each data.users as user (user.id)}
+				<div>
+					<p>#{user.id}</p>
+					<p>Discord Username: {user.discordUsername ?? 'No Discord username'}</p>
+					<p>Roblox Username: {user.robloxUsername ?? 'No Roblox username'}</p>
+					<p>Role: {user.role.toLowerCase()}</p>
+					<br />
+				</div>
+			{/each}
+		</div>
 	</div>
 {/if}
