@@ -1,7 +1,19 @@
 import { fail, redirect } from '@sveltejs/kit';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { runCommand } from '$lib/erlc/runCommand';
 import { createUser } from '$lib/users/createUser';
+import { db } from '$lib/db';
+
+export const load: PageServerLoad = async () => {
+	const users = await db.orm.public.User.select(
+		'id',
+		'discordUsername',
+		'robloxUsername',
+		'role'
+	).all();
+
+	return { users };
+};
 
 export const actions: Actions = {
 	command: async ({ request, locals }) => {
