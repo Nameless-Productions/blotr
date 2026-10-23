@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
 
 	let { data, form } = $props();
 </script>
@@ -65,7 +66,7 @@
 
 			{#each data.users as user (user.id)}
 				<div>
-					<p>#{user.id}</p>
+					<a href={resolve(`/user/${user.id}`)}>#{user.id}</a>
 					<p>Discord Username: {user.discordUsername ?? 'No Discord username'}</p>
 					<p>Roblox Username: {user.robloxUsername ?? 'No Roblox username'}</p>
 					<p>Role: {user.role.toLowerCase()}</p>
