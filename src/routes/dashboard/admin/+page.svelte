@@ -66,7 +66,7 @@
 
 			{#each data.users as user (user.id)}
 				<div>
-					<a href={resolve(`/user/${user.id}`)}>#{user.id}</a>
+					<a href={resolve(`/user/${user.id}`)} class="link">#{user.id}</a>
 					<p>Discord Username: {user.discordUsername ?? 'No Discord username'}</p>
 					<p>Roblox Username: {user.robloxUsername ?? 'No Roblox username'}</p>
 					<p>Role: {user.role.toLowerCase()}</p>
