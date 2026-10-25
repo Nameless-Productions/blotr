@@ -75,7 +75,7 @@ new Cron('*/5 * * * * *', async () => {
 				Z: player.Location.LocationZ,
 				PostalCode: player.Location.PostalCode,
 				StreetName: player.Location.StreetName,
-				BuildingNumber: player.Location.StreetName
+				BuildingNumber: player.Location.BuildingNumber
 			}
 		}))
 	);
