@@ -31,5 +31,5 @@
 <br />
 <div class="rounded-xl border border-gray-400 p-2">
 	<p class="font-bold">Recent logs</p>
-	<LogList logs={data.logs.reverse()} />
+	<LogList logs={data.logs} />
 </div>

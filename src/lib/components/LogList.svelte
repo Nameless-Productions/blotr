@@ -6,7 +6,7 @@
 </script>
 
 <div class="grid space-y-3 space-x-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-	{#each logs.reverse() as log (log.id)}
+	{#each logs as log (log.id)}
 		<div class="rounded-xl border border-gray-400 p-2">
 			<p>#{log.id}</p>
 			<p>{log.command}</p>
