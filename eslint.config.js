@@ -39,5 +39,15 @@ export default defineConfig(
 		rules: {
 			'@typescript-eslint/no-explicit-any': 'warn'
 		}
+	},
+	{
+		ignores: [
+			'.claude/',
+			'.svelte-kit/',
+			'migrations/',
+			'node_modules/',
+			'src/lib/contract.json',
+			'src/lib/contract.d.ts'
+		]
 	}
 );

@@ -13,8 +13,10 @@
 	<div class="grid gap-3 text-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
 		{#if data.user.role !== 'USER'}
 			<a href={resolve('/dashboard/logs')} class="button">Logs</a>
-			<a href={resolve('/dashboard/shifts')} class="button">Shifts</a>
-			<a href={resolve('/dashboard/moderaion')} class="button">Moderation panel</a>
+
+			<!--the as /dashboards are temporary until i finish them-->
+			<a href={resolve('/dashboard/shifts' as '/dashboard')} class="button">Shifts</a>
+			<a href={resolve('/dashboard/moderaion' as '/dashboard')} class="button">Moderation panel</a>
 		{/if}
 		{#if data.user.role === 'ADMINISTRATOR' || data.user.role === 'OWNER'}
 			<a href={resolve('/dashboard/admin')} class="button">Administrator panel</a>
