@@ -1,0 +1,4 @@
+.claude/
+.svelte-kit/
+migrations/
+node_modules/
