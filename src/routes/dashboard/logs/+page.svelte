@@ -1,15 +1,7 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
-
-	interface Log {
-		command: string;
-		id: number;
-		robloxUserId: string;
-		robloxUsername: string;
-		timestamp: number;
-		userId: number | null;
-	}
+	import LogList from '$lib/components/LogList.svelte';
+	import type { Log } from '$lib/types/log';
 
 	let logs: Log[] = $state([]);
 	let page: number = $state(0);
@@ -44,28 +36,9 @@
 </script>
 
 <p class="text-xl font-bold">Logs</p>
+<br />
 
-{#each [...logs] as log (log.id)}
-	<div>
-		<p>Log #{log.id}</p>
-		<p>{log.command}</p>
-		<p>{new Date(log.timestamp * 1000).toLocaleString()}</p>
-		<a
-			target="_blank"
-			class="link"
-			href={`https://www.roblox.com/users/${log.robloxUserId}/profile`}>{log.robloxUsername}</a
-		>
-
-		{#if log.userId}
-			<br />
-			<a target="_blank" class="link" href={resolve(`/user/${log.userId}`)}>User ID: {log.userId}</a
-			>
-		{:else}
-			<p>No Blotr user</p>
-		{/if}
-	</div>
-	<br />
-{/each}
+<LogList {logs} />
 
 <button onclick={loadMore} disabled={loading} class="link">
 	{loading ? 'Loading' : 'Load more'}
