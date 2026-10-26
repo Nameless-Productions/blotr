@@ -87,6 +87,20 @@ export async function getServerInfo(params: GetServerInfoParams) {
 		return;
 	}
 
+	if (res.status === 429) {
+		const retry = res.headers.get('Retry-After');
+
+		if (!retry || isNaN(Number(retry))) {
+			throw new Error('Rate limited by ERLC');
+		}
+		await new Promise<void>((resolve) => setTimeout(resolve, Number(retry) * 1000 + 1000)); // retry in ms + 1 sec
+		res = await fetch(url, {
+			headers: {
+				'server-key': env.SERVER_KEY
+			}
+		});
+	}
+
 	if (res.status != 200) {
 		console.warn(`Error with erlc api: ${res.status}`);
 		return;

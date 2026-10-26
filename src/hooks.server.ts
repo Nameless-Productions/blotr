@@ -4,9 +4,11 @@ import { db } from './lib/db';
 import { error, redirect, type Handle } from '@sveltejs/kit';
 import { verifyToken } from '$lib/jwt';
 import { getUser } from '$lib/users/getUser';
+import { getRobloxUser } from '$lib/users/getRobloxUser';
+import { updateUsernames } from '$lib/users/updateUsernames';
 
 new Cron('*/5 * * * * *', async () => {
-	console.log('Running cron job');
+	if (process.env.DEBUG === 'true') console.log('Running cron job');
 
 	const logs = await getServerInfo({
 		CommandLogs: true,
@@ -28,7 +30,20 @@ new Cron('*/5 * * * * *', async () => {
 		).all();
 		if (commandDB.length == 1) continue;
 
-		const robloxId = commandLog.Player.split(':')[1];
+		if (process.env.DEBUG === 'true') console.log('Adding log to db: ', commandLog);
+
+		let robloxId: string | undefined;
+		let robloxUsername: string | undefined;
+
+		if (commandLog.Player === 'Remote Server') {
+			robloxId = '0';
+			robloxUsername = 'Remote Server';
+		} else {
+			robloxId = commandLog.Player.split(':')[1];
+			const robloxUser = await getRobloxUser(robloxId);
+			if (!robloxUser) throw new Error(`[cron job] roblox user not found with id ${robloxId}`);
+			robloxUsername = robloxUser;
+		}
 
 		let userId: number | null = null;
 
@@ -40,7 +55,8 @@ new Cron('*/5 * * * * *', async () => {
 			robloxUserId: robloxId,
 			timestamp: commandLog.Timestamp,
 			command: commandLog.Command,
-			userId
+			userId,
+			robloxUsername: robloxUsername
 		});
 	}
 
@@ -59,7 +75,7 @@ new Cron('*/5 * * * * *', async () => {
 				Z: player.Location.LocationZ,
 				PostalCode: player.Location.PostalCode,
 				StreetName: player.Location.StreetName,
-				BuildingNumber: player.Location.StreetName
+				BuildingNumber: player.Location.BuildingNumber
 			}
 		}))
 	);
@@ -78,6 +94,14 @@ new Cron('*/5 * * * * *', async () => {
 	);
 });
 
+updateUsernames();
+setInterval(
+	async () => {
+		updateUsernames();
+	},
+	60 * 60 * 1000
+); // 1 hour
+
 async function getUsr(token: string) {
 	const uid = await verifyToken(token);
 	if (!uid) return;
@@ -91,6 +115,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const pathname = event.url.pathname.replace(/\/{2,}/g, '/').replace(/\/+$/, '') || '/';
 
 	const isPublic = pathname.startsWith('/login') || pathname === '/';
+	const isModPage =
+		pathname.startsWith('/dashboard/logs') ||
+		pathname.startsWith('/dashboard/shifts') ||
+		pathname.startsWith('/dashboard/moderation');
+	const isAdminPage = pathname.startsWith('/dashboard/admin');
 
 	let isAuthed = false;
 
@@ -119,6 +148,15 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (pathname.startsWith('/setup')) return error(403, { message: 'Already set up' });
 
 	if (isPublic) return await resolve(event);
+	if (isModPage) {
+		if (event.locals.user?.role !== 'USER') return await resolve(event);
+		return error(403);
+	}
+	if (isAdminPage) {
+		if (event.locals.user?.role === 'ADMINISTRATOR' || event.locals.user?.role === 'OWNER')
+			return await resolve(event);
+		return error(403);
+	}
 
 	if (!isAuthed) return redirect(303, new URL('/login', event.url));
 

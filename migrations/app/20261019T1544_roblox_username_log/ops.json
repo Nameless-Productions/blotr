@@ -1,0 +1,104 @@
+[
+	{
+		"id": "column.public.CommandLog.robloxUsername",
+		"label": "Add column \"robloxUsername\" to \"CommandLog\"",
+		"operationClass": "additive",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "column",
+				"name": "robloxUsername",
+				"table": "CommandLog"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure column \"robloxUsername\" is missing",
+				"sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+				"params": ["public", "CommandLog", "robloxUsername"]
+			}
+		],
+		"execute": [
+			{
+				"description": "add column \"robloxUsername\"",
+				"sql": "ALTER TABLE \"public\".\"CommandLog\" ADD COLUMN \"robloxUsername\" text"
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify column \"robloxUsername\" exists",
+				"sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+				"params": ["public", "CommandLog", "robloxUsername"]
+			}
+		]
+	},
+	{
+		"id": "data_migration.backfill-CommandLog-robloxUsername",
+		"label": "Data transform: backfill-CommandLog-robloxUsername",
+		"operationClass": "data",
+		"target": {
+			"id": "postgres"
+		},
+		"precheck": [
+			{
+				"description": "Check backfill-CommandLog-robloxUsername has work to do",
+				"sql": "SELECT EXISTS (SELECT \"timestamp\" AS \"timestamp\" FROM \"public\".\"CommandLog\" WHERE \"robloxUsername\" IS NULL LIMIT 1) AS ok",
+				"params": []
+			}
+		],
+		"execute": [
+			{
+				"description": "Run backfill-CommandLog-robloxUsername",
+				"sql": "UPDATE \"public\".\"CommandLog\" SET \"robloxUsername\" = $1 WHERE \"robloxUsername\" IS NULL",
+				"params": [""]
+			}
+		],
+		"postcheck": [
+			{
+				"description": "Verify backfill-CommandLog-robloxUsername resolved all violations",
+				"sql": "SELECT NOT EXISTS (SELECT \"timestamp\" AS \"timestamp\" FROM \"public\".\"CommandLog\" WHERE \"robloxUsername\" IS NULL LIMIT 1) AS ok",
+				"params": []
+			}
+		]
+	},
+	{
+		"id": "alterNullability.setNotNull.CommandLog.robloxUsername",
+		"label": "Set NOT NULL on \"CommandLog\".\"robloxUsername\"",
+		"operationClass": "widening",
+		"target": {
+			"id": "postgres",
+			"details": {
+				"schema": "public",
+				"objectType": "column",
+				"name": "robloxUsername",
+				"table": "CommandLog"
+			}
+		},
+		"precheck": [
+			{
+				"description": "ensure column \"robloxUsername\" exists",
+				"sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+				"params": ["public", "CommandLog", "robloxUsername"]
+			},
+			{
+				"description": "ensure no NULL values in \"robloxUsername\"",
+				"sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"public\".\"CommandLog\" WHERE \"robloxUsername\" IS NULL) AS \"result\"",
+				"params": []
+			}
+		],
+		"execute": [
+			{
+				"description": "set NOT NULL on \"robloxUsername\"",
+				"sql": "ALTER TABLE \"public\".\"CommandLog\" ALTER COLUMN \"robloxUsername\" SET NOT NULL"
+			}
+		],
+		"postcheck": [
+			{
+				"description": "verify column \"robloxUsername\" is NOT NULL",
+				"sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+				"params": ["public", "CommandLog", "robloxUsername", "NO"]
+			}
+		]
+	}
+]

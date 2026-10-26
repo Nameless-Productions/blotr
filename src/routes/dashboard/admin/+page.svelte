@@ -1,0 +1,78 @@
+<script lang="ts">
+	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
+
+	let { data, form } = $props();
+</script>
+
+{#if data.user?.role === 'ADMINISTRATOR' || data.user?.role === 'OWNER'}
+	<p class="text-xl font-bold">Administrator panel</p>
+
+	<div class="lg:cols-4 grid gap-2 sm:grid-cols-1 md:grid-cols-2">
+		<div>
+			<p class="font-bold">Run command</p>
+			<form action="?/command" method="post" use:enhance>
+				<input type="text" name="command" placeholder=":h Hello, World!" class="input" required />
+				<input type="submit" class="button" value="Run Command" />
+			</form>
+
+			{#if form && form.command}
+				<br />
+				{#if 'error' in form.command}
+					<p class="text-red">{form.command.error}</p>
+				{:else if 'message' in form.command}
+					<p>{form.command.message}</p>
+				{/if}
+			{/if}
+			<br />
+		</div>
+
+		<div>
+			<p class="font-bold">Create User</p>
+
+			<form action="?/create" method="post" use:enhance>
+				<input type="text" class="input w-50" placeholder="Discord ID" name="discord" required />
+				<br />
+				<input type="text" class="input w-50" placeholder="Roblox ID" name="roblox" required />
+				<br />
+				<select name="role" class="input w-50">
+					<option value="USER">User</option>
+					<option value="MODERATOR">Moderator</option>
+					{#if data.user.role === 'OWNER'}
+						<option value="ADMINISTRATOR">Administrator</option>
+					{/if}
+				</select>
+				<br />
+				<input type="password" class="input w-50" placeholder="Password" name="password" required />
+				<p class="text-sm text-gray-400">Note: The user will be able to change this</p>
+
+				<input type="submit" value="Create User" class="button mt-2" />
+			</form>
+
+			{#if form && form.create}
+				{#if 'error' in form.create}
+					<p class="text-red-500">{form.create.error}</p>
+				{:else if 'message' in form.create}
+					<p>{form.create.message}</p>
+				{/if}
+				<br />
+			{/if}
+		</div>
+
+		<div>
+			<p class="font-bold">Users</p>
+
+			<br />
+
+			{#each data.users as user (user.id)}
+				<div>
+					<a href={resolve(`/user/${user.id}`)} class="link">#{user.id}</a>
+					<p>Discord Username: {user.discordUsername ?? 'No Discord username'}</p>
+					<p>Roblox Username: {user.robloxUsername ?? 'No Roblox username'}</p>
+					<p>Role: {user.role.toLowerCase()}</p>
+					<br />
+				</div>
+			{/each}
+		</div>
+	</div>
+{/if}

@@ -20,6 +20,7 @@
 		<a class="text-2xl font-bold hover:font-normal" href={resolve('/')}>Blotr</a>
 		{#if user}
 			<a class="font-bold hover:font-normal" href={resolve('/dashboard')}>Dashboard</a>
+			<a class="font-bold hover:font-normal" href={resolve('/dashboard/logout')}>Log out</a>
 			<p class="ml-auto font-bold">{user.discordUsername}</p>
 		{:else}
 			<a class="font-bold hover:font-normal" href={resolve('/login')}>Log in</a>
