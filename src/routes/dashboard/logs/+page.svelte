@@ -58,8 +58,7 @@
 
 		{#if log.userId}
 			<br />
-			<a target="_blank" class="link" href={resolve(`/api/users/getUser/${log.userId}`)}
-				>User ID: {log.userId}</a
+			<a target="_blank" class="link" href={resolve(`/user/${log.userId}`)}>User ID: {log.userId}</a
 			>
 		{:else}
 			<p>No Blotr user</p>
