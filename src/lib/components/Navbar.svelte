@@ -21,7 +21,9 @@
 		{#if user}
 			<a class="font-bold hover:font-normal" href={resolve('/dashboard')}>Dashboard</a>
 			<a class="font-bold hover:font-normal" href={resolve('/dashboard/logout')}>Log out</a>
-			<p class="ml-auto font-bold">{user.discordUsername}</p>
+			<a href={resolve('/me')} class="ml-auto cursor-pointer font-bold hover:font-normal"
+				>{user.discordUsername}</a
+			>
 		{:else}
 			<a class="font-bold hover:font-normal" href={resolve('/login')}>Log in</a>
 		{/if}
